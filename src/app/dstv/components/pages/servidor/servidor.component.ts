@@ -161,5 +161,19 @@ export class ServidorComponent implements OnInit {
         this.servidorSelecionado = {};
     }
 
-    public excluirSelecionados() {}
+    public excluirSelecionados() {
+
+        if(this.listaServidoresSelecionados) {
+            this.listaServidoresSelecionados.forEach(
+                (item:ServidorI) => {
+                    this.servidorService.delete(item.id || '');
+                }
+            )
+        }
+
+
+        console.log(this.listaServidoresSelecionados);
+       // this.servidorService.deleteMultiple(this.listaServidoresSelecionados)
+
+    }
 }

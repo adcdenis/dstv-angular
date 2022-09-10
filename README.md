@@ -25,3 +25,17 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## DEPLOY GIT HUB PAGES
+
+--para gerar build para o github pages
+
+ng build --configuration production --aot --base-href="/dstv-angular/"
+
+angular-cli-ghpages --dir=dist/dstv-angular
+
+
+--------------------
+
+https://adcdenis.github.io/dstv-angular/
+

@@ -9,8 +9,11 @@ import {
     doc,
     docData,
     DocumentData,
+    DocumentReference,
     Firestore,
     updateDoc,
+    writeBatch,
+    WriteBatch,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -18,32 +21,49 @@ import { Observable } from 'rxjs';
     providedIn: 'root',
 })
 export class ServidorFireService {
-    private db: CollectionReference<DocumentData>;
+    private dbServidor: CollectionReference<DocumentData>;
 
     constructor(private firestore: Firestore) {
-        this.db = collection(this.firestore, 'servidor');
+        this.dbServidor = collection(this.firestore, 'servidor');
     }
 
     getAll() {
-        return collectionData(this.db, {idField: 'id',}) as Observable<ServidorI[]>;
+        return collectionData(this.dbServidor, { idField: 'id' }) as Observable<
+            ServidorI[]
+        >;
     }
 
     get(id: string) {
         const servidorDocumentReference = doc(this.firestore, `servidor/${id}`);
-        return docData(servidorDocumentReference, { idField: 'id' }) as Observable<ServidorI>;
+        return docData(servidorDocumentReference, {
+            idField: 'id',
+        }) as Observable<ServidorI>;
     }
 
     create(servidor: ServidorI) {
-        return addDoc(this.db, servidor) ;
+        return addDoc(this.dbServidor, servidor);
     }
 
     update(servidor: ServidorI) {
-        const servidorDocumentReference = doc(this.firestore, `servidor/${servidor.id}`);
+        const servidorDocumentReference = doc(
+            this.firestore,
+            `servidor/${servidor.id}`
+        );
         return updateDoc(servidorDocumentReference, { ...servidor });
     }
 
     delete(id: string) {
         const servidorDocumentReference = doc(this.firestore, `servidor/${id}`);
         return deleteDoc(servidorDocumentReference);
+    }
+
+    public deleteMultiple(servidor: DocumentReference<ServidorI>[]) {
+        const batch = writeBatch(this.firestore);
+
+        servidor.forEach((elem) => {
+            batch.delete(elem);
+        });
+
+        batch.commit();
     }
 }
