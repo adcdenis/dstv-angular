@@ -62,7 +62,7 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="alterar(servidor)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="abrirDialogAlterar(servidor)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="abrirDialogExcluir(servidor)"></button>
                             </div>
                         </td>
@@ -77,8 +77,23 @@
                 <span *ngIf="servidorSelecionado">Tem certeza que você deseja excluir <b>{{servidorSelecionado.nome}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="dialogoExcluir = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="excluir()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não" (click)="dialogoExcluir = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sim" (click)="excluir()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="dialogoServidor" [style]="{width: '450px'}" header="Detalhes do Servidor" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="name">Nome</label>
+                    <input type="text" pInputText id="name" [(ngModel)]="servidorSelecionado.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !servidorSelecionado.nome}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !servidorSelecionado.nome">Nome é obrigatório.</small>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="dialogoServidor = false"></button>
+                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="salvarOuAlterar()"></button>
             </ng-template>
         </p-dialog>
     </div>

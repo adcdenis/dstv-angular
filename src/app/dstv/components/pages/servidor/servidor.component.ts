@@ -3,6 +3,7 @@ import { ServidorService } from './../../../service/servidor.service';
 import { Component, OnInit } from '@angular/core';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
+import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
 
 @Component({
     selector: 'app-servidor',
@@ -14,11 +15,13 @@ export class ServidorComponent implements OnInit {
     public listaServidores: Array<ServidorI> = [];
     public listaServidoresSelecionados: Array<ServidorI> = [];
     public dialogoExcluir: boolean = false;
+    public dialogoServidor: boolean = false;
     public servidorSelecionado: ServidorI = {};
     cols: any[] = [];
+    submitted: boolean = false;
 
     constructor(
-        private servidorService: ServidorService,
+        private servidorService: ServidorFireService,
         private messageService: MessageService
     ) {}
 
@@ -30,7 +33,7 @@ export class ServidorComponent implements OnInit {
             { field: 'nome', header: 'Nome' },
         ];
 
-        this.servidorService.listar().subscribe({
+        this.servidorService.getAll().subscribe({
             next: (v) => (this.listaServidores = v),
             error: (e) => console.error(e),
             complete: () => console.info('complete'),
@@ -40,51 +43,110 @@ export class ServidorComponent implements OnInit {
         // this.excluir(primeiro);
     }
 
-    public salvar() {
-        const primeiro: ServidorI = { nome: 'Canuto' };
-        this.servidorService.salvar(primeiro).subscribe({
-            next: (v) => (v: any) => console.log(v),
-            error: (e) => console.error(e),
-            complete: () => console.info('complete'),
-        });
+    public salvarOuAlterar() {
+
+        this.submitted = true;
+
+        if(!this.servidorSelecionado.nome || this.servidorSelecionado.nome.trim().length == 0) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erro!',
+                detail: 'Insira um nome!',
+                life: 3000,
+            });
+            return;
+        }
+
+        if (this.servidorSelecionado.id) {
+            this.alterar();
+        } else {
+            this.salvar();
+        }
     }
 
-    public alterar(servidor: ServidorI) {
-        this.servidorService.editar(servidor).subscribe({
-            next: (v) => (v: any) => console.log(v),
-            error: (e) => console.error(e),
-            complete: () => console.info('complete'),
+    public salvar() {
+
+        this.servidorService.create(this.servidorSelecionado).then(() => {
+            this.dialogoServidor = false;
+
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso!',
+                detail: 'Servidor Criado!',
+                life: 3000,
+            });
+
+            this.servidorService.getAll().subscribe({
+                next: (v) => (this.listaServidores = v),
+                error: (e) => console.error(e),
+                complete: () => console.info('complete'),
+            });
         });
+        // .subscribe({
+        //     next: (v) => (v: any) => console.log(v),
+        //     error: (e) => console.error(e),
+        //     complete: () => console.info('complete'),
+        // });
+    }
+
+    public abrirDialogAlterar(servidor: ServidorI) {
+        this.servidorSelecionado = servidor;
+        this.submitted = false;
+        this.dialogoServidor = true;
+    }
+
+    public alterar() {
+        this.servidorService.update(this.servidorSelecionado).then(() => {
+            this.dialogoServidor = false;
+
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso!',
+                detail: 'Servidor Alterado!',
+                life: 3000,
+            });
+
+            this.servidorService.getAll().subscribe({
+                next: (v) => (this.listaServidores = v),
+                error: (e) => console.error(e),
+                complete: () => console.info('complete'),
+            });
+        });
+        // .subscribe({
+        //     next: (v) => (v: any) => console.log(v),
+        //     error: (e) => console.error(e),
+        //     complete: () => console.info('complete'),
+        // });
     }
 
     public abrirDialogExcluir(servidor: ServidorI) {
+        this.submitted = false;
         this.servidorSelecionado = servidor;
         this.dialogoExcluir = true;
     }
 
     public excluir() {
-        this.servidorService.excluir(this.servidorSelecionado).subscribe({
-            next: (v) => (v: any) => console.log(v),
-            error: (e) => console.error(e),
-            complete: () => {
+        this.servidorService
+            .delete(this.servidorSelecionado.id || '')
+            .then(() => {
                 console.info('complete');
+
+                this.dialogoExcluir = false;
+
                 this.messageService.add({
                     severity: 'success',
-                    summary: 'Successful',
+                    summary: 'Sucesso!',
                     detail: 'Servidor Excluído',
                     life: 3000,
                 });
-
                 this.servidorSelecionado = {};
-                this.dialogoExcluir = false;
 
-                this.servidorService.listar().subscribe({
+                this.servidorService.getAll().subscribe({
                     next: (v) => (this.listaServidores = v),
                     error: (e) => console.error(e),
                     complete: () => console.info('complete'),
                 });
-            },
-        });
+            });
     }
 
     onGlobalFilter(table: Table, event: Event) {
@@ -94,7 +156,10 @@ export class ServidorComponent implements OnInit {
         );
     }
 
-    public novo() {}
+    public novo() {
+        this.dialogoServidor = true;
+        this.servidorSelecionado = {};
+    }
 
     public excluirSelecionados() {}
 }
