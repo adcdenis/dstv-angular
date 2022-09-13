@@ -15,6 +15,9 @@ import { AppLayoutModule } from './layout/app.layout.module';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -23,6 +26,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
         AppLayoutModule,
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideFirestore(() => getFirestore()),
+        provideAuth(() => getAuth()),
+        AngularFireAuthModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -33,6 +38,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
         NodeService,
         PhotoService,
         ProductService,
+        { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
     ],
     bootstrap: [AppComponent],
 })

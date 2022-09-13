@@ -41,7 +41,7 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon>
+                        <th pSortableColumn="id" *ngIf="false">Id <p-sortIcon field="id"></p-sortIcon>
                         </th>
                         <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon>
                         </th>
@@ -53,10 +53,10 @@
                         <td>
                             <p-tableCheckbox [value]="servidor"></p-tableCheckbox>
                         </td>
-                        <td style="width:50%; min-width:10rem;"><span class="p-column-title">Id</span>
+                        <td style="width:50%; min-width:10rem;" *ngIf="false"><span class="p-column-title">Id</span>
                             {{servidor.id}}
                         </td>
-                        <td style="width:50%; min-width:10rem;">
+                        <td style="width:90%; min-width:10rem;">
                             <span class="p-column-title">Nome</span>
                             {{servidor.nome}}
                         </td>

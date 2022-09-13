@@ -90,7 +90,7 @@ export class ServidorComponent implements OnInit {
     }
 
     public abrirDialogAlterar(servidor: ServidorI) {
-        this.servidorSelecionado = servidor;
+        this.servidorSelecionado = {...servidor};
         this.submitted = false;
         this.dialogoServidor = true;
     }
