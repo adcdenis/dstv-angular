@@ -12,8 +12,7 @@ import {
     DocumentReference,
     Firestore,
     updateDoc,
-    writeBatch,
-    WriteBatch,
+    writeBatch
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
