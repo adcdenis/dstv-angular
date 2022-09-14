@@ -39,3 +39,9 @@ angular-cli-ghpages --dir=dist/dstv-angular
 
 https://adcdenis.github.io/dstv-angular/
 
+
+# DEPLOY NO FIREBASE
+
+ng build --configuration production --aot
+
+firebase deploy

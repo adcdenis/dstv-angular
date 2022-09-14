@@ -3,7 +3,6 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { PlanoI } from 'src/app/dstv/api/dstvInterfaces';
 import { PlanoService } from 'src/app/dstv/service/plano.service';
-import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
 
 @Component({
   selector: 'app-plano',
@@ -74,7 +73,7 @@ export class PlanoComponent implements OnInit {
             this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso!',
-                detail: 'Servidor Criado!',
+                detail: 'Plano Criado!',
                 life: 3000,
             });
 
