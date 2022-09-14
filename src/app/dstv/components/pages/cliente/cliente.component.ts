@@ -15,8 +15,11 @@ export class ClienteComponent implements OnInit {
     //Usando dinamic forms
     public cadastroForm: FormGroup = this.formBuilder.group({
         id: [''],
-        nome: ['', [Validators.required, Validators.minLength(3), Validators.pattern(new RegExp("\\S"))]],
-        //lastName: ['', [Validators.required, Validators.minLength(2)]],
+        nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(new RegExp("\\S"))]],
+        usuario: ['', [Validators.maxLength(10)]],
+        email: ['', [Validators.email, Validators.pattern(new RegExp("\\S")), Validators.maxLength(50)]],
+        telefone: ['', [Validators.pattern(new RegExp("\\S"))]],
+        observacao: ['', [Validators.pattern(new RegExp("\\S"))]],
     });
 
     public listaClientes: Array<ClienteI> = [];
@@ -39,6 +42,10 @@ export class ClienteComponent implements OnInit {
         this.cols = [
             { field: 'id', header: 'Id' },
             { field: 'nome', header: 'Nome' },
+            { field: 'usuario', header: 'Usuário' },
+            { field: 'email', header: 'Email' },
+            { field: 'telefone', header: 'Telefone' },
+            { field: 'observacao', header: 'Observacao' },
         ];
 
         this.clienteService.getAll().subscribe({
@@ -96,7 +103,7 @@ export class ClienteComponent implements OnInit {
     }
 
     public abrirDialogAlterar(cliente: ClienteI) {
-        this.cadastroForm.setValue(cliente);
+        this.cadastroForm.patchValue(cliente);
         this.dialogoCliente = true;
     }
 
@@ -124,7 +131,7 @@ export class ClienteComponent implements OnInit {
     }
 
     public abrirDialogExcluir(cliente: ClienteI) {
-        this.cadastroForm.setValue(cliente);
+        this.cadastroForm.patchValue(cliente);
         this.dialogoExcluir = true;
     }
 
