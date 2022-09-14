@@ -45,3 +45,9 @@ https://adcdenis.github.io/dstv-angular/
 ng build --configuration production --aot
 
 firebase deploy
+
+
+----obs limpar cache
+ng build --configuration production --aot --output-hashing=all
+
+--muda hashs forçando navegador a atualizar arquivos cacheados
