@@ -8,7 +8,7 @@
                         <button pButton pRipple label="Novo" icon="pi pi-plus" class="p-button-success mr-2"
                             (click)="novo()"></button>
                         <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
-                            (click)="excluirSelecionados()"
+                            (click)="abrirDialogDeletarVarios()"
                             [disabled]="!listaClientesSelecionados || !listaClientesSelecionados.length"></button>
                     </div>
                 </ng-template>
@@ -56,7 +56,7 @@
                         <td style="width:50%; min-width:10rem;" *ngIf="false"><span class="p-column-title">Id</span>
                             {{cliente.id}}
                         </td>
-                        <td style="width:90%; min-width:10rem;">
+                        <td style="width:90%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
                             <span class="p-column-title">Nome</span>
                             {{cliente.nome}}
                         </td>
@@ -74,7 +74,7 @@
         <p-dialog [(visible)]="dialogoExcluir" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="clienteSelecionado">Tem certeza que você deseja excluir <b>{{clienteSelecionado.nome}}</b>?</span>
+                <span >Tem certeza que você deseja excluir <b>{{this.cadastroForm.value.nome}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não" (click)="dialogoExcluir = false"></button>
@@ -82,18 +82,31 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="dialogoCliente" [style]="{width: '450px'}" header="Detalhes do Servidor" [modal]="true" class="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="name">Nome:</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="clienteSelecionado.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !clienteSelecionado.nome}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !clienteSelecionado.nome">Nome é obrigatório.</small>
-                </div>
-            </ng-template>
+        <p-dialog [(visible)]="dialogoCliente" [style]="{width: '450px'}" header="Detalhes do Cliente" [modal]="true" class="p-fluid">
+            <form [formGroup]="cadastroForm" (ngSubmit)="salvarOuAlterar()">
 
+                    <div class="field">
+                        <input formControlName="id" type="hidden" pInputText id="id"/>
+                        <label for="name">Nome:</label>
+                        <input formControlName="nome" type="text" pInputText id="name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : cadastroForm.get('nome')?.errors && !cadastroForm.get('nome')}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="cadastroForm.get('nome')?.errors && (cadastroForm.get('nome')?.dirty || cadastroForm.get('nome')?.touched)">Nome é obrigatório e deve possuir 3 caracteres no mínimo.</small>
+
+                    </div>
+                    <div align="center">
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="dialogoCliente = false"></button>
+                        <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" type="submit" [disabled]="cadastroForm.invalid"></button>
+                    </div>
+            </form>
+        </p-dialog>
+
+        <p-dialog [(visible)]="dialogoDeleteVarios" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Tem certeza que quer deletar todos os selecionados?</span>
+            </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="dialogoCliente = false"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="salvarOuAlterar()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="dialogoDeleteVarios = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes" (click)="excluirSelecionados()"></button>
             </ng-template>
         </p-dialog>
     </div>

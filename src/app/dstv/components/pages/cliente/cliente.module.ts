@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClienteComponent } from './cliente.component';
 import { ClienteRoutingModule } from './cliente-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -25,7 +25,7 @@ import { ToolbarModule } from 'primeng/toolbar';
   imports: [
     CommonModule,
     ClienteRoutingModule,
-    FormsModule,
+    ReactiveFormsModule,
 
     //Primefaces
     TableModule,

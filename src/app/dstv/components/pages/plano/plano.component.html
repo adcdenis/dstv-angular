@@ -88,18 +88,18 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="dialogoPlano" [style]="{width: '450px'}" header="Detalhes do Servidor" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="dialogoPlano" [style]="{width: '450px'}" header="Detalhes do Plano" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Nome:</label>
                     <input type="text" pInputText id="name" [(ngModel)]="planoSelecionado.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !planoSelecionado.nome}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !planoSelecionado.nome">Nome é obrigatório.</small>
-                    <br/>
+                </div>
+                <div class="field">
                     <label for="valor">Valor:</label>
                     <p-inputNumber [(ngModel)]="planoSelecionado.valor" [showButtons]="false" inputId="stacked" mode="currency"
                         currency="BRL" [ngClass]="{'ng-invalid ng-dirty' : submitted && !planoSelecionado.valor}" autofocus>
                     </p-inputNumber>
-
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !planoSelecionado.valor">Valor é obrigatório.</small>
                 </div>
             </ng-template>

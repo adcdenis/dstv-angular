@@ -1,28 +1,36 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ClienteI } from 'src/app/dstv/api/dstvInterfaces';
 import { ClienteService } from 'src/app/dstv/service/cliente.service';
 
 @Component({
-  selector: 'app-cliente',
-  templateUrl: './cliente.component.html',
-  styleUrls: ['./cliente.component.scss'],
-  providers: [MessageService],
+    selector: 'app-cliente',
+    templateUrl: './cliente.component.html',
+    styleUrls: ['./cliente.component.scss'],
+    providers: [MessageService],
 })
 export class ClienteComponent implements OnInit {
+    //Usando dinamic forms
+    public cadastroForm: FormGroup = this.formBuilder.group({
+        id: [''],
+        nome: ['', [Validators.required, Validators.minLength(3), Validators.pattern(new RegExp("\\S"))]],
+        //lastName: ['', [Validators.required, Validators.minLength(2)]],
+    });
 
     public listaClientes: Array<ClienteI> = [];
     public listaClientesSelecionados: Array<ClienteI> = [];
     public dialogoExcluir: boolean = false;
     public dialogoCliente: boolean = false;
-    public clienteSelecionado: ClienteI = {};
+    public dialogoDeleteVarios: boolean = false;
+
     cols: any[] = [];
-    submitted: boolean = false;
 
     constructor(
         private clienteService: ClienteService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private formBuilder: FormBuilder
     ) {}
 
     ngOnInit(): void {
@@ -31,7 +39,6 @@ export class ClienteComponent implements OnInit {
         this.cols = [
             { field: 'id', header: 'Id' },
             { field: 'nome', header: 'Nome' },
-            { field: 'valor', header: 'Valor' },
         ];
 
         this.clienteService.getAll().subscribe({
@@ -42,20 +49,25 @@ export class ClienteComponent implements OnInit {
     }
 
     public salvarOuAlterar() {
-
-        this.submitted = true;
-
-        if(!this.clienteSelecionado.nome || this.clienteSelecionado.nome.trim().length == 0) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Erro!',
-                detail: 'Insira um nome!',
-                life: 3000,
-            });
-            return;
+        if (this.cadastroForm.valid) {
+            console.log(this.cadastroForm.value);
+            console.log(this.cadastroForm.value.nome);
         }
 
-        if (this.clienteSelecionado.id) {
+        // if (
+        //     !this.clienteSelecionado.nome ||
+        //     this.clienteSelecionado.nome.trim().length == 0
+        // ) {
+        //     this.messageService.add({
+        //         severity: 'error',
+        //         summary: 'Erro!',
+        //         detail: 'Insira um nome!',
+        //         life: 3000,
+        //     });
+        //     return;
+        // }
+
+        if (this.cadastroForm.value.id) {
             this.alterar();
         } else {
             this.salvar();
@@ -63,8 +75,7 @@ export class ClienteComponent implements OnInit {
     }
 
     public salvar() {
-
-        this.clienteService.create(this.clienteSelecionado).then(() => {
+        this.clienteService.create(this.cadastroForm.value).then(() => {
             this.dialogoCliente = false;
 
             this.messageService.add({
@@ -79,17 +90,22 @@ export class ClienteComponent implements OnInit {
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });
-        });
+        }).catch(
+            (error) => console.log('error: ', error)
+        );
     }
 
     public abrirDialogAlterar(cliente: ClienteI) {
-        this.clienteSelecionado = {...cliente};
-        this.submitted = false;
+        this.cadastroForm.setValue(cliente);
         this.dialogoCliente = true;
     }
 
+    public abrirDialogDeletarVarios() {
+        this.dialogoDeleteVarios = true;
+    }
+
     public alterar() {
-        this.clienteService.update(this.clienteSelecionado).then(() => {
+        this.clienteService.update(this.cadastroForm.value).then(() => {
             this.dialogoCliente = false;
 
             this.messageService.add({
@@ -108,14 +124,13 @@ export class ClienteComponent implements OnInit {
     }
 
     public abrirDialogExcluir(cliente: ClienteI) {
-        this.submitted = false;
-        this.clienteSelecionado = cliente;
+        this.cadastroForm.setValue(cliente);
         this.dialogoExcluir = true;
     }
 
     public excluir() {
         this.clienteService
-            .delete(this.clienteSelecionado.id || '')
+            .delete(this.cadastroForm.value.id || '')
             .then(() => {
                 console.info('complete');
 
@@ -127,7 +142,6 @@ export class ClienteComponent implements OnInit {
                     detail: 'Excluído',
                     life: 3000,
                 });
-                this.clienteSelecionado = {};
 
                 this.clienteService.getAll().subscribe({
                     next: (v) => (this.listaClientes = v),
@@ -146,20 +160,17 @@ export class ClienteComponent implements OnInit {
 
     public novo() {
         this.dialogoCliente = true;
-        this.clienteSelecionado = {};
+        this.cadastroForm.reset();
     }
 
     public excluirSelecionados() {
-
-        if(this.listaClientesSelecionados) {
-            this.listaClientesSelecionados.forEach(
-                (item:ClienteI) => {
-                    this.clienteService.delete(item.id || '');
-                }
-            )
+        if (this.listaClientesSelecionados) {
+            this.listaClientesSelecionados.forEach((item: ClienteI) => {
+                this.clienteService.delete(item.id || '');
+            });
         }
 
+        this.dialogoDeleteVarios = false;
         console.log(this.listaClientesSelecionados);
     }
-
 }
