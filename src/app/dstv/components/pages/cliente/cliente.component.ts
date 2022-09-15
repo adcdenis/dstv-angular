@@ -1,9 +1,12 @@
+import { PlanoService } from './../../../service/plano.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { ClienteI } from 'src/app/dstv/api/dstvInterfaces';
+import { ClienteI, PlanoI, ServidorI } from 'src/app/dstv/api/dstvInterfaces';
 import { ClienteService } from 'src/app/dstv/service/cliente.service';
+import { ServidorService } from 'src/app/dstv/service/servidor.service';
+import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
 
 @Component({
     selector: 'app-cliente',
@@ -19,10 +22,15 @@ export class ClienteComponent implements OnInit {
         usuario: ['', [Validators.maxLength(10)]],
         email: ['', [Validators.email, Validators.pattern(new RegExp("\\S")), Validators.maxLength(50)]],
         telefone: ['', [Validators.pattern(new RegExp("\\S"))]],
+        dataVencimento: ['', [Validators.required]],
         observacao: ['', [Validators.pattern(new RegExp("\\S"))]],
+        servidor: [''],
+        plano: [''],
     });
 
     public listaClientes: Array<ClienteI> = [];
+    public listaPlanos: Array<PlanoI> = [];
+    public listaServidores: Array<ServidorI> = [];
     public listaClientesSelecionados: Array<ClienteI> = [];
     public dialogoExcluir: boolean = false;
     public dialogoCliente: boolean = false;
@@ -32,6 +40,8 @@ export class ClienteComponent implements OnInit {
 
     constructor(
         private clienteService: ClienteService,
+        private planoService: PlanoService,
+        private servidorService: ServidorFireService,
         private messageService: MessageService,
         private formBuilder: FormBuilder
     ) {}
@@ -50,6 +60,18 @@ export class ClienteComponent implements OnInit {
 
         this.clienteService.getAll().subscribe({
             next: (v) => (this.listaClientes = v),
+            error: (e) => console.error(e),
+            complete: () => console.info('complete'),
+        });
+
+        this.planoService.getAll().subscribe({
+            next: (v) => (this.listaPlanos = v),
+            error: (e) => console.error(e),
+            complete: () => console.info('complete'),
+        });
+
+        this.servidorService.getAll().subscribe({
+            next: (v) => (this.listaServidores = v),
             error: (e) => console.error(e),
             complete: () => console.info('complete'),
         });
@@ -103,6 +125,11 @@ export class ClienteComponent implements OnInit {
     }
 
     public abrirDialogAlterar(cliente: ClienteI) {
+        const dt:any = cliente.dataVencimento;
+        if(dt && dt.seconds) {
+            const dataConvertida = new Date(dt.seconds *1000)
+            cliente.dataVencimento = dataConvertida;
+        }
         this.cadastroForm.patchValue(cliente);
         this.dialogoCliente = true;
     }

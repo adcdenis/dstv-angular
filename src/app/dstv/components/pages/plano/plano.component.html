@@ -89,25 +89,28 @@
         </p-dialog>
 
         <p-dialog [(visible)]="dialogoPlano" [style]="{width: '450px'}" header="Detalhes do Plano" [modal]="true" class="p-fluid">
-            <ng-template pTemplate="content">
-                <div class="field">
+
+            <div class="p-fluid grid">
+                <div class="field col-12">
                     <label for="name">Nome:</label>
                     <input type="text" pInputText id="name" [(ngModel)]="planoSelecionado.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !planoSelecionado.nome}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !planoSelecionado.nome">Nome é obrigatório.</small>
                 </div>
-                <div class="field">
+                <div class="field col-12">
                     <label for="valor">Valor:</label>
                     <p-inputNumber [(ngModel)]="planoSelecionado.valor" [showButtons]="false" inputId="stacked" mode="currency"
                         currency="BRL" [ngClass]="{'ng-invalid ng-dirty' : submitted && !planoSelecionado.valor}" autofocus>
                     </p-inputNumber>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !planoSelecionado.valor">Valor é obrigatório.</small>
                 </div>
-            </ng-template>
+                <div class="field col-6">
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger" (click)="dialogoPlano = false"></button>
+                </div>
+                <div class="field col-6">
+                    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success" (click)="salvarOuAlterar()"></button>
+                </div>
+            </div>
 
-            <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="dialogoPlano = false"></button>
-                <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="salvarOuAlterar()"></button>
-            </ng-template>
         </p-dialog>
     </div>
 </div>

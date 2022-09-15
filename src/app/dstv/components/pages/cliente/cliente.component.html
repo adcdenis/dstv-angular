@@ -82,7 +82,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="dialogoCliente" [style]="{width: '600px'}" header="Detalhes do Cliente" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="dialogoCliente" [style]="{width: '800px'}" header="Detalhes do Cliente" [modal]="true" class="p-fluid">
             <form [formGroup]="cadastroForm" (ngSubmit)="salvarOuAlterar()">
 
                 <div class="p-fluid grid">
@@ -100,10 +100,23 @@
                         <label for="email">Email:</label>
                         <input formControlName="email" type="text" pInputText id="email" autofocus maxlength="50"/>
                     </div>
-                    <div class="field col-12">
+                    <div class="field col-6">
                         <label for="telefone">Telefone:</label>
                         <p-inputMask mask="(55) 99-999999999" formControlName="telefone"></p-inputMask>
                     </div>
+                    <div class="field col-6">
+                        <label for="dataVencimento">Data Vencimento:</label>
+                        <p-calendar id="dataVencimento" formControlName="dataVencimento" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="field col-6">
+                        <label for="servidor">Servidor:</label>
+                        <p-dropdown id="servidor" [options]="listaServidores" formControlName="servidor" placeholder="Selecione um servidor" optionLabel="nome" [showClear]="true"></p-dropdown>
+                    </div>
+                    <div class="field col-6">
+                        <label for="plano">Plano:</label>
+                        <p-dropdown id="plano" [options]="listaPlanos" formControlName="plano" placeholder="Selecione um plano" optionLabel="nome" [showClear]="true"></p-dropdown>
+                    </div>
+
                     <div class="field col-12">
                         <label for="observacao">Observação:</label>
                         <textarea formControlName="observacao" pInputTextarea autofocus maxlength="500" [rows]="5" [cols]="30"></textarea>

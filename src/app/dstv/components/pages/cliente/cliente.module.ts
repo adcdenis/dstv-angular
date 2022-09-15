@@ -17,6 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ClienteRoutingModule } from './cliente-routing.module';
 import { ClienteComponent } from './cliente.component';
+import {CalendarModule} from 'primeng/calendar';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { ClienteComponent } from './cliente.component';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
-    InputMaskModule
+    InputMaskModule,
+    CalendarModule
   ]
 })
 export class ClienteModule { }
