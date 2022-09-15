@@ -27,9 +27,9 @@
                 currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
                 [(selection)]="listaClientesSelecionados" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <div class="flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center">
                         <h5 class="m-0">Gerenciar Clientes</h5>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <span class="block mt-2 sm:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Procurar..."
                                 class="w-full sm:w-auto" />
@@ -86,34 +86,34 @@
             <form [formGroup]="cadastroForm" (ngSubmit)="salvarOuAlterar()">
 
                 <div class="p-fluid grid formgrid">
-                    <div class="field col-12 md:col-12">
+                    <div class="field col-12 sm:col-12">
                         <input formControlName="id" type="hidden" pInputText id="id"/>
                         <label for="name">Nome:</label>
                         <input formControlName="nome" type="text" pInputText id="name" required autofocus [ngClass]="{'ng-invalid ng-dirty' : cadastroForm.get('nome')?.errors && !cadastroForm.get('nome')}"/>
                         <small class="ng-dirty ng-invalid" *ngIf="cadastroForm.get('nome')?.errors && (cadastroForm.get('nome')?.dirty || cadastroForm.get('nome')?.touched)">Nome é obrigatório e deve possuir 3 caracteres no mínimo.</small>
 
                     </div>
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 sm:col-6">
                         <label for="usuario">Usuário:</label>
                         <input formControlName="usuario" type="text" pInputText id="usuario" autofocus maxlength="10"/>
                     </div>
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 sm:col-6">
                         <label for="email">Email:</label>
                         <input formControlName="email" type="text" pInputText id="email" autofocus maxlength="50"/>
                     </div>
-                    <div class="field col-12 md:col-12">
+                    <div class="field col-12 sm:col-12">
                         <label for="telefone">Telefone:</label>
                         <p-inputMask mask="(55) 99-999999999" formControlName="telefone"></p-inputMask>
                     </div>
-                    <div class="field col-12 md:col-12">
+                    <div class="field col-12 sm:col-12">
                         <label for="observacao">Observação:</label>
                         <textarea formControlName="observacao" pInputTextarea autofocus maxlength="500" [rows]="5" [cols]="30"></textarea>
                     </div>
 
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 sm:col-6">
                         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="dialogoCliente = false"></button>
                     </div>
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 sm:col-6">
                         <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" type="submit" [disabled]="cadastroForm.invalid"></button>
                     </div>
                 </div>
