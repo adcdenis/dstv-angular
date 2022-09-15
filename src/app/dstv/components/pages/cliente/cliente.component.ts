@@ -5,8 +5,8 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ClienteI, PlanoI, ServidorI } from 'src/app/dstv/api/dstvInterfaces';
 import { ClienteService } from 'src/app/dstv/service/cliente.service';
-import { ServidorService } from 'src/app/dstv/service/servidor.service';
 import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
+import * as FileSaver from 'file-saver';
 
 @Component({
     selector: 'app-cliente',
@@ -18,12 +18,27 @@ export class ClienteComponent implements OnInit {
     //Usando dinamic forms
     public cadastroForm: FormGroup = this.formBuilder.group({
         id: [''],
-        nome: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(new RegExp("\\S"))]],
+        nome: [
+            '',
+            [
+                Validators.required,
+                Validators.minLength(3),
+                Validators.maxLength(50),
+                Validators.pattern(new RegExp('\\S')),
+            ],
+        ],
         usuario: ['', [Validators.maxLength(10)]],
-        email: ['', [Validators.email, Validators.pattern(new RegExp("\\S")), Validators.maxLength(50)]],
-        telefone: ['', [Validators.pattern(new RegExp("\\S"))]],
+        email: [
+            '',
+            [
+                Validators.email,
+                Validators.pattern(new RegExp('\\S')),
+                Validators.maxLength(50),
+            ],
+        ],
+        telefone: ['', [Validators.pattern(new RegExp('\\S'))]],
         dataVencimento: ['', [Validators.required]],
-        observacao: ['', [Validators.pattern(new RegExp("\\S"))]],
+        observacao: ['', [Validators.pattern(new RegExp('\\S'))]],
         servidor: [''],
         plano: [''],
     });
@@ -59,7 +74,19 @@ export class ClienteComponent implements OnInit {
         ];
 
         this.clienteService.getAll().subscribe({
-            next: (v) => (this.listaClientes = v),
+            next: (v) => {
+                this.listaClientes = v;
+                this.listaClientes.map((item) => {
+                    const dt: any = item.dataVencimento;
+                    if (dt && dt.seconds) {
+                        const dataConvertida = new Date(dt.seconds * 1000);
+                        return (item.dataVencimento = dataConvertida);
+                    } else {
+                        return item;
+                    }
+                });
+                console.log('this.listaClientes: ', this.listaClientes);
+            },
             error: (e) => console.error(e),
             complete: () => console.info('complete'),
         });
@@ -104,30 +131,31 @@ export class ClienteComponent implements OnInit {
     }
 
     public salvar() {
-        this.clienteService.create(this.cadastroForm.value).then(() => {
-            this.dialogoCliente = false;
+        this.clienteService
+            .create(this.cadastroForm.value)
+            .then(() => {
+                this.dialogoCliente = false;
 
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Sucesso!',
-                detail: 'Cliente Criado!',
-                life: 3000,
-            });
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Sucesso!',
+                    detail: 'Cliente Criado!',
+                    life: 3000,
+                });
 
-            this.clienteService.getAll().subscribe({
-                next: (v) => (this.listaClientes = v),
-                error: (e) => console.error(e),
-                complete: () => console.info('complete'),
-            });
-        }).catch(
-            (error) => console.log('error: ', error)
-        );
+                this.clienteService.getAll().subscribe({
+                    next: (v) => (this.listaClientes = v),
+                    error: (e) => console.error(e),
+                    complete: () => console.info('complete'),
+                });
+            })
+            .catch((error) => console.log('error: ', error));
     }
 
     public abrirDialogAlterar(cliente: ClienteI) {
-        const dt:any = cliente.dataVencimento;
-        if(dt && dt.seconds) {
-            const dataConvertida = new Date(dt.seconds *1000)
+        const dt: any = cliente.dataVencimento;
+        if (dt && dt.seconds) {
+            const dataConvertida = new Date(dt.seconds * 1000);
             cliente.dataVencimento = dataConvertida;
         }
         this.cadastroForm.patchValue(cliente);
@@ -206,5 +234,43 @@ export class ClienteComponent implements OnInit {
 
         this.dialogoDeleteVarios = false;
         console.log(this.listaClientesSelecionados);
+    }
+
+    // exportPdf() {
+    //     import("jspdf").then(jsPDF => {
+    //         import("jspdf-autotable").then(x => {
+    //             const doc = new jsPDF.default(0,0);
+    //             doc.autoTable(this.exportColumns, this.products);
+    //             doc.save('products.pdf');
+    //         })
+    //     })
+    // }
+
+    exportExcel() {
+        import('xlsx').then((xlsx) => {
+            const worksheet = xlsx.utils.json_to_sheet(this.listaClientes);
+            const workbook = {
+                Sheets: { data: worksheet },
+                SheetNames: ['data'],
+            };
+            const excelBuffer: any = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+            this.saveAsExcelFile(excelBuffer, 'products');
+        });
+    }
+
+    saveAsExcelFile(buffer: any, fileName: string): void {
+        let EXCEL_TYPE =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        let EXCEL_EXTENSION = '.xlsx';
+        const data: Blob = new Blob([buffer], {
+            type: EXCEL_TYPE,
+        });
+        FileSaver.saveAs(
+            data,
+            fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
+        );
     }
 }

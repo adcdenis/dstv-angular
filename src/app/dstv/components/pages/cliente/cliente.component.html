@@ -17,11 +17,16 @@
                     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
                         chooseLabel="Importar" class="mr-2 inline-block" *ngIf="false"></p-fileUpload>
                     <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
+                        (click)="dt.exportCSV()" *ngIf="false"></button>
+                    <button pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
+                        (click)="exportExcel()"></button>
+
+
+
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="listaClientes" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+            <p-table styleClass="p-datatable-striped" #dt [value]="listaClientes" [columns]="cols" responsiveLayout="stack" [rows]="10"
                 [globalFilterFields]="['valor','nome','id']" [rows]="10"
                 [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
@@ -41,9 +46,13 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="id" *ngIf="false">Id <p-sortIcon field="id"></p-sortIcon>
-                        </th>
                         <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="dataVencimento">Vencimento <p-sortIcon field="dataVencimento"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="plano">Plano <p-sortIcon field="nome"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="servidor">Servidor <p-sortIcon field="servidor"></p-sortIcon>
                         </th>
                         <th></th>
                     </tr>
@@ -53,14 +62,23 @@
                         <td>
                             <p-tableCheckbox [value]="cliente"></p-tableCheckbox>
                         </td>
-                        <td style="width:50%; min-width:10rem;" *ngIf="false"><span class="p-column-title">Id</span>
-                            {{cliente.id}}
-                        </td>
-                        <td style="width:90%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                        <td style="width:60%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
                             <span class="p-column-title">Nome</span>
                             {{cliente.nome}}
                         </td>
-                        <td>
+                        <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <span class="p-column-title">Vencimento</span>
+                            {{cliente.dataVencimento | date : 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <span class="p-column-title">Plano</span>
+                            {{cliente.plano.nome}}
+                        </td>
+                        <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <span class="p-column-title">Servidor</span>
+                            {{cliente.servidor.nome}}
+                        </td>
+                        <td style="width:10%;">
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="abrirDialogAlterar(cliente)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="abrirDialogExcluir(cliente)"></button>
