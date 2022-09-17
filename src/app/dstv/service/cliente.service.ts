@@ -9,7 +9,10 @@ import {
     docData,
     DocumentData,
     Firestore,
-    updateDoc} from '@angular/fire/firestore';
+    query,
+    updateDoc,
+    where} from '@angular/fire/firestore';
+import { getDocs, orderBy } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { ClienteI } from '../api/dstvInterfaces';
 
@@ -50,5 +53,15 @@ export class ClienteService {
     delete(id: string) {
         const clienteDocumentReference = doc(this.firestore, `cliente/${id}`);
         return deleteDoc(clienteDocumentReference);
+
+    }
+
+    getAllOrderByVencimento() : Promise<any>{
+        const q = query(this.dbCliente, orderBy("dataVencimento"));
+        return getDocs(q);
+        // const querySnapshot = await getDocs(q);
+        // querySnapshot.forEach((doc) => {
+        //     console.log(doc.id, ' => ', doc.data());
+        // });
     }
 }

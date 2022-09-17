@@ -10,6 +10,9 @@
                         <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
                             (click)="abrirDialogDeletarVarios()"
                             [disabled]="!listaClientesSelecionados || !listaClientesSelecionados.length"></button>
+                        <button pButton pRipple label="Vencidos" icon="pi pi-trash" class="p-button-danger"
+                            (click)="filtrarPorVencidos()"
+                            ></button>
                     </div>
                 </ng-template>
 
@@ -26,7 +29,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table styleClass="p-datatable-striped" #dt [value]="listaClientes" [columns]="cols" responsiveLayout="stack" [rows]="10"
+            <p-table sortField="dataVencimento" styleClass="p-datatable-striped" #dt [value]="listaClientes" [columns]="cols" responsiveLayout="stack" [rows]="10"
                 [globalFilterFields]="['valor','nome','id']" [rows]="10"
                 [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"

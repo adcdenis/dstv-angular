@@ -1,3 +1,4 @@
+import { map } from 'rxjs';
 import { PlanoService } from './../../../service/plano.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -50,6 +51,7 @@ export class ClienteComponent implements OnInit {
     public dialogoExcluir: boolean = false;
     public dialogoCliente: boolean = false;
     public dialogoDeleteVarios: boolean = false;
+    public filtroVencimento: any;
 
     cols: any[] = [];
 
@@ -61,9 +63,28 @@ export class ClienteComponent implements OnInit {
         private formBuilder: FormBuilder
     ) {}
 
-    ngOnInit(): void {
-        console.log('aqui');
+    private converterDateToTimeStamp: any = (cliente: ClienteI) => {
+        const dt: any = cliente.dataVencimento;
+        if (dt && dt.seconds) {
+            const dataConvertida = new Date(dt.seconds * 1000);
+            cliente.dataVencimento = dataConvertida;
+            return cliente;
+        } else {
+            return cliente;
+        }
+    };
 
+    private convertEFiltra = (cliente: ClienteI[], filtro: any) => {
+        this.listaClientes = cliente
+            .map((item) => {
+                return this.converterDateToTimeStamp(item);
+            })
+            .filter((item: any) => {
+                return filtro ? filtro(item) : true;
+            });
+    };
+
+    ngOnInit(): void {
         this.cols = [
             { field: 'id', header: 'Id' },
             { field: 'nome', header: 'Nome' },
@@ -73,23 +94,8 @@ export class ClienteComponent implements OnInit {
             { field: 'observacao', header: 'Observacao' },
         ];
 
-        this.clienteService.getAll().subscribe({
-            next: (v) => {
-                this.listaClientes = v;
-                this.listaClientes.map((item) => {
-                    const dt: any = item.dataVencimento;
-                    if (dt && dt.seconds) {
-                        const dataConvertida = new Date(dt.seconds * 1000);
-                        return (item.dataVencimento = dataConvertida);
-                    } else {
-                        return item;
-                    }
-                });
-                console.log('this.listaClientes: ', this.listaClientes);
-            },
-            error: (e) => console.error(e),
-            complete: () => console.info('complete'),
-        });
+        //this.buscarClientesOrdenado();
+        this.buscarClientes();
 
         this.planoService.getAll().subscribe({
             next: (v) => (this.listaPlanos = v),
@@ -102,6 +108,60 @@ export class ClienteComponent implements OnInit {
             error: (e) => console.error(e),
             complete: () => console.info('complete'),
         });
+    }
+
+    private buscarClientesOrdenado() {
+        this.clienteService.getAllOrderByVencimento().then(
+            (result) => {
+                console.log(result.docs)
+
+            }
+
+                // result.map((doc:any) => {
+                //               console.log(doc.id, ' => ', doc.data());
+                //               return doc.data()
+                //           })
+           // }
+
+            // result.forEach((doc:any) => {
+            //          console.log(doc.id, ' => ', doc.data());
+            //      })
+        );
+    }
+
+    private buscarClientes() {
+        this.clienteService.getAll().subscribe({
+            next: (v) => {
+                this.convertEFiltra(v, this.filtroVencimento);
+                console.log('this.listaClientes: ', this.listaClientes);
+            },
+            error: (e) => console.error(e),
+            complete: () => console.info('complete'),
+        });
+    }
+
+    private vencido: (cliente: ClienteI) => boolean = (cliente: ClienteI) => {
+        const date: Date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return cliente.dataVencimento < date;
+    };
+
+    private naoVencido: (cliente: ClienteI) => boolean = (
+        cliente: ClienteI
+    ) => {
+        const date: Date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return cliente.dataVencimento >= date;
+    };
+
+    public filtrarPorVencidos() {
+        this.filtroVencimento = this.vencido;
+        this.buscarClientes();
+    }
+
+    public filtrarPorNaoVencidos() {
+        this.filtroVencimento = this.naoVencido;
+        this.buscarClientes();
     }
 
     public salvarOuAlterar() {
@@ -143,11 +203,7 @@ export class ClienteComponent implements OnInit {
                     life: 3000,
                 });
 
-                this.clienteService.getAll().subscribe({
-                    next: (v) => (this.listaClientes = v),
-                    error: (e) => console.error(e),
-                    complete: () => console.info('complete'),
-                });
+                this.buscarClientes();
             })
             .catch((error) => console.log('error: ', error));
     }
@@ -167,6 +223,7 @@ export class ClienteComponent implements OnInit {
     }
 
     public alterar() {
+        console.log('alterar: ', this.cadastroForm.value);
         this.clienteService.update(this.cadastroForm.value).then(() => {
             this.dialogoCliente = false;
 
@@ -177,11 +234,7 @@ export class ClienteComponent implements OnInit {
                 life: 3000,
             });
 
-            this.clienteService.getAll().subscribe({
-                next: (v) => (this.listaClientes = v),
-                error: (e) => console.error(e),
-                complete: () => console.info('complete'),
-            });
+            this.buscarClientes();
         });
     }
 
@@ -205,11 +258,7 @@ export class ClienteComponent implements OnInit {
                     life: 3000,
                 });
 
-                this.clienteService.getAll().subscribe({
-                    next: (v) => (this.listaClientes = v),
-                    error: (e) => console.error(e),
-                    complete: () => console.info('complete'),
-                });
+                this.buscarClientes();
             });
     }
 

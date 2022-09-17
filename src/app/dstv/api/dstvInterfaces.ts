@@ -16,7 +16,7 @@ export interface ClienteI {
     email?: string;
     telefone?: number;
     observacao?: string;
-    dataVencimento?: Date;
+    dataVencimento: Date;
     //combos
     idServidor?: number;
     idPlano?: number;
