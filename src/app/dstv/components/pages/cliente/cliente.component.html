@@ -10,13 +10,26 @@
                         <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
                             (click)="abrirDialogDeletarVarios()"
                             [disabled]="!listaClientesSelecionados || !listaClientesSelecionados.length"></button>
-                        <button pButton pRipple label="Vencidos" icon="pi pi-trash" class="p-button-danger"
-                            (click)="filtrarPorVencidos()"
-                            ></button>
+
                     </div>
                 </ng-template>
 
                 <ng-template pTemplate="right">
+                    <button pButton pRipple label="Expira em 3 dias!" icon="pi pi-exclamation-triangle" class="p-button-danger mr-2"
+                            (click)="filtrarPorVence3Dias()"
+                            ></button>
+                    <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning mr-2"
+                           (click)="filtrarPorVencidos()"
+                    ></button>
+
+                    <button pButton pRipple label="Ativos" icon="pi pi-users" class="p-button-success mr-2"
+                           (click)="filtrarPorNaoVencidos()"
+                    ></button>
+
+                    <button pButton pRipple label="TODOS" icon="pi pi-list" class="p-button-success mr-2"
+                           (click)="mostrarTodos()"
+                    ></button>
+
                     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
                         chooseLabel="Importar" class="mr-2 inline-block" *ngIf="false"></p-fileUpload>
                     <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
@@ -127,7 +140,7 @@
                     </div>
                     <div class="field col-6">
                         <label for="dataVencimento">Data Vencimento:</label>
-                        <p-calendar id="dataVencimento" formControlName="dataVencimento" dateFormat="dd/mm/yy"></p-calendar>
+                        <p-calendar id="dataVencimento" formControlName="dataVencimento" dateFormat="dd/mm/yy" ></p-calendar>
                     </div>
                     <div class="field col-6">
                         <label for="servidor">Servidor:</label>

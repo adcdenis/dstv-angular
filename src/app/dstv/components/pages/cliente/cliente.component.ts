@@ -2,7 +2,7 @@ import { map } from 'rxjs';
 import { PlanoService } from './../../../service/plano.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ClienteI, PlanoI, ServidorI } from 'src/app/dstv/api/dstvInterfaces';
 import { ClienteService } from 'src/app/dstv/service/cliente.service';
@@ -60,7 +60,8 @@ export class ClienteComponent implements OnInit {
         private planoService: PlanoService,
         private servidorService: ServidorFireService,
         private messageService: MessageService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private config: PrimeNGConfig
     ) {}
 
     private converterDateToTimeStamp: any = (cliente: ClienteI) => {
@@ -85,6 +86,16 @@ export class ClienteComponent implements OnInit {
     };
 
     ngOnInit(): void {
+
+        this.config.setTranslation({
+            accept: 'Aceitar',
+            reject: 'Cancelar',
+            //translations
+            dayNamesMin: ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"],
+            monthNames: ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
+            monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun","Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+        });
+
         this.cols = [
             { field: 'id', header: 'Id' },
             { field: 'nome', header: 'Nome' },
@@ -129,7 +140,7 @@ export class ClienteComponent implements OnInit {
         );
     }
 
-    private buscarClientes() {
+    public buscarClientes() {
         this.clienteService.getAll().subscribe({
             next: (v) => {
                 this.convertEFiltra(v, this.filtroVencimento);
@@ -154,6 +165,24 @@ export class ClienteComponent implements OnInit {
         return cliente.dataVencimento >= date;
     };
 
+    private venceEm3Dias: (cliente: ClienteI) => boolean = (
+        cliente: ClienteI
+    ) => {
+
+        const dataAtual: Date = new Date();
+        dataAtual.setHours(0, 0, 0, 0);
+
+        const data3d: Date = new Date();
+        data3d.setHours(0, 0, 0, 0);
+        data3d.setDate(data3d.getDate() + 3);
+        return (cliente.dataVencimento >= dataAtual) && (cliente.dataVencimento <= data3d);
+    };
+
+    public filtrarPorVence3Dias() {
+        this.filtroVencimento = this.venceEm3Dias;
+        this.buscarClientes();
+    }
+
     public filtrarPorVencidos() {
         this.filtroVencimento = this.vencido;
         this.buscarClientes();
@@ -161,6 +190,11 @@ export class ClienteComponent implements OnInit {
 
     public filtrarPorNaoVencidos() {
         this.filtroVencimento = this.naoVencido;
+        this.buscarClientes();
+    }
+
+    public mostrarTodos() {
+        this.filtroVencimento = null;
         this.buscarClientes();
     }
 
