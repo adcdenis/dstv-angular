@@ -1,0 +1,33 @@
+docker build -t dstv-angular .
+
+-- ver imagens
+docker images
+
+-- rodar
+docker run dstv-angular
+
+--obter id do docker
+docker container ls
+
+--obter ip
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' 34a79e2ff16d
+
+-- roda numa porta liberando linha de comando
+docker run -p 8080:8080 -d dstv-angular
+
+-- roda numa porta NÃO liberando linha de comando
+docker run -p 8080:8080 dstv-angular
+
+-baixar docker ubuntu
+docker pull ubuntu
+
+-- baixar iterativamente
+docker run -it ubuntu
+
+
+--login no docker hub
+docker login --username=adcdenis
+
+
+--logar numa conta não root
+docker exec -it -u canuto 436e440b112b bash
