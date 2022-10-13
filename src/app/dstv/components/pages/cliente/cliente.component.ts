@@ -106,7 +106,8 @@ export class ClienteComponent implements OnInit {
         ];
 
         //this.buscarClientesOrdenado();
-        this.buscarClientes();
+        //this.buscarClientes();
+        this.filtrarPorVence3Dias();
 
         this.planoService.getAll().subscribe({
             next: (v) => (this.listaPlanos = v),

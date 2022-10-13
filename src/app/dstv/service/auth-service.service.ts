@@ -61,7 +61,7 @@ export class AuthServiceService {
                   if (user) {
                       this.user = user;
                       //localStorage.setItem('userdstv',JSON.stringify(this.user));
-                      this.router.navigate(['dashboard']);
+                      this.router.navigate(['cliente']);
                   }
               });
           })
