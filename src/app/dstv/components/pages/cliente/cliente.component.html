@@ -37,8 +37,6 @@
                     <button pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
                         (click)="exportExcel()"></button>
 
-
-
                 </ng-template>
             </p-toolbar>
 
@@ -62,9 +60,11 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
+                        <th pSortableColumn="dataVencimento">Vencimento <p-sortIcon field="dataVencimento"></p-sortIcon>
+                        </th>
                         <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="dataVencimento">Vencimento <p-sortIcon field="dataVencimento"></p-sortIcon>
+                        <th>Alerta <p-sortIcon></p-sortIcon>
                         </th>
                         <th pSortableColumn="plano">Plano <p-sortIcon field="nome"></p-sortIcon>
                         </th>
@@ -78,13 +78,18 @@
                         <td>
                             <p-tableCheckbox [value]="cliente"></p-tableCheckbox>
                         </td>
-                        <td style="width:60%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
-                            <span class="p-column-title">Nome</span>
-                            {{cliente.nome}}
-                        </td>
                         <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
                             <span class="p-column-title">Vencimento</span>
                             {{cliente.dataVencimento | date : 'dd/MM/yyyy'}}
+                        </td>
+                        <td style="width:50%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <span class="p-column-title">Nome</span>
+                            {{cliente.nome}}
+                        </td>
+                        <td style="width:10%;">
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2" (click)="abrirWhatsApp(cliente)"></button>
+                            </div>
                         </td>
                         <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
                             <span class="p-column-title">Plano</span>

@@ -18,7 +18,7 @@ export interface ClienteI {
     observacao?: string;
     dataVencimento: Date;
     //combos
-    idServidor?: number;
-    idPlano?: number;
+    servidor?: ServidorI;
+    plano?: PlanoI;
 }
 
