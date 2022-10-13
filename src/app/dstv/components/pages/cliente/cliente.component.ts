@@ -28,7 +28,7 @@ export class ClienteComponent implements OnInit {
                 Validators.pattern(new RegExp('\\S')),
             ],
         ],
-        usuario: ['', [Validators.maxLength(10)]],
+        usuario: ['', [Validators.maxLength(20)]],
         email: [
             '',
             [
