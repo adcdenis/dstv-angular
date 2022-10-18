@@ -8,7 +8,9 @@
                         <div class="my-2">
                             <button pButton pRipple label="Novo" icon="pi pi-plus" class="p-button-success mr-2"
                                 (click)="novo()"></button>
-                            <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
+                            <button pButton pRipple label="Expira em 3 dias!" icon="pi pi-exclamation-triangle"
+                                class="p-button-danger mr-2" (click)="filtrarPorVence3Dias()"></button>
+                            <button *ngIf="false" pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
                                 (click)="abrirDialogDeletarVarios()"
                                 [disabled]="!listaClientesSelecionados || !listaClientesSelecionados.length"></button>
 
@@ -16,8 +18,7 @@
                     </ng-template>
 
                     <ng-template pTemplate="right">
-                        <button pButton pRipple label="Expira em 3 dias!" icon="pi pi-exclamation-triangle"
-                            class="p-button-danger mr-2" (click)="filtrarPorVence3Dias()"></button>
+
                         <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning mr-2"
                             (click)="filtrarPorVencidos()"></button>
 
@@ -31,7 +32,7 @@
                             chooseLabel="Importar" class="mr-2 inline-block" *ngIf="false"></p-fileUpload>
                         <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
                             (click)="dt.exportCSV()" *ngIf="false"></button>
-                        <button pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
+                        <button *ngIf="false" pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
                             (click)="exportExcel()"></button>
 
                     </ng-template>
@@ -54,7 +55,7 @@
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
-                            <th style="width: 3rem">
+                            <th style="width: 3rem" *ngIf="false">
                                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th>
                             <th pSortableColumn="dataVencimento">Vencimento <p-sortIcon field="dataVencimento">
@@ -62,7 +63,7 @@
                             </th>
                             <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon>
                             </th>
-                            <th>Alerta <p-sortIcon></p-sortIcon>
+                            <th>Alerta
                             </th>
                             <th pSortableColumn="plano">Plano <p-sortIcon field="nome"></p-sortIcon>
                             </th>
@@ -73,7 +74,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-cliente>
                         <tr>
-                            <td>
+                            <td *ngIf="false">
                                 <p-tableCheckbox [value]="cliente"></p-tableCheckbox>
                             </td>
                             <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
