@@ -8,7 +8,7 @@
                         <div class="my-2">
                             <button pButton pRipple label="Novo" icon="pi pi-plus" class="p-button-success mr-2"
                                 (click)="novo()"></button>
-                            <button pButton pRipple label="Expira em 3 dias!" icon="pi pi-exclamation-triangle"
+                            <button pButton pRipple label="3 dias!" icon="pi pi-exclamation-triangle"
                                 class="p-button-danger mr-2" (click)="filtrarPorVence3Dias()"></button>
                             <button *ngIf="false" pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
                                 (click)="abrirDialogDeletarVarios()"
@@ -19,11 +19,11 @@
 
                     <ng-template pTemplate="right">
 
-                        <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning mr-2"
-                            (click)="filtrarPorVencidos()"></button>
-
                         <button pButton pRipple label="Ativos" icon="pi pi-users" class="p-button-success mr-2"
                             (click)="filtrarPorNaoVencidos()"></button>
+
+                        <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning mr-2"
+                            (click)="filtrarPorVencidos()"></button>
 
                         <button pButton pRipple label="TODOS" icon="pi pi-list"
                             (click)="mostrarTodos()"></button>
