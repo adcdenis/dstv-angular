@@ -376,4 +376,27 @@ export class ClienteComponent implements OnInit {
 
         window.open(msg, '_blank');
     }
+
+    public clonar(cliente: ClienteI) {
+
+        //zera id
+        cliente.id = '';
+        cliente.nome += ' - 2';
+
+        this.clienteService
+        .create(cliente)
+        .then(() => {
+            this.dialogoCliente = false;
+
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso!',
+                detail: 'Cliente Criado!',
+                life: 3000,
+            });
+
+            this.buscarClientes();
+        })
+        .catch((error) => console.log('error: ', error));
+    }
 }
