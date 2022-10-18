@@ -25,7 +25,7 @@
                         <button pButton pRipple label="Ativos" icon="pi pi-users" class="p-button-success mr-2"
                             (click)="filtrarPorNaoVencidos()"></button>
 
-                        <button pButton pRipple label="TODOS" icon="pi pi-list" class="p-button-success mr-2"
+                        <button pButton pRipple label="TODOS" icon="pi pi-list"
                             (click)="mostrarTodos()"></button>
 
                         <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
@@ -102,14 +102,14 @@
                             </td>
                             <td style="width:10%;">
                                 <div class="flex">
-                                    <button pButton pRipple icon="pi pi-clone"
-                                        class="p-button-rounded p-button-success mr-2"
-                                        (click)="clonar(cliente)"></button>
                                     <button pButton pRipple icon="pi pi-pencil"
                                         class="p-button-rounded p-button-success mr-2"
                                         (click)="abrirDialogAlterar(cliente)"></button>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"
                                         (click)="abrirDialogExcluir(cliente)"></button>
+                                    <button pButton pRipple icon="pi pi-clone"
+                                        class="p-button-rounded"
+                                        (click)="clonar(cliente)"></button>
                                 </div>
                             </td>
                         </tr>
