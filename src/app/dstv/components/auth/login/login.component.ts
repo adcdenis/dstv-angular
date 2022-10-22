@@ -26,13 +26,25 @@ import { AuthServiceService } from './../../../service/auth-service.service';
                 color: var(--primary-color) !important;
             }
 
-           .fundo{
-            //backgroundImage: 'url(https://source.unsplash.com/random)';
-            backgroundImage : '../../../../../assets/dstv/backgrounds/background1.jpg';
-            backgroundRepeat: 'no-repeat';
-            backgroundSize: 'cover';
-            backgroundPosition: 'center';
-    }
+            .image {
+                backgroundImage: 'url(https://source.unsplash.com/random)';
+                backgroundRepeat: 'no-repeat';
+                backgroundSize: 'cover';
+                backgroundPosition: 'center';
+            }
+
+            #random{
+            /* BOX MODEL */
+            width: 100%;
+            height: 450px;
+            border: 1px solid black;
+
+            /* ENHANCEMENT */
+            background-image: url('https://source.unsplash.com/random');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            }
         `,
     ],
 })
@@ -69,6 +81,8 @@ export class LoginComponent implements OnInit{
         //     this.router.navigate(['dashboard']);
         // }
     }
+
+
 
 
 }
