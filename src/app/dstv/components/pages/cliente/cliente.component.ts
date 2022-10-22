@@ -363,9 +363,16 @@ export class ClienteComponent implements OnInit {
     const valorPlano = cliente.plano ? cliente.plano.valor : ''
     const dataFormatada = cliente.dataVencimento.toLocaleDateString('pt-BR');
 
-    const hora = cliente.dataVencimento.getHours();
-    const diaTardeNoite = (hora > 6 && hora < 12) ? 'bom dia!' : (hora > 12 && hora < 18) ? 'boa tarde!' : 'boa noite!'
+    //teste
+    //const data = new Date(2022, 10, 22, 18, 0, 0, 0);
 
+    //const hora = data.getHours();
+    //alert('hora: ' + hora)
+    const hora = new Date().getHours();
+
+    const diaTardeNoite = (hora > 6 && hora < 12) ? 'bom dia!' : (hora >= 12 && hora < 18) ? 'boa tarde!' : 'boa noite!'
+
+    alert('diatardenoite: ' + diaTardeNoite)
 
     let msg = `https://api.whatsapp.com/send?phone=55${telefone}` +
         `&text=Olá, ${diaTardeNoite}%0D%0A*Segue seu vencimento IPTV* %0D%0A*Vencimento:* _` +
