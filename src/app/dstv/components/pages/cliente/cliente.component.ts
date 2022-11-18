@@ -372,7 +372,7 @@ export class ClienteComponent implements OnInit {
 
     const diaTardeNoite = (hora > 6 && hora < 12) ? 'bom dia!' : (hora >= 12 && hora < 18) ? 'boa tarde!' : 'boa noite!'
 
-    alert('diatardenoite: ' + diaTardeNoite)
+    //alert('diatardenoite: ' + diaTardeNoite)
 
     let msg = `https://api.whatsapp.com/send?phone=55${telefone}` +
         `&text=Olá, ${diaTardeNoite}%0D%0A*Segue seu vencimento IPTV* %0D%0A*Vencimento:* _` +
