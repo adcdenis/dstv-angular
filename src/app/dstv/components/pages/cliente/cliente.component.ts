@@ -374,7 +374,7 @@ export class ClienteComponent implements OnInit {
 
     //alert('diatardenoite: ' + diaTardeNoite)
 
-    let msg = `https://api.whatsapp.com/send?phone=55${telefone}` +
+    let msg = `https://api.whatsapp.com/send?phone=${telefone}` +
         `&text=Olá, ${diaTardeNoite}%0D%0A*Segue seu vencimento IPTV* %0D%0A*Vencimento:* _` +
         `${dataFormatada}` +
         `_ %0D%0A %0D%0A*PLANO CONTRATADO* %0D%0A⭕ _Plano:_ *${nomePlano}` +
