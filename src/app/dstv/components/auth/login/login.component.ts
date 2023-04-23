@@ -27,7 +27,7 @@ import { AuthServiceService } from './../../../service/auth-service.service';
             }
 
             .image {
-                backgroundImage: 'url(https://source.unsplash.com/random)';
+                backgroundImage: 'url(https://source.unsplash.com/1920x1280/?gaming)';
                 backgroundRepeat: 'no-repeat';
                 backgroundSize: 'cover';
                 backgroundPosition: 'center';
@@ -40,7 +40,7 @@ import { AuthServiceService } from './../../../service/auth-service.service';
             border: 1px solid black;
 
             /* ENHANCEMENT */
-            background-image: url('https://source.unsplash.com/random');
+            background-image: url('https://source.unsplash.com/1920x1280/?gaming');
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
