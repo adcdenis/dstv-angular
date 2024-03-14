@@ -1,16 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    CanActivate,
-    CanActivateChild,
-    CanDeactivate,
-    CanLoad,
-    Route,
-    Router,
-    RouterStateSnapshot,
-    UrlSegment,
-    UrlTree
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthServiceService } from '../service/auth-service.service';
 
@@ -18,7 +7,7 @@ import { AuthServiceService } from '../service/auth-service.service';
     providedIn: 'root',
 })
 export class GuardsGuard
-    implements CanActivate, CanActivateChild, CanDeactivate<unknown>, CanLoad
+    
 {
     constructor(private router: Router, private auth: AuthServiceService) {}
 

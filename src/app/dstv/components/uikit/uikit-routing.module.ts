@@ -17,7 +17,6 @@ import { RouterModule } from '@angular/router';
         { path: 'overlay', loadChildren: () => import('./overlays/overlaysdemo.module').then(m => m.OverlaysDemoModule) },
         { path: 'panel', loadChildren: () => import('./panels/panelsdemo.module').then(m => m.PanelsDemoModule) },
         { path: 'table', loadChildren: () => import('./table/tabledemo.module').then(m => m.TableDemoModule) },
-        { path: 'tree', loadChildren: () => import('./tree/treedemo.module').then(m => m.TreeDemoModule) },
         { path: 'menu', loadChildren: () => import('./menus/menus.module').then(m => m.MenusModule) }
     ])],
     exports: [RouterModule]

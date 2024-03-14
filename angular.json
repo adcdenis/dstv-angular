@@ -108,7 +108,6 @@
             }
         }
     },
-    "defaultProject": "sakai",
     "cli": {
       "analytics": false
     }
