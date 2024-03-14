@@ -51,3 +51,6 @@ firebase deploy
 ng build --configuration production --aot --output-hashing=all
 
 --muda hashs forçando navegador a atualizar arquivos cacheados
+
+--caso firebase não esteja instalado
+npm install -g firebase-tools
