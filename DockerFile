@@ -1,4 +1,4 @@
-FROM node:current-alpine3.16 as builder
+FROM node:current-alpine as builder
 
 WORKDIR /app
 
@@ -9,7 +9,9 @@ RUN npm install
 
 COPY . .
 
-RUN $(npm bin)/ng build --configuration=production --source-map=false
+RUN npm i -g @angular/cli
+
+RUN ng build --configuration production --aot
 
 FROM nginx:alpine
 
