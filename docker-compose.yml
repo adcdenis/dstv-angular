@@ -1,20 +1,9 @@
-version: "3.8"
-
+version: "3"
 services:
-  nameis:
-    container_name: gato
-    image: dstvf:1
+  devapp:
     build: .
     ports:
-      - 8080:80
-
-
-comandos:
-
-# docker build -t dstvf:1 .
-# docker run -p 8080:80 -d dstvf:1
-# docker-compose up -d
-
-# para produção:
-# docker build -t adcdenis/frontend:1 .
-# docker push adcdenis/frontend:1
+      - "4200:4200"
+    volumes:
+        - "/app/node_modules"
+        - ".:/app"
