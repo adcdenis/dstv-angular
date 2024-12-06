@@ -12,7 +12,8 @@ import { Message, MessageService } from 'primeng/api';
             z-index:99999;
         }
     `],
-    providers: [MessageService]
+    providers: [MessageService],
+    standalone: false
 })
 export class MessagesDemoComponent {
 

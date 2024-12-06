@@ -9,6 +9,7 @@ import { ClienteI } from '../../api/dstvInterfaces';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    standalone: false
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 

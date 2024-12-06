@@ -25,7 +25,8 @@ interface expandedRows {
         :host ::ng-deep .p-progressbar {
             height:.5rem;
         }
-    `]
+    `],
+    standalone: false
 })
 export class TableDemoComponent implements OnInit {
 

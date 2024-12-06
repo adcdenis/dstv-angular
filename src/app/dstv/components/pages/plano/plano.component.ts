@@ -5,10 +5,11 @@ import { PlanoI } from 'src/app/dstv/api/dstvInterfaces';
 import { PlanoService } from 'src/app/dstv/service/plano.service';
 
 @Component({
-  selector: 'app-plano',
-  templateUrl: './plano.component.html',
-  styleUrls: ['./plano.component.scss'],
-  providers: [MessageService],
+    selector: 'app-plano',
+    templateUrl: './plano.component.html',
+    styleUrls: ['./plano.component.scss'],
+    providers: [MessageService],
+    standalone: false
 })
 export class PlanoComponent implements OnInit {
 

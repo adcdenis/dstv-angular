@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
         <i class="pi pi-fw pi-user mr-2 text-2xl"></i>
         <p class="mt-5 text-center text-lg">Personal Component Content via Child Route</p>
       </div>
-  `
+  `,
+    standalone: false
 })
 export class PersonalComponent { }

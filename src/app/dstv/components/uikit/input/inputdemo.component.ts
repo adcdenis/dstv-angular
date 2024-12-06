@@ -50,7 +50,8 @@ import { CountryService } from 'src/app/dstv/service/country.service';
         :host ::ng-deep .p-colorpicker {
             width: 2.5em
         }
-    `]
+    `],
+    standalone: false
 })
 export class InputDemoComponent implements OnInit {
     countries: any[] = [];

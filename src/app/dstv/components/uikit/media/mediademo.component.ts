@@ -4,7 +4,8 @@ import { PhotoService } from 'src/app/dstv/service/photo.service';
 import { ProductService } from 'src/app/dstv/service/product.service';
 
 @Component({
-    templateUrl: './mediademo.component.html'
+    templateUrl: './mediademo.component.html',
+    standalone: false
 })
 export class MediaDemoComponent implements OnInit {
 

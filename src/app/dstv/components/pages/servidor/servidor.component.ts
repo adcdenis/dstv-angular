@@ -10,6 +10,7 @@ import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service'
     templateUrl: './servidor.component.html',
     styleUrls: ['./servidor.component.scss'],
     providers: [MessageService],
+    standalone: false
 })
 export class ServidorComponent implements OnInit {
     public listaServidores: Array<ServidorI> = [];

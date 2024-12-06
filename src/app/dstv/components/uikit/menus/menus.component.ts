@@ -3,7 +3,8 @@ import { MegaMenuItem, MenuItem } from 'primeng/api';
 
 @Component({
     templateUrl: './menus.component.html',
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class MenusComponent implements OnInit {
 

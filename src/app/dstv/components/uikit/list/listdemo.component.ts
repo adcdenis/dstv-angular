@@ -5,7 +5,8 @@ import { Product } from 'src/app/dstv/api/product';
 import { ProductService } from 'src/app/dstv/service/product.service';
 
 @Component({
-    templateUrl: './listdemo.component.html'
+    templateUrl: './listdemo.component.html',
+    standalone: false
 })
 export class ListDemoComponent implements OnInit {
 

@@ -14,6 +14,7 @@ import * as FileSaver from 'file-saver';
     templateUrl: './cliente.component.html',
     styleUrls: ['./cliente.component.scss'],
     providers: [MessageService],
+    standalone: false
 })
 export class ClienteComponent implements OnInit {
     //Usando dinamic forms

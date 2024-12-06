@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
         <i class="pi pi-fw pi-check mr-2 text-2xl"></i>
         <p class="m-0 mt-5 text-center text-lg">Confirmation Component Content via Child Route</p>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class ConfirmationComponent { }

@@ -47,6 +47,7 @@ import { AuthServiceService } from './../../../service/auth-service.service';
             }
         `,
     ],
+    standalone: false
 })
 export class LoginComponent implements OnInit{
     valCheck: string[] = ['remember'];
