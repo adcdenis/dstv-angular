@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/dstv-angular",
+    "public": "dist/dstv-angular/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
