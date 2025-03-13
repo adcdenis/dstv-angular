@@ -30,10 +30,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 --para gerar build para o github pages
 
-ng build --configuration production --aot --base-href="/dstv-angular/"
+ng build --configuration production --aot --base-href="./"
 
-angular-cli-ghpages --dir=dist/dstv-angular
+--angular-cli-ghpages --dir=dist/dstv-angular/browser
 
+--comando resumido:
+ngh --dir=dist/dstv-angular/browser
 
 --------------------
 
