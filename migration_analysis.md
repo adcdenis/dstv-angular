@@ -86,8 +86,34 @@ Este documento resume a estrutura, telas, regras de negócio e funcionalidades d
 
 2.  **Mensagem de WhatsApp:**
     - A mensagem é montada dinamicamente no frontend (`cliente.component.ts`).
-    - Inclui saudação baseada no horário (Bom dia/tarde/noite).
-    - Dados bancários (Pix, PicPay, BB) estão "hardcoded" no código. **Recomendação:** Mover para configurações ou banco de dados no app Flutter.
+    - **Variáveis:**
+        - `telefone`: Telefone do cliente.
+        - `nomePlano`: Nome do plano vinculado.
+        - `valorPlano`: Valor do plano vinculado.
+        - `usuario`: Usuário do cliente (opcional).
+        - `dataFormatada`: Data de vencimento formatada (dd/MM/yyyy).
+        - `diaTardeNoite`: Saudação baseada na hora atual (Bom dia/tarde/noite).
+    - **Estrutura da Mensagem:**
+        ```text
+        Olá, {diaTardeNoite}
+        *Segue seu vencimento IPTV*
+        *Vencimento:* _{dataFormatada}_
+
+        *PLANO CONTRATADO*
+        ⭕ _Plano:_ *{nomePlano}*
+        ⭕ _Valor:_ *R$ {valorPlano}*
+        [⭕ _Conta:_ *{usuario}*] (Se existir)
+
+        *FORMAS DE PAGAMENTOS*
+        ✅ Pic Pay : @canutobr
+        ✅ Banco do Brasil: ag 3020-1 cc 45746-9
+        ✅ Pix: canutopixbb@gmail.com
+
+        - Duração da lista 30 dias, acesso de um ponto, não permite conexões simultâneas.
+        - Assim que efetuar o pagamento, enviar o comprovante e vou efetuar a contratação/renovação o mais rápido possível.
+        -*Aguardamos seu contato para renovação!*
+        ```
+    - **Recomendação:** Mover dados bancários e textos fixos para uma configuração remota (Remote Config ou Firestore) para evitar hardcoding no app Flutter.
 
 3.  **Clonagem:**
     - Ao clonar, o ID é limpo para criar um novo registro e o nome recebe sufixo.
