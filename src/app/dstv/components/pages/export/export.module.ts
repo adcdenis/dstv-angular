@@ -6,6 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
     imports: [
@@ -14,7 +16,9 @@ import { ToastModule } from 'primeng/toast';
         ButtonModule,
         RippleModule,
         CardModule,
-        ToastModule
+        ToastModule,
+        FileUploadModule,
+        TagModule
     ],
     declarations: [ExportComponent]
 })

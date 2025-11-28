@@ -18,12 +18,12 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['dashboard'] },
-                    { label: 'Clientes', icon: 'pi pi-users', routerLink: ['cliente'] },
-                    { label: 'Servidores', icon: 'pi pi-server', routerLink: ['servidor'] },
-                    { label: 'Planos', icon: 'pi pi-dollar', routerLink: ['plano'] },
-                    { label: 'Mensagem', icon: 'pi pi-whatsapp', routerLink: ['mensagem'] },
-                    { label: 'Exportar Dados', icon: 'pi pi-download', routerLink: ['export'] },
+                    { label: 'Dashboard', icon: 'pi pi-chart-bar', routerLink: ['dashboard'], class: 'menu-dashboard' },
+                    { label: 'Clientes', icon: 'pi pi-id-card', routerLink: ['cliente'], class: 'menu-clientes' },
+                    { label: 'Servidores', icon: 'pi pi-cloud', routerLink: ['servidor'], class: 'menu-servidores' },
+                    { label: 'Planos', icon: 'pi pi-wallet', routerLink: ['plano'], class: 'menu-planos' },
+                    { label: 'Mensagem', icon: 'pi pi-whatsapp', routerLink: ['mensagem'], class: 'menu-mensagem' },
+                    { label: 'Importar / Exportar', icon: 'pi pi-file-export', routerLink: ['export'], class: 'menu-export' },
                 ]
             },
             // {
