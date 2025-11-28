@@ -22,3 +22,11 @@ export interface ClienteI {
     plano?: PlanoI;
 }
 
+export interface MensagemTemplateI {
+    id?: string;
+    nome?: string;
+    corpo?: string;
+    ativo?: boolean;
+    criadoEm?: number;
+}
+

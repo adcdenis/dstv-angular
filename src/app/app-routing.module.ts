@@ -15,6 +15,7 @@ import { GuardsGuard } from './dstv/core/guards.guard';
                     { path: 'cliente', loadChildren: () => import('./dstv/components/pages/cliente/cliente.module').then(m => m.ClienteModule) },
                     { path: 'servidor', loadChildren: () => import('./dstv/components/pages/servidor/servidor.module').then(m => m.ServidorModule), canActivateChild: [GuardsGuard] },
                     { path: 'plano', loadChildren: () => import('./dstv/components/pages/plano/plano.module').then(m => m.PlanoModule) },
+                    { path: 'mensagem', loadChildren: () => import('./dstv/components/pages/mensagem/mensagem.module').then(m => m.MensagemModule) },
                     { path: 'export', loadChildren: () => import('./dstv/components/pages/export/export.module').then(m => m.ExportModule) },
 
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import packageJson from '../../../../../../package.json';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
@@ -54,6 +55,7 @@ export class LoginComponent implements OnInit{
 
     email!: string;
     password!: string;
+    version: string = packageJson.version;
 
     constructor(private auth: AuthServiceService, private router: Router, public layoutService: LayoutService, private activateRoute: ActivatedRoute) {}
 

@@ -1,0 +1,51 @@
+<div class="grid">
+  <div class="col-12 md:col-4">
+    <div class="card p-fluid">
+      <h5>Template</h5>
+      <div class="field">
+        <label for="corpo">Mensagem</label>
+        <textarea pInputTextarea id="corpo" class="corpo-textarea" rows="20" [(ngModel)]="form.value.corpo" (ngModelChange)="form.patchValue({corpo: $event})"></textarea>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button *ngFor="let t of tokens" pButton type="button" (click)="inserirToken(t.value)" [label]="t.label" class="p-button-outlined"></button>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col-12 md:col-4">
+    <div class="card">
+      <h5>Pré-visualização</h5>
+      <pre class="pre-wrap">{{ previewText }}</pre>
+    </div>
+  </div>
+  <div class="col-12 md:col-4">
+    <div class="card">
+      <h5>Formatação WhatsApp</h5>
+      <p>
+        - Negrito: envolver com <code>*texto*</code><br>
+        - Itálico: envolver com <code>_texto_</code><br>
+        - Tachado: envolver com <code>~texto~</code><br>
+        - Monoespaço: envolver com <code>`texto`</code><br>
+        - Quebra de linha: usar quebra normal; é enviada como <code>\n</code> automaticamente.
+      </p>
+      <h6>Tokens disponíveis</h6>
+      <ul>
+        <li><code>{{'{{saudacao}}'}}</code>, <code>{{'{{nome}}'}}</code>, <code>{{'{{telefone}}'}}</code>, <code>{{'{{usuario}}'}}</code></li>
+        <li><code>{{'{{dataVencimento}}'}}</code>, <code>{{'{{plano.nome}}'}}</code>, <code>{{'{{plano.valor}}'}}</code></li>
+      </ul>
+      <h6>Mensagem padrão</h6>
+      <pre class="pre-wrap">{{ defaultCorpo() }}</pre>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="grid mt-3">
+      <div class="col-12 md:col-6">
+        <button pButton type="button" icon="pi pi-times" label="Limpar" class="p-button-danger" style="width:100%" (click)="limpar()"></button>
+      </div>
+      <div class="col-12 md:col-6">
+        <button pButton type="button" icon="pi pi-check" label="Salvar" class="p-button-success" style="width:100%" (click)="salvar()"></button>
+      </div>
+    </div>
+  </div>
+  <p-toast></p-toast>
+</div>

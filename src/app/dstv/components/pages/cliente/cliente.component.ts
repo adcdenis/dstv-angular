@@ -8,6 +8,8 @@ import { ClienteI, PlanoI, ServidorI } from 'src/app/dstv/api/dstvInterfaces';
 import { ClienteService } from 'src/app/dstv/service/cliente.service';
 import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
 import * as FileSaver from 'file-saver';
+import { MensagemService } from 'src/app/dstv/service/mensagem.service';
+import { MensagemTemplateI } from 'src/app/dstv/api/dstvInterfaces';
 
 @Component({
     selector: 'app-cliente',
@@ -62,7 +64,8 @@ export class ClienteComponent implements OnInit {
         private servidorService: ServidorFireService,
         private messageService: MessageService,
         private formBuilder: FormBuilder,
-        private config: PrimeNGConfig
+        private config: PrimeNGConfig,
+        private mensagemService: MensagemService
     ) {}
 
     private converterDateToTimeStamp: any = (cliente: ClienteI) => {
@@ -357,11 +360,11 @@ export class ClienteComponent implements OnInit {
         );
     }
 
-    public abrirWhatsApp(cliente: ClienteI) {
+    public async abrirWhatsApp(cliente: ClienteI) {
 
-    const telefone = cliente.telefone ? cliente.telefone : ''
-    const nomePlano = cliente.plano ? cliente.plano.nome : ''
-    const valorPlano = cliente.plano ? cliente.plano.valor : ''
+    const telefone = cliente.telefone ? String(cliente.telefone) : ''
+    const nomePlano = cliente.plano ? (cliente.plano.nome || '') : ''
+    const valorPlano = cliente.plano ? (cliente.plano.valor || '') : ''
     const usuario = cliente.usuario ? cliente.usuario : ''
     const dataFormatada = cliente.dataVencimento.toLocaleDateString('pt-BR');
 
@@ -376,15 +379,22 @@ export class ClienteComponent implements OnInit {
 
     //alert('diatardenoite: ' + diaTardeNoite)
 
-    let msg = `https://web.whatsapp.com/send?phone=${telefone}` +
-        `&text=Olá, ${diaTardeNoite}%0D%0A*Segue seu vencimento IPTV* %0D%0A*Vencimento:* _` +
-        `${dataFormatada}` +
-        `_ %0D%0A %0D%0A*PLANO CONTRATADO* %0D%0A⭕ _Plano:_ *${nomePlano}` +
-        `* %0D%0A⭕ _Valor:_ *R$ ${valorPlano}* ` +
-         (usuario ? `%0D%0A⭕ _Conta:_ *${usuario}*` : '') +
-        ` %0D%0A %0D%0A*FORMAS DE PAGAMENTOS* %0D%0A✅ Pic Pay : @canutobr%0D%0A✅ Banco do Brasil: ag 3020-1 cc 45746-9%0D%0A✅ Pix: canutopixbb@gmail.com %0D%0A %0D%0A- Duração da lista 30 dias, acesso de um ponto, não permite conexões simultâneas. %0D%0A %0D%0A- Assim que efetuar o pagamento, enviar o comprovante e vou efetuar a contratação/renovação o mais rápido possível.%0D%0A %0D%0A-*Aguardamos seu contato para renovação!*`
-
-        window.open(msg, '_blank');
+    const ativa: MensagemTemplateI | null = await this.mensagemService.getAtiva();
+    let texto: string;
+    if (ativa && ativa.corpo) {
+        texto = ativa.corpo
+            .replace(/\{\{saudacao\}\}/g, diaTardeNoite)
+            .replace(/\{\{nome\}\}/g, cliente.nome || '')
+            .replace(/\{\{telefone\}\}/g, telefone)
+            .replace(/\{\{usuario\}\}/g, usuario)
+            .replace(/\{\{dataVencimento\}\}/g, dataFormatada)
+            .replace(/\{\{plano\.nome\}\}/g, nomePlano)
+            .replace(/\{\{plano\.valor\}\}/g, String(valorPlano));
+    } else {
+        texto = `Olá, ${diaTardeNoite}\n*Segue seu vencimento IPTV* \n*Vencimento:* _${dataFormatada}_\n\n*PLANO CONTRATADO* \n⭕ _Plano:_ *${nomePlano}* \n⭕ _Valor:_ *R$ ${valorPlano}* ${usuario ? `\n⭕ _Conta:_ *${usuario}*` : ''}\n\n*FORMAS DE PAGAMENTOS* \n✅ Pic Pay : @canutobr\n✅ Banco do Brasil: ag 3020-1 cc 45746-9\n✅ Pix: canutopixbb@gmail.com \n\n- Duração da lista 30 dias, acesso de um ponto, não permite conexões simultâneas. \n\n- Assim que efetuar o pagamento, enviar o comprovante e vou efetuar a contratação/renovação o mais rápido possível.\n\n-*Aguardamos seu contato para renovação!*`;
+    }
+    const url = `https://web.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
     }
 
     public clonar(cliente: ClienteI) {

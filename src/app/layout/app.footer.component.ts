@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LayoutService } from "./service/app.layout.service";
+import packageJson from '../../../package.json';
 
 @Component({
     selector: 'app-footer',
@@ -7,5 +8,6 @@ import { LayoutService } from "./service/app.layout.service";
     standalone: false
 })
 export class AppFooterComponent {
+    version: string = packageJson.version;
     constructor(public layoutService: LayoutService) { }
 }
