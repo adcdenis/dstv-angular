@@ -102,9 +102,9 @@
                             </td>
                             <td style="width:10%;">
                                 <div class="flex">
-                                    <button pButton pRipple icon="pi pi-pencil"
+                                    <button pButton pRipple icon="pi pi-refresh"
                                         class="p-button-rounded p-button-success mr-2"
-                                        (click)="abrirDialogAlterar(cliente)"></button>
+                                        (click)="abrirDialogRenovar(cliente)"></button>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"
                                         (click)="abrirDialogExcluir(cliente)"></button>
                                     <button pButton pRipple icon="pi pi-clone"
@@ -202,6 +202,31 @@
                     (click)="dialogoDeleteVarios = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sim"
                     (click)="excluirSelecionados()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="dialogoRenovar" header="Confirmar Renovação" [modal]="true" [style]="{width:'480px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Tem certeza que deseja renovar <b>{{clienteRenovacao?.nome}}</b> por mais 30 dias?<br> Novo vencimento: <b>{{novaDataVencimento | date:'dd/MM/yyyy'}}</b></span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não"
+                    (click)="dialogoRenovar = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sim"
+                    (click)="confirmarRenovar()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="dialogoPosRenovacao" header="Renovação Concluída" [modal]="true" [style]="{width:'520px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
+            <div>
+                {{mensagemRenovacao}}
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-danger" label="Cancelar"
+                    (click)="dialogoPosRenovacao = false"></button>
+                <button pButton pRipple icon="pi pi-send" class="p-button-success" label="Enviar confirmação"
+                    (click)="enviarConfirmacaoRenovacao()"></button>
             </ng-template>
         </p-dialog>
     </div>

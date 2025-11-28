@@ -393,10 +393,46 @@ export class ClienteComponent implements OnInit {
     } else {
         texto = `Olá, ${diaTardeNoite}\n*Segue seu vencimento IPTV* \n*Vencimento:* _${dataFormatada}_\n\n*PLANO CONTRATADO* \n⭕ _Plano:_ *${nomePlano}* \n⭕ _Valor:_ *R$ ${valorPlano}* ${usuario ? `\n⭕ _Conta:_ *${usuario}*` : ''}\n\n*FORMAS DE PAGAMENTOS* \n✅ Pic Pay : @canutobr\n✅ Banco do Brasil: ag 3020-1 cc 45746-9\n✅ Pix: canutopixbb@gmail.com \n\n- Duração da lista 30 dias, acesso de um ponto, não permite conexões simultâneas. \n\n- Assim que efetuar o pagamento, enviar o comprovante e vou efetuar a contratação/renovação o mais rápido possível.\n\n-*Aguardamos seu contato para renovação!*`;
     }
+
     const url = `https://web.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(texto)}`;
     window.open(url, '_blank');
     }
 
+    dialogoRenovar: boolean = false;
+    dialogoPosRenovacao: boolean = false;
+    clienteRenovacao: ClienteI | null = null;
+    novaDataVencimento: Date | null = null;
+    mensagemRenovacao: string = '';
+
+    public abrirDialogRenovar(cliente: ClienteI) {
+        this.clienteRenovacao = { ...cliente };
+        const dt: any = cliente.dataVencimento;
+        let base = dt && dt.seconds ? new Date(dt.seconds * 1000) : new Date(cliente.dataVencimento);
+        base.setHours(0,0,0,0);
+        const nova = new Date(base);
+        nova.setDate(nova.getDate() + 30);
+        this.novaDataVencimento = nova;
+        this.dialogoRenovar = true;
+    }
+
+    public async confirmarRenovar() {
+        if (!this.clienteRenovacao || !this.novaDataVencimento) return;
+        const atualizado: ClienteI = { ...this.clienteRenovacao, dataVencimento: this.novaDataVencimento };
+        await this.clienteService.update(atualizado);
+        this.dialogoRenovar = false;
+        const dataStr = this.novaDataVencimento.toLocaleDateString('pt-BR');
+        this.mensagemRenovacao = `Conta renovada com sucesso. Novo vencimento: ${dataStr}`;
+        this.dialogoPosRenovacao = true;
+        this.buscarClientes();
+    }
+
+    public enviarConfirmacaoRenovacao() {
+        if (!this.clienteRenovacao) return;
+        const telefone = this.clienteRenovacao.telefone ? String(this.clienteRenovacao.telefone) : '';
+        const url = `https://web.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(this.mensagemRenovacao)}`;
+        window.open(url, '_blank');
+        this.dialogoPosRenovacao = false;
+    }
     public clonar(cliente: ClienteI) {
 
         //zera id
