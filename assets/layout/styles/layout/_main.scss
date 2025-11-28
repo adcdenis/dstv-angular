@@ -1,3 +1,4 @@
+@use "./variables" as *;
 * {
     box-sizing: border-box;
 }
@@ -26,4 +27,8 @@ a {
 .layout-wrapper {
     min-height: 100vh;
     overflow-x: hidden;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

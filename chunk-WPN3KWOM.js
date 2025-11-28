@@ -1,0 +1,1 @@
+import{E as i,Fb as o,H as r}from"./chunk-UX7NIMCO.js";var c=(()=>{class e{constructor(t){this.http=t}getCountries(){return this.http.get("assets/dstv/data/countries.json").toPromise().then(t=>t.data).then(t=>t)}static{this.\u0275fac=function(s){return new(s||e)(r(o))}}static{this.\u0275prov=i({token:e,factory:e.\u0275fac})}}return e})();export{c as a};
