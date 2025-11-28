@@ -27,10 +27,10 @@ import { AuthServiceService } from './../../../service/auth-service.service';
             }
 
             .image {
-                backgroundImage: 'url(https://source.unsplash.com/1920x1280/?gaming)';
-                backgroundRepeat: 'no-repeat';
-                backgroundSize: 'cover';
-                backgroundPosition: 'center';
+                background-image: url('https://source.unsplash.com/1920x1280/?gaming');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
             }
 
             #random{

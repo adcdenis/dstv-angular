@@ -1,3 +1,4 @@
+@use "./variables" as *;
 @media screen and (min-width: 1729px) {
     .layout-main, .landing-wrapper {
         width: 1504px;
@@ -5,6 +6,22 @@
         margin-right: auto !important;
     }
 
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1728px) {
+    .layout-main, .landing-wrapper {
+        width: 1200px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1279px) {
+    .layout-main, .landing-wrapper {
+        width: 980px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 }
 
 @media (min-width: 992px) {
@@ -63,7 +80,7 @@
     .layout-wrapper {
         .layout-main-container {
             margin-left: 0;
-            padding-left: 2rem;
+            padding: 6rem 1rem 1.5rem 1rem;
         }
 
         .layout-sidebar {

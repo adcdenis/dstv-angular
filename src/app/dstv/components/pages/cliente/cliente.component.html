@@ -2,7 +2,7 @@
     <p-toast></p-toast>
     <div class="col-12">
         <ng-container *ngIf="!dialogoCliente">
-            <div class="card px-6 py-6">
+            <div class="card px-6 py-6 fade-in">
                 <p-toolbar styleClass="mb-4">
                     <ng-template pTemplate="left">
                         <div class="my-2">
@@ -45,7 +45,7 @@
                     [(selection)]="listaClientesSelecionados" selectionMode="multiple" [rowHover]="true" dataKey="id">
                     <ng-template pTemplate="caption">
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Gerenciar Clientes</h5>
+                            <h5 class="m-0"><i class="pi pi-users mr-2"></i>Gerenciar Clientes</h5>
                             <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search"></i>
                                 <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
@@ -118,7 +118,7 @@
             </div>
         </ng-container>
 
-        <p-dialog [(visible)]="dialogoExcluir" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="dialogoExcluir" header="Confirmar" [modal]="true" [style]="{width:'450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span>Tem certeza que você deseja excluir <b>{{this.cadastroForm.value.nome}}</b>?</span>
@@ -132,7 +132,7 @@
         </p-dialog>
 
         <ng-container *ngIf="dialogoCliente">
-            <div class="card px-6 py-6">
+            <div class="card px-6 py-6 fade-in">
                 <form [formGroup]="cadastroForm" (ngSubmit)="salvarOuAlterar()">
 
                     <div class="p-fluid grid">
@@ -192,7 +192,7 @@
             </div>
         </ng-container>
 
-        <p-dialog [(visible)]="dialogoDeleteVarios" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="dialogoDeleteVarios" header="Confirmar" [modal]="true" [style]="{width:'450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span>Tem certeza que quer deletar todos os selecionados?</span>

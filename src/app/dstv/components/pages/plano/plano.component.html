@@ -1,6 +1,6 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6">
+        <div class="card px-6 py-6 fade-in">
             <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
@@ -16,8 +16,6 @@
                 <ng-template pTemplate="right">
                     <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
                         chooseLabel="Importar" class="mr-2 inline-block" *ngIf="false"></p-fileUpload>
-                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
-                        (click)="dt.exportCSV()"></button>
                 </ng-template>
             </p-toolbar>
 
@@ -28,7 +26,7 @@
                 [(selection)]="listaPlanosSelecionados" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Gerenciar Planos</h5>
+                        <h5 class="m-0"><i class="pi pi-dollar mr-2"></i>Gerenciar Planos</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Procurar..."
@@ -77,7 +75,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="dialogoExcluir" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="dialogoExcluir" header="Confirmar" [modal]="true" [style]="{width:'450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="planoSelecionado">Tem certeza que você deseja excluir <b>{{planoSelecionado.nome}}</b>?</span>
@@ -88,7 +86,7 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="dialogoPlano" [style]="{width: '450px'}" header="Detalhes do Plano" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="dialogoPlano" [style]="{width: '450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}" header="Detalhes do Plano" [modal]="true" class="p-fluid">
 
             <div class="p-fluid grid">
                 <div class="field col-12">
