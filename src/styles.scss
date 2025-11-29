@@ -40,3 +40,185 @@ $gutter: 1rem; //for primeflex grid system
   color: #3F51B5;
   font-size: 1.4rem;
 }
+
+/* Clientes table mobile refinements */
+.clientes-table .p-datatable-tbody > tr > td {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Toolbar wrapping for mobile */
+.clientes-toolbar .p-toolbar-group-left,
+.clientes-toolbar .p-toolbar-group-right {
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .clientes-toolbar .p-toolbar-group-left,
+  .clientes-toolbar .p-toolbar-group-right {
+    gap: 0.25rem;
+  }
+
+  .clientes-toolbar .p-toolbar-group-right {
+    justify-content: flex-start !important;
+  }
+
+  .clientes-toolbar .p-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .clientes-toolbar .p-button .pi {
+    font-size: 0.9rem;
+  }
+
+  .clientes-table .p-datatable-thead > tr > th:nth-child(3),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(3) {
+    display: none;
+  }
+
+  .clientes-table .nome-usuario {
+    white-space: normal;
+  }
+
+  .clientes-table .p-datatable-tbody > tr > td:last-child .p-button {
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .clientes-toolbar .p-toolbar-group-left,
+  .clientes-toolbar .p-toolbar-group-right {
+    width: 100%;
+  }
+}
+
+@media (min-width: 641px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+.list-card { position: relative; }
+
+.fab {
+  position: fixed !important;
+  right: 1rem !important;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 2000 !important;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 992px) {
+  .fab { bottom: 4rem !important; }
+}
+
+.fab .pi {
+  font-size: 1.25rem;
+}
+
+@media (min-width: 641px) {
+  .clientes-table .p-datatable-thead > tr > th:nth-child(1),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(1) {
+    width: 10%;
+    min-width: 10rem;
+  }
+  .clientes-table .p-datatable-thead > tr > th:nth-child(2),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(2) {
+    width: 50%;
+    min-width: 10rem;
+  }
+  .clientes-table .p-datatable-thead > tr > th:nth-child(3),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(3) {
+    width: 10%;
+  }
+  .clientes-table .p-datatable-thead > tr > th:nth-child(4),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(4) {
+    width: 10%;
+    min-width: 10rem;
+  }
+  .clientes-table .p-datatable-thead > tr > th:nth-child(5),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(5) {
+    width: 10%;
+    min-width: 10rem;
+  }
+  .clientes-table .p-datatable-thead > tr > th:nth-child(6),
+  .clientes-table .p-datatable-tbody > tr > td:nth-child(6) {
+    width: 10%;
+  }
+}
+
+@media (min-width: 641px) {
+  .planos-table .p-datatable-thead > tr > th:first-child,
+  .planos-table .p-datatable-tbody > tr > td:first-child {
+    width: 3rem;
+  }
+  .planos-table .p-datatable-thead > tr > th:nth-child(2),
+  .planos-table .p-datatable-tbody > tr > td:nth-child(2) {
+    width: 70%;
+    min-width: 10rem;
+  }
+  .planos-table .p-datatable-thead > tr > th:nth-child(3),
+  .planos-table .p-datatable-tbody > tr > td:nth-child(3) {
+    width: 20%;
+    min-width: 10rem;
+  }
+}
+
+@media (min-width: 641px) {
+  .servidores-table .p-datatable-thead > tr > th:first-child,
+  .servidores-table .p-datatable-tbody > tr > td:first-child {
+    width: 3rem;
+  }
+  .servidores-table .p-datatable-thead > tr > th:nth-child(2),
+  .servidores-table .p-datatable-tbody > tr > td:nth-child(2) {
+    width: 90%;
+    min-width: 10rem;
+  }
+}
+
+/* Generic list toolbar for reuse */
+.list-toolbar .p-toolbar-group-left,
+.list-toolbar .p-toolbar-group-right {
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .list-toolbar .p-toolbar-group-left,
+  .list-toolbar .p-toolbar-group-right {
+    width: 100%;
+    gap: 0.25rem;
+  }
+
+  .list-toolbar .p-toolbar-group-right {
+    justify-content: flex-start !important;
+  }
+
+  .list-toolbar .p-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .list-toolbar .p-button .pi {
+    font-size: 0.9rem;
+  }
+}
+
+/* Generic list table */
+.list-table .p-datatable-tbody > tr > td {
+  padding: 0.5rem 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .list-table .p-datatable-tbody > tr > td:last-child .p-button {
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+}

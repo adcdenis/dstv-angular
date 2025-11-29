@@ -2,44 +2,39 @@
     <p-toast></p-toast>
     <div class="col-12">
         <ng-container *ngIf="!dialogoCliente">
-            <div class="card px-6 py-6 fade-in">
-                <p-toolbar styleClass="mb-4">
+            <div class="card px-6 py-6 fade-in list-card">
+                <p-toolbar styleClass="mb-4 clientes-toolbar">
                     <ng-template pTemplate="left">
-                        <div class="my-2">
-                            <button pButton pRipple label="Novo" icon="pi pi-plus" class="p-button-success mr-2"
-                                (click)="novo()"></button>
+                        <div class="p-toolbar-group-left flex flex-wrap gap-2 w-full">
                             <button pButton pRipple label="3 dias!" icon="pi pi-exclamation-triangle"
-                                class="p-button-danger mr-2" (click)="filtrarPorVence3Dias()"></button>
+                                class="p-button-danger" (click)="filtrarPorVence3Dias()"></button>
                             <button *ngIf="false" pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
                                 (click)="abrirDialogDeletarVarios()"
                                 [disabled]="!listaClientesSelecionados || !listaClientesSelecionados.length"></button>
-
                         </div>
                     </ng-template>
 
                     <ng-template pTemplate="right">
+                        <div class="p-toolbar-group-right flex flex-wrap gap-2 w-full md:w-auto justify-content-end mt-2 md:mt-0">
+                            <button pButton pRipple label="Ativos" icon="pi pi-users" class="p-button-success"
+                                (click)="filtrarPorNaoVencidos()"></button>
+                            <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning"
+                                (click)="filtrarPorVencidos()"></button>
+                            <button pButton pRipple label="TODOS" icon="pi pi-list"
+                                (click)="mostrarTodos()"></button>
 
-                        <button pButton pRipple label="Ativos" icon="pi pi-users" class="p-button-success mr-2"
-                            (click)="filtrarPorNaoVencidos()"></button>
-
-                        <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning mr-2"
-                            (click)="filtrarPorVencidos()"></button>
-
-                        <button pButton pRipple label="TODOS" icon="pi pi-list"
-                            (click)="mostrarTodos()"></button>
-
-                        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                            chooseLabel="Importar" class="mr-2 inline-block" *ngIf="false"></p-fileUpload>
-                        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
-                            (click)="dt.exportCSV()" *ngIf="false"></button>
-                        <button *ngIf="false" pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
-                            (click)="exportExcel()"></button>
-
+                            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                                chooseLabel="Importar" class="inline-block" *ngIf="false"></p-fileUpload>
+                            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
+                                (click)="dt.exportCSV()" *ngIf="false"></button>
+                            <button *ngIf="false" pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
+                                (click)="exportExcel()"></button>
+                        </div>
                     </ng-template>
                 </p-toolbar>
 
-                <p-table sortField="dataVencimento" styleClass="p-datatable-striped" #dt [value]="listaClientes"
-                    [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['valor','nome','id']"
+                <p-table sortField="dataVencimento" styleClass="p-datatable-striped clientes-table" #dt [value]="listaClientes"
+                    [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['valor','nome','id']"
                     [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                     currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
                     [(selection)]="listaClientesSelecionados" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -77,30 +72,30 @@
                             <td *ngIf="false">
                                 <p-tableCheckbox [value]="cliente"></p-tableCheckbox>
                             </td>
-                            <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <td (click)="abrirDialogAlterar(cliente)">
                                 <span class="p-column-title">Vencimento</span>
                                 {{cliente.dataVencimento | date : 'dd/MM/yyyy'}}
                             </td>
-                            <td style="width:50%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)" class="nome-usuario">
+                            <td (click)="abrirDialogAlterar(cliente)" class="nome-usuario">
                                 <span class="p-column-title">Nome</span>
                                 {{cliente.nome}}
                             </td>
-                            <td style="width:10%;">
-                                <div class="flex">
+                            <td>
+                                <div class="flex flex-wrap">
                                     <button pButton pRipple icon="pi pi-whatsapp"
                                         class="p-button-rounded p-button-success mr-2"
                                         (click)="abrirWhatsApp(cliente)"></button>
                                 </div>
                             </td>
-                            <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <td (click)="abrirDialogAlterar(cliente)">
                                 <span class="p-column-title">Plano</span>
                                 {{cliente.plano.nome}}
                             </td>
-                            <td style="width:10%; min-width:10rem;" (click)="abrirDialogAlterar(cliente)">
+                            <td (click)="abrirDialogAlterar(cliente)">
                                 <span class="p-column-title">Servidor</span>
                                 {{cliente.servidor.nome}}
                             </td>
-                            <td style="width:10%;">
+                            <td>
                                 <div class="flex">
                                     <button pButton pRipple icon="pi pi-refresh"
                                         class="p-button-rounded p-button-success mr-2"
@@ -115,6 +110,7 @@
                         </tr>
                     </ng-template>
                 </p-table>
+                <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success fab" (click)="novo()"></button>
             </div>
         </ng-container>
 
