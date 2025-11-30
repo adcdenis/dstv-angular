@@ -23,6 +23,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Servidores', icon: 'pi pi-cloud', routerLink: ['servidor'], class: 'menu-servidores' },
                     { label: 'Planos', icon: 'pi pi-wallet', routerLink: ['plano'], class: 'menu-planos' },
                     { label: 'Mensagem', icon: 'pi pi-whatsapp', routerLink: ['mensagem'], class: 'menu-mensagem' },
+                    { label: 'Relatórios', icon: 'pi pi-file-excel', routerLink: ['relatorios'], class: 'menu-relatorios' },
                     { label: 'Importar / Exportar', icon: 'pi pi-file-export', routerLink: ['export'], class: 'menu-export' },
                 ]
             },

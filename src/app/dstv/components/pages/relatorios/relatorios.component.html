@@ -1,0 +1,229 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6 fade-in">
+            <p-toast></p-toast>
+
+            <!-- Título da página -->
+            <div class="flex align-items-center justify-content-between mb-4">
+                <h5 class="m-0"><i class="pi pi-file-excel mr-2"></i>Relatórios de Clientes</h5>
+            </div>
+
+            <!-- Área de Filtros -->
+            <div class="card mb-4 filtro-card">
+                <h6 class="mb-3"><i class="pi pi-filter mr-2"></i>Filtros</h6>
+
+                <form [formGroup]="filtroForm" class="p-fluid">
+                    <div class="grid">
+                        <!-- Filtro por Nome do Cliente -->
+                        <div class="field col-12 md:col-6 lg:col-3">
+                            <label for="nomeCliente">Nome do Cliente</label>
+                            <input
+                                pInputText
+                                id="nomeCliente"
+                                formControlName="nomeCliente"
+                                placeholder="Digite o nome do cliente"
+                                (input)="aplicarFiltros()">
+                        </div>
+
+                        <!-- Filtro por Plano -->
+                        <div class="field col-12 md:col-6 lg:col-3">
+                            <label for="plano">Plano</label>
+                            <p-dropdown
+                                id="plano"
+                                formControlName="plano"
+                                [options]="listaPlanos"
+                                placeholder="Selecione um plano"
+                                optionLabel="nome"
+                                [showClear]="true"
+                                (onChange)="aplicarFiltros()">
+                            </p-dropdown>
+                        </div>
+
+                        <!-- Filtro por Servidor -->
+                        <div class="field col-12 md:col-6 lg:col-3">
+                            <label for="servidor">Servidor</label>
+                            <p-dropdown
+                                id="servidor"
+                                formControlName="servidor"
+                                [options]="listaServidores"
+                                placeholder="Selecione um servidor"
+                                optionLabel="nome"
+                                [showClear]="true"
+                                (onChange)="aplicarFiltros()">
+                            </p-dropdown>
+                        </div>
+
+                        <!-- Filtro por Status -->
+                        <div class="field col-12 md:col-6 lg:col-3">
+                            <label for="status">Status</label>
+                            <p-dropdown
+                                id="status"
+                                formControlName="status"
+                                [options]="statusOptions"
+                                optionLabel="label"
+                                optionValue="value"
+                                (onChange)="aplicarFiltros()">
+                            </p-dropdown>
+                        </div>
+
+                        <!-- Botões de Ação -->
+                        <div class="field col-12">
+                            <div class="flex gap-2">
+                                <button
+                                    pButton
+                                    pRipple
+                                    label="Limpar Filtros"
+                                    icon="pi pi-filter-slash"
+                                    class="p-button-outlined p-button-secondary"
+                                    (click)="limparFiltros()">
+                                </button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    label="Gerar Excel"
+                                    icon="pi pi-file-excel"
+                                    class="p-button-success"
+                                    (click)="gerarExcel()">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Resumo dos Dados -->
+            <div class="grid mb-4">
+                <div class="col-12 md:col-6 lg:col-3">
+                    <div class="card summary-card">
+                        <div class="flex align-items-center">
+                            <div class="p-3 bg-blue-100 border-round mr-3">
+                                <i class="pi pi-users text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-900 font-medium text-xl">{{clientesFiltrados.length}}</div>
+                                <div class="text-600">Total Filtrado</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                    <div class="card summary-card">
+                        <div class="flex align-items-center">
+                            <div class="p-3 bg-green-100 border-round mr-3">
+                                <i class="pi pi-check-circle text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-900 font-medium text-xl">{{getCountByStatus('ativos')}}</div>
+                                <div class="text-600">Ativos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                    <div class="card summary-card">
+                        <div class="flex align-items-center">
+                            <div class="p-3 bg-orange-100 border-round mr-3">
+                                <i class="pi pi-exclamation-triangle text-orange-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-900 font-medium text-xl">{{getCountByStatus('vencidos')}}</div>
+                                <div class="text-600">Vencidos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                    <div class="card summary-card">
+                        <div class="flex align-items-center">
+                            <div class="p-3 bg-yellow-100 border-round mr-3">
+                                <i class="pi pi-clock text-yellow-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-900 font-medium text-xl">{{getCountByStatus('vence3dias')}}</div>
+                                <div class="text-600">Vencem em 3 dias</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Pré-visualização -->
+            <div class="card">
+                <h6 class="mb-3"><i class="pi pi-eye mr-2"></i>Pré-visualização dos Dados</h6>
+
+                <p-table
+                    [value]="clientesFiltrados.slice(0, 10)"
+                    [columns]="cols"
+                    styleClass="p-datatable-striped relatorios-table"
+                    responsiveLayout="stack"
+                    [rows]="10"
+                    [paginator]="false"
+                    [showCurrentPageReport]="false"
+                    currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Usuário</th>
+                            <th>Data Vencimento</th>
+                            <th>Plano</th>
+                            <th>Servidor</th>
+                            <th>Status</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-cliente>
+                        <tr>
+                            <td>
+                                <span class="p-column-title">Nome</span>
+                                {{cliente.nome}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Usuário</span>
+                                {{cliente.usuario || '-'}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Data Vencimento</span>
+                                {{cliente.dataVencimento | date : 'dd/MM/yyyy'}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Plano</span>
+                                {{cliente.plano?.nome || '-'}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Servidor</span>
+                                {{cliente.servidor?.nome || '-'}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Status</span>
+                                <span
+                                    [class]="'status-badge ' + getStatusClass(cliente.dataVencimento)">
+                                    {{getStatusCliente(cliente.dataVencimento)}}
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                Nenhum cliente encontrado com os filtros selecionados.
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+                <!-- Mensagem se houver mais de 10 registros -->
+                <div *ngIf="clientesFiltrados.length > 10" class="mt-3 text-center">
+                    <small class="text-600">
+                        Mostrando os primeiros 10 registros de {{clientesFiltrados.length}}.
+                        Clique em "Gerar Excel" para exportar todos os dados.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
