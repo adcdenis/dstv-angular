@@ -103,27 +103,6 @@ $gutter: 1rem; //for primeflex grid system
 
 .list-card { position: relative; }
 
-.fab {
-  position: fixed !important;
-  right: 1rem !important;
-  bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
-  z-index: 2000 !important;
-  width: 3.5rem;
-  height: 3.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-}
-
-@media (min-width: 992px) {
-  .fab { bottom: 4rem !important; }
-}
-
-.fab .pi {
-  font-size: 1.25rem;
-}
-
 @media (min-width: 641px) {
   .clientes-table .p-datatable-thead > tr > th:nth-child(1),
   .clientes-table .p-datatable-tbody > tr > td:nth-child(1) {

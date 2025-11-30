@@ -110,8 +110,9 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success fab" (click)="novo()"></button>
             </div>
+            <!-- Botão flutuante movido para fora do card para posicionamento correto -->
+            <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-success fab" (click)="novo()"></button>
         </ng-container>
 
         <p-dialog [(visible)]="dialogoExcluir" header="Confirmar" [modal]="true" [style]="{width:'450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">

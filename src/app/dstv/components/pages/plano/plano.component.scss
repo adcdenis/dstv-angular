@@ -1,0 +1,75 @@
+// Estilos específicos para o componente de plano
+
+// Botão flutuante (FAB)
+.fab {
+    // Garantir posicionamento fixo em relação à viewport
+    position: fixed !important;
+    // Z-index alto para ficar acima de outros elementos
+    z-index: 1030 !important;
+
+    // Posicionamento consistente em todas as telas
+    right: 2rem !important;
+    bottom: 2rem !important;
+
+    // Dimensões consistentes
+    width: 56px !important;
+    height: 56px !important;
+
+    // Melhorar a transição e o efeito hover
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    &:hover {
+        transform: scale(1.1) translateY(-2px) !important;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    // Adicionar animação de entrada
+    animation: fadeInUp 0.4s ease-out;
+}
+
+// Animação para o botão aparecer
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Garantir que o card da lista tenha espaço suficiente para o FAB
+.list-card {
+    position: relative;
+    // Adicionar padding extra na parte inferior para evitar sobreposição
+    padding-bottom: 100px;
+}
+
+// Ajustes para dispositivos móveis
+@media (max-width: 768px) {
+    .fab {
+        // Botão menor em dispositivos móveis
+        width: 48px !important;
+        height: 48px !important;
+        // Mais próximo das bordas em dispositivos móveis
+        right: 1rem !important;
+        bottom: 1rem !important;
+        // Considerar áreas seguras em dispositivos com notch
+        bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .fab .pi {
+        font-size: 1.1rem !important;
+    }
+
+    .list-card {
+        padding-bottom: 80px;
+    }
+}
+
+// Garantir que o botão seja visível durante a rolagem
+:host {
+    position: relative;
+    min-height: 100vh;
+}
