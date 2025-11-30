@@ -5,7 +5,9 @@ import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { ClienteI } from '../../api/dstvInterfaces';
+import { ClienteI, ServidorI, PlanoI } from '../../api/dstvInterfaces';
+import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
+import { PlanoService } from 'src/app/dstv/service/plano.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -29,15 +31,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     vencidos: number = 0;
     vence3dias: number = 0;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    listaServidores: Array<ServidorI> = [];
+    listaPlanos: Array<PlanoI> = [];
+    clientesPorServidor: Array<{servidor: ServidorI, quantidade: number}> = [];
+    clientesPorPlano: Array<{plano: PlanoI, quantidade: number}> = [];
+
+    constructor(
+        private productService: ProductService,
+        public layoutService: LayoutService,
+        private servidorService: ServidorFireService,
+        private planoService: PlanoService
+    ) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
     }
 
     ngOnInit() {
-
         this.buscarClientes();
+        this.buscarServidoresEPlanos();
 
         // this.initChart();
         // this.productService.getProductsSmall().then(data => this.products = data);
@@ -46,6 +58,76 @@ export class DashboardComponent implements OnInit, OnDestroy {
         //     { label: 'Add New', icon: 'pi pi-fw pi-plus' },
         //     { label: 'Remove', icon: 'pi pi-fw pi-minus' }
         // ];
+    }
+
+    public async buscarServidoresEPlanos() {
+        // Buscar servidores
+        this.servidorService.getAll().subscribe({
+            next: (servidores) => {
+                this.listaServidores = servidores;
+                this.contarClientesPorServidor();
+            },
+            error: (e) => console.error(e)
+        });
+
+        // Buscar planos
+        this.planoService.getAll().subscribe({
+            next: (planos) => {
+                this.listaPlanos = planos;
+                this.contarClientesPorPlano();
+            },
+            error: (e) => console.error(e)
+        });
+    }
+
+    public async contarClientesPorServidor() {
+        this.clientesPorServidor = [];
+
+        for (const servidor of this.listaServidores) {
+            if (servidor.id) {
+                const clientesQuery = await this.clienteService.getByServidor(servidor.id);
+                const clientes = clientesQuery.docs.map(doc => {
+                    const cliente = doc.data() as ClienteI;
+                    return this.converterDateToTimeStamp(cliente);
+                });
+
+                // Contar apenas clientes ativos (não vencidos)
+                const quantidade = clientes.filter(cliente => this.naoVencido(cliente)).length;
+
+                this.clientesPorServidor.push({
+                    servidor: servidor,
+                    quantidade: quantidade
+                });
+            }
+        }
+
+        // Ordenar por quantidade (maior para menor)
+        this.clientesPorServidor.sort((a, b) => b.quantidade - a.quantidade);
+    }
+
+    public async contarClientesPorPlano() {
+        this.clientesPorPlano = [];
+
+        for (const plano of this.listaPlanos) {
+            if (plano.id) {
+                const clientesQuery = await this.clienteService.getByPlano(plano.id);
+                const clientes = clientesQuery.docs.map(doc => {
+                    const cliente = doc.data() as ClienteI;
+                    return this.converterDateToTimeStamp(cliente);
+                });
+
+                // Contar apenas clientes ativos (não vencidos)
+                const quantidade = clientes.filter(cliente => this.naoVencido(cliente)).length;
+
+                this.clientesPorPlano.push({
+                    plano: plano,
+                    quantidade: quantidade
+                });
+            }
+        }
+
+        // Ordenar por quantidade (maior para menor)
+        this.clientesPorPlano.sort((a, b) => b.quantidade - a.quantidade);
     }
 
 

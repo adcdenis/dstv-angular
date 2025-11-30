@@ -32,7 +32,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ng build --configuration production --aot --base-href="./"
 
---angular-cli-ghpages --dir=dist/dstv-angular/browser
+angular-cli-ghpages --dir=dist/dstv-angular/browser
 
 --comando resumido:
 ngh --dir=dist/dstv-angular/browser

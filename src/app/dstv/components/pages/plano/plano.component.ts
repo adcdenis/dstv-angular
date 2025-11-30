@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { PlanoI } from 'src/app/dstv/api/dstvInterfaces';
 import { PlanoService } from 'src/app/dstv/service/plano.service';
+import { ClienteService } from 'src/app/dstv/service/cliente.service';
 
 @Component({
     selector: 'app-plano',
@@ -17,13 +18,15 @@ export class PlanoComponent implements OnInit {
     public listaPlanosSelecionados: Array<PlanoI> = [];
     public dialogoExcluir: boolean = false;
     public dialogoPlano: boolean = false;
+    public dialogoExcluirSelecionados: boolean = false;
     public planoSelecionado: PlanoI = {};
     cols: any[] = [];
     submitted: boolean = false;
 
     constructor(
         private planoService: PlanoService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private clienteService: ClienteService
     ) {}
 
     ngOnInit(): void {
@@ -122,7 +125,23 @@ export class PlanoComponent implements OnInit {
         this.dialogoExcluir = true;
     }
 
-    public excluir() {
+    public async excluir() {
+        // Verificar se há clientes utilizando este plano
+        const clientesQuery = await this.clienteService.getByPlano(this.planoSelecionado.id || '');
+        const clientes = clientesQuery.docs.map(doc => doc.data() as any);
+
+        if (clientes.length > 0) {
+            const nomesClientes = clientes.map(c => c.nome).join(', ');
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erro ao excluir!',
+                detail: `Este plano não pode ser excluído pois está sendo utilizado pelos seguintes clientes: ${nomesClientes}`,
+                life: 5000,
+            });
+            this.dialogoExcluir = false;
+            return;
+        }
+
         this.planoService
             .delete(this.planoSelecionado.id || '')
             .then(() => {
@@ -133,7 +152,7 @@ export class PlanoComponent implements OnInit {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Sucesso!',
-                    detail: 'Excluído',
+                    detail: 'Plano Excluído',
                     life: 3000,
                 });
                 this.planoSelecionado = {};
@@ -158,16 +177,66 @@ export class PlanoComponent implements OnInit {
         this.planoSelecionado = {};
     }
 
-    public excluirSelecionados() {
+    public abrirDialogExcluirSelecionados() {
+        this.dialogoExcluirSelecionados = true;
+    }
 
+    public async excluirSelecionados() {
         if(this.listaPlanosSelecionados) {
+            // Verificar se há clientes utilizando os planos selecionados
+            const planosComDependencias: Array<{plano: PlanoI, clientes: any[]}> = [];
+
+            for (const plano of this.listaPlanosSelecionados) {
+                const clientesQuery = await this.clienteService.getByPlano(plano.id || '');
+                const clientes = clientesQuery.docs.map(doc => doc.data() as any);
+
+                if (clientes.length > 0) {
+                    planosComDependencias.push({
+                        plano: plano,
+                        clientes: clientes
+                    });
+                }
+            }
+
+            if (planosComDependencias.length > 0) {
+                let mensagemErro = 'Os seguintes planos não podem ser excluídos pois estão sendo utilizados por clientes:\n';
+                planosComDependencias.forEach(item => {
+                    const nomesClientes = item.clientes.map(c => c.nome).join(', ');
+                    mensagemErro += `\n• ${item.plano.nome}: ${nomesClientes}`;
+                });
+
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro ao excluir!',
+                    detail: mensagemErro,
+                    life: 8000,
+                });
+                this.dialogoExcluirSelecionados = false;
+                return;
+            }
+
+            // Se não houver dependências, prosseguir com a exclusão
             this.listaPlanosSelecionados.forEach(
                 (item:PlanoI) => {
                     this.planoService.delete(item.id || '');
                 }
             )
-        }
 
-        console.log(this.listaPlanosSelecionados);
+            this.dialogoExcluirSelecionados = false;
+            this.listaPlanosSelecionados = [];
+
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso!',
+                detail: 'Planos Excluídos',
+                life: 3000,
+            });
+
+            this.planoService.getAll().subscribe({
+                next: (v) => (this.listaPlanos = v),
+                error: (e) => console.error(e),
+                complete: () => console.info('complete'),
+            });
+        }
     }
 }

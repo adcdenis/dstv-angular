@@ -2,12 +2,11 @@
     <div class="col-12">
         <div class="card px-6 py-6 fade-in list-card">
             <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4 list-toolbar">
+            <p-toolbar styleClass="mb-4 list-toolbar" *ngIf="listaPlanosSelecionados && listaPlanosSelecionados.length > 0">
                 <ng-template pTemplate="left">
                     <div class="p-toolbar-group-left flex flex-wrap gap-2 w-full">
                         <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
-                            (click)="excluirSelecionados()"
-                            [disabled]="!listaPlanosSelecionados || !listaPlanosSelecionados.length"></button>
+                            (click)="abrirDialogExcluirSelecionados()"></button>
                     </div>
                 </ng-template>
 
@@ -111,6 +110,17 @@
                 </div>
             </div>
 
+        </p-dialog>
+
+        <p-dialog [(visible)]="dialogoExcluirSelecionados" header="Confirmar Exclusão" [modal]="true" [style]="{width:'450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Tem certeza que você deseja excluir os <b>{{listaPlanosSelecionados?.length || 0}}</b> planos selecionados?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não" (click)="dialogoExcluirSelecionados = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sim" (click)="excluirSelecionados()"></button>
+            </ng-template>
         </p-dialog>
     </div>
 </div>

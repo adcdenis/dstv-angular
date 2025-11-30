@@ -64,4 +64,14 @@ export class ClienteService {
         //     console.log(doc.id, ' => ', doc.data());
         // });
     }
+
+    getByServidor(servidorId: string) {
+        const q = query(this.dbCliente, where("servidor.id", "==", servidorId));
+        return getDocs(q);
+    }
+
+    getByPlano(planoId: string) {
+        const q = query(this.dbCliente, where("plano.id", "==", planoId));
+        return getDocs(q);
+    }
 }

@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service';
+import { ClienteService } from 'src/app/dstv/service/cliente.service';
 
 @Component({
     selector: 'app-servidor',
@@ -17,13 +18,15 @@ export class ServidorComponent implements OnInit {
     public listaServidoresSelecionados: Array<ServidorI> = [];
     public dialogoExcluir: boolean = false;
     public dialogoServidor: boolean = false;
+    public dialogoExcluirSelecionados: boolean = false;
     public servidorSelecionado: ServidorI = {};
     cols: any[] = [];
     submitted: boolean = false;
 
     constructor(
         private servidorService: ServidorFireService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private clienteService: ClienteService
     ) {}
 
     ngOnInit(): void {
@@ -126,7 +129,23 @@ export class ServidorComponent implements OnInit {
         this.dialogoExcluir = true;
     }
 
-    public excluir() {
+    public async excluir() {
+        // Verificar se há clientes utilizando este servidor
+        const clientesQuery = await this.clienteService.getByServidor(this.servidorSelecionado.id || '');
+        const clientes = clientesQuery.docs.map(doc => doc.data() as any);
+
+        if (clientes.length > 0) {
+            const nomesClientes = clientes.map(c => c.nome).join(', ');
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erro ao excluir!',
+                detail: `Este servidor não pode ser excluído pois está sendo utilizado pelos seguintes clientes: ${nomesClientes}`,
+                life: 5000,
+            });
+            this.dialogoExcluir = false;
+            return;
+        }
+
         this.servidorService
             .delete(this.servidorSelecionado.id || '')
             .then(() => {
@@ -162,19 +181,66 @@ export class ServidorComponent implements OnInit {
         this.servidorSelecionado = {};
     }
 
-    public excluirSelecionados() {
+    public abrirDialogExcluirSelecionados() {
+        this.dialogoExcluirSelecionados = true;
+    }
 
+    public async excluirSelecionados() {
         if(this.listaServidoresSelecionados) {
+            // Verificar se há clientes utilizando os servidores selecionados
+            const servidoresComDependencias: Array<{servidor: ServidorI, clientes: any[]}> = [];
+
+            for (const servidor of this.listaServidoresSelecionados) {
+                const clientesQuery = await this.clienteService.getByServidor(servidor.id || '');
+                const clientes = clientesQuery.docs.map(doc => doc.data() as any);
+
+                if (clientes.length > 0) {
+                    servidoresComDependencias.push({
+                        servidor: servidor,
+                        clientes: clientes
+                    });
+                }
+            }
+
+            if (servidoresComDependencias.length > 0) {
+                let mensagemErro = 'Os seguintes servidores não podem ser excluídos pois estão sendo utilizados por clientes:\n';
+                servidoresComDependencias.forEach(item => {
+                    const nomesClientes = item.clientes.map(c => c.nome).join(', ');
+                    mensagemErro += `\n• ${item.servidor.nome}: ${nomesClientes}`;
+                });
+
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erro ao excluir!',
+                    detail: mensagemErro,
+                    life: 8000,
+                });
+                this.dialogoExcluirSelecionados = false;
+                return;
+            }
+
+            // Se não houver dependências, prosseguir com a exclusão
             this.listaServidoresSelecionados.forEach(
                 (item:ServidorI) => {
                     this.servidorService.delete(item.id || '');
                 }
             )
+
+            this.dialogoExcluirSelecionados = false;
+            this.listaServidoresSelecionados = [];
+
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Sucesso!',
+                detail: 'Servidores Excluídos',
+                life: 3000,
+            });
+
+            this.servidorService.getAll().subscribe({
+                next: (v) => (this.listaServidores = v),
+                error: (e) => console.error(e),
+                complete: () => console.info('complete'),
+            });
         }
-
-
-        console.log(this.listaServidoresSelecionados);
-       // this.servidorService.deleteMultiple(this.listaServidoresSelecionados)
-
     }
 }
