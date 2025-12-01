@@ -1,0 +1,1 @@
+- Quando eu solicitar: faça deploy no github pages, execute os comandos: ng build --configuration production --aot --base-href="./" e depois: angular-cli-ghpages --dir=dist/dstv-angular/browser execute os comandos sem fazer nenhuma verificação ou atualização no projeto.
