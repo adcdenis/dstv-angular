@@ -18,6 +18,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ClienteRoutingModule } from './cliente-routing.module';
 import { ClienteComponent } from './cliente.component';
 import {CalendarModule} from 'primeng/calendar';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {CalendarModule} from 'primeng/calendar';
     InputNumberModule,
     DialogModule,
     InputMaskModule,
-    CalendarModule
+    CalendarModule,
+    TooltipModule
   ]
 })
 export class ClienteModule { }

@@ -92,7 +92,7 @@
                             </td>
                             <td>
                                 <div class="flex flex-wrap">
-                                    <button pButton pRipple icon="pi pi-whatsapp"
+                                    <button pButton pRipple icon="pi pi-whatsapp" pTooltip="Enviar mensagem no WhatsApp" tooltipPosition="top"
                                         class="p-button-rounded p-button-success mr-2"
                                         (click)="abrirWhatsApp(cliente)"></button>
                                 </div>
@@ -107,12 +107,12 @@
                             </td>
                             <td>
                                 <div class="flex">
-                                    <button pButton pRipple icon="pi pi-refresh"
+                                    <button pButton pRipple icon="pi pi-calendar-plus" pTooltip="Renovar por 30 dias" tooltipPosition="top"
                                         class="p-button-rounded p-button-success mr-2"
                                         (click)="abrirDialogRenovar(cliente)"></button>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"
+                                    <button pButton pRipple icon="pi pi-trash" pTooltip="Excluir cliente" tooltipPosition="top" class="p-button-rounded p-button-warning mr-2"
                                         (click)="abrirDialogExcluir(cliente)"></button>
-                                    <button pButton pRipple icon="pi pi-clone"
+                                    <button pButton pRipple icon="pi pi-clone" pTooltip="Clonar cliente" tooltipPosition="top"
                                         class="p-button-rounded"
                                         (click)="clonar(cliente)"></button>
                                 </div>
