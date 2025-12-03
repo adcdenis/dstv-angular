@@ -1,58 +1,184 @@
-# Sakai
+# DSTV Angular - Sistema de Gerenciamento IPTV
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
+**DSTV Angular** é uma plataforma de gerenciamento de serviços de IPTV (Internet Protocol Television) construída com Angular 19. Esta aplicação serve como um sistema completo de negócios para provedores de serviços IPTV.
 
-## Development server
+## 🎯 Objetivo Principal
+Gerenciar clientes, planos de assinatura, servidores e comunicação automatizada via WhatsApp para empresas de IPTV.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## 💻 Tecnologias Utilizadas
+- **Angular 19** - Framework principal
+- **TypeScript 5.5** - Tipagem forte
+- **Firebase** - Banco de dados e autenticação
+- **PrimeNG** - Biblioteca de componentes UI
+- **Chart.js** - Visualização de dados
+- **SCSS** - Pré-processamento CSS
 
-## Code scaffolding
+## 🌟 Funcionalidades Principais
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 1. Gestão de Clientes
+- CRUD completo para clientes
+- Campos: nome, usuário, email, telefone, data de expiração
+- Filtros por status (expirados, a expirar, ativos)
+- Exportação para Excel
 
-## Build
+### 2. Sistema de Assinaturas
+- Gerenciamento de planos de serviço
+- Renovação automática
+- Controle de datas de validade
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 3. Comunicação WhatsApp
+- Templates personalizáveis de mensagens
+- Variáveis dinâmicas (nome, data expiração, plano)
+- Integração direta com WhatsApp Web
 
-## Running unit tests
+### 4. Dashboard Analítico
+- Estatísticas em tempo real
+- Gráficos interativos
+- Visualização de status de clientes
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 5. Gestão de Servidores
+- Controle de servidores IPTV
+- Associação servidor-cliente
+- Monitoramento de disponibilidade
 
-## Running end-to-end tests
+## 🏗️ Estrutura da Aplicação
+```
+src/app/dstv/
+├── components/
+│   ├── auth/          # Autenticação
+│   ├── dashboard/     # Painel principal
+│   ├── pages/         # Módulos de negócio
+│   └── uikit/         # Componentes UI
+└── service/           # Serviços de negócio
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 🔐 Segurança
+- Autenticação Firebase
+- Proteção de rotas
+- Validação de entrada
+- Configuração CORS
 
-## Further help
+## 📱 Multiplataforma
+- Design responsivo para todos dispositivos
+- Suporte mobile-first
+- Interface adaptativa
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 🚀 Implantação
+- Firebase Hosting (produção)
+- Docker (contêineres)
+- Heroku
+- GitHub Pages
 
-## DEPLOY GIT HUB PAGES
+## 📊 Módulos Principais
 
---para gerar build para o github pages
+### AuthModule
+Componentes de autenticação e controle de acesso.
 
+### DashboardModule
+Painel principal com estatísticas e visualizações.
+
+### PagesModule
+Módulos de negócio:
+- **Cliente** - Gestão de clientes
+- **Plano** - Administração de planos
+- **Servidor** - Gerenciamento de servidores
+- **Mensagem** - Templates WhatsApp
+- **Export** - Exportação de dados
+- **Relatorios** - Relatórios e analytics
+
+### UI Kit Module
+Componentes reutilizáveis da interface.
+
+### LayoutModule
+Componentes estruturais do layout.
+
+## 🛠️ Desenvolvimento
+
+### Pré-requisitos
+- Node.js 18+
+- Angular CLI
+- Conta Firebase
+
+### Instalação
+```bash
+npm install
+```
+
+### Desenvolvimento
+```bash
+ng serve
+```
+
+### Build
+```bash
+ng build
+```
+
+### Testes
+```bash
+ng test
+```
+
+## 🔧 Serviços Principais
+
+### Serviços de Negócio
+- **ClienteService** - Operações CRUD de clientes
+- **PlanoService** - Gestão de planos
+- **ServidorFireService** - Gerenciamento de servidores
+- **MensagemService** - Templates de mensagem
+- **AuthServiceService** - Autenticação
+
+### Serviços de Apoio
+- **CountryService** - Dados geográficos
+- **CustomerService** - Operações adicionais de clientes
+- **EventService** - Gestão de eventos
+- **IconService** - Gestão de ícones
+
+## 📋 Recursos Adicionais
+
+### Importação/Exportação de Dados
+- Exportação completa em formato JSON
+- Importação com validação
+- Relatórios de importação
+
+### Sistema de Renovação
+- Processo automatizado de renovação
+- Atualização automática de datas de expiração
+- Mensagens de confirmação
+
+### Validação e Relatórios
+- Validação de entrada de dados
+- Sanitização de dados
+- Relatórios detalhados de operações
+
+## 🚀 Deploy
+
+### GitHub Pages
+Para gerar build para o GitHub Pages:
+```bash
 ng build --configuration production --aot --base-href="./"
-
-angular-cli-ghpages --dir=dist/dstv-angular/browser
-
---comando resumido:
 ngh --dir=dist/dstv-angular/browser
+```
 
---------------------
+Acesse: https://adcdenis.github.io/dstv-angular/
 
-https://adcdenis.github.io/dstv-angular/
-
-
-# DEPLOY NO FIREBASE
-
+### Firebase
+Para deploy no Firebase:
+```bash
 ng build --configuration production --aot
-
 firebase deploy
+```
 
-
-----obs limpar cache
+Para limpar cache e forçar atualização:
+```bash
 ng build --configuration production --aot --output-hashing=all
+```
 
---muda hashs forçando navegador a atualizar arquivos cacheados
-
---caso firebase não esteja instalado
+Instalar Firebase Tools (se necessário):
+```bash
 npm install -g firebase-tools
+```
+
+---
+
+Este projeto representa uma solução completa e pronta para produção para gerenciamento de negócios IPTV, com arquitetura Angular moderna, recursos abrangentes e múltiplas opções de implantação.

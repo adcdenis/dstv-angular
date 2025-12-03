@@ -16,12 +16,12 @@ export class PlanoComponent implements OnInit {
 
     public listaPlanos: Array<PlanoI> = [];
     public listaPlanosSelecionados: Array<PlanoI> = [];
-    public dialogoExcluir: boolean = false;
     public dialogoPlano: boolean = false;
     public dialogoExcluirSelecionados: boolean = false;
     public planoSelecionado: PlanoI = {};
     cols: any[] = [];
     submitted: boolean = false;
+    public clientesPorPlano: { [key: string]: number } = {};
 
     constructor(
         private planoService: PlanoService,
@@ -36,10 +36,14 @@ export class PlanoComponent implements OnInit {
             { field: 'id', header: 'Id' },
             { field: 'nome', header: 'Nome' },
             { field: 'valor', header: 'Valor' },
+            { field: 'nrClientes', header: 'Clientes' },
         ];
 
         this.planoService.getAll().subscribe({
-            next: (v) => (this.listaPlanos = v),
+            next: (v) => {
+                this.listaPlanos = v;
+                this.carregarContagemClientes();
+            },
             error: (e) => console.error(e),
             complete: () => console.info('complete'),
         });
@@ -82,7 +86,10 @@ export class PlanoComponent implements OnInit {
             });
 
             this.planoService.getAll().subscribe({
-                next: (v) => (this.listaPlanos = v),
+                next: (v) => {
+                    this.listaPlanos = v;
+                    this.carregarContagemClientes();
+                },
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });
@@ -112,58 +119,16 @@ export class PlanoComponent implements OnInit {
             });
 
             this.planoService.getAll().subscribe({
-                next: (v) => (this.listaPlanos = v),
+                next: (v) => {
+                    this.listaPlanos = v;
+                    this.carregarContagemClientes();
+                },
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });
         });
     }
 
-    public abrirDialogExcluir(servidor: PlanoI) {
-        this.submitted = false;
-        this.planoSelecionado = servidor;
-        this.dialogoExcluir = true;
-    }
-
-    public async excluir() {
-        // Verificar se há clientes utilizando este plano
-        const clientesQuery = await this.clienteService.getByPlano(this.planoSelecionado.id || '');
-        const clientes = clientesQuery.docs.map(doc => doc.data() as any);
-
-        if (clientes.length > 0) {
-            const nomesClientes = clientes.map(c => c.nome).join(', ');
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Erro ao excluir!',
-                detail: `Este plano não pode ser excluído pois está sendo utilizado pelos seguintes clientes: ${nomesClientes}`,
-                life: 5000,
-            });
-            this.dialogoExcluir = false;
-            return;
-        }
-
-        this.planoService
-            .delete(this.planoSelecionado.id || '')
-            .then(() => {
-                console.info('complete');
-
-                this.dialogoExcluir = false;
-
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Sucesso!',
-                    detail: 'Plano Excluído',
-                    life: 3000,
-                });
-                this.planoSelecionado = {};
-
-                this.planoService.getAll().subscribe({
-                    next: (v) => (this.listaPlanos = v),
-                    error: (e) => console.error(e),
-                    complete: () => console.info('complete'),
-                });
-            });
-    }
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal(
@@ -178,7 +143,39 @@ export class PlanoComponent implements OnInit {
     }
 
     public abrirDialogExcluirSelecionados() {
+        // Verificar se há planos selecionados
+        if (!this.listaPlanosSelecionados || this.listaPlanosSelecionados.length === 0) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Atenção!',
+                detail: 'Por favor, selecione pelo menos um plano para excluir.',
+                life: 3000,
+            });
+            return;
+        }
         this.dialogoExcluirSelecionados = true;
+    }
+
+    public async carregarContagemClientes() {
+        this.clientesPorPlano = {};
+
+        for (const plano of this.listaPlanos) {
+            if (plano.id) {
+                const clientesQuery = await this.clienteService.getByPlano(plano.id);
+                const clientes = clientesQuery.docs.map(doc => doc.data() as any);
+                this.clientesPorPlano[plano.id] = clientes.length;
+                // Adiciona a propriedade nrClientes ao objeto plano para ordenação
+                (plano as any).nrClientes = clientes.length;
+            }
+        }
+
+        // Força a atualização da tabela após carregar as contagens
+        this.listaPlanos = [...this.listaPlanos];
+    }
+
+    public getNumeroClientes(planoId?: string): number {
+        if (!planoId) return 0;
+        return this.clientesPorPlano[planoId] || 0;
     }
 
     public async excluirSelecionados() {
@@ -233,7 +230,10 @@ export class PlanoComponent implements OnInit {
             });
 
             this.planoService.getAll().subscribe({
-                next: (v) => (this.listaPlanos = v),
+                next: (v) => {
+                    this.listaPlanos = v;
+                    this.carregarContagemClientes();
+                },
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });

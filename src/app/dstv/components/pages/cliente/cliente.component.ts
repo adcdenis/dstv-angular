@@ -48,6 +48,7 @@ export class ClienteComponent implements OnInit {
     });
 
     public listaClientes: Array<ClienteI> = [];
+    public todosClientes: Array<ClienteI> = [];
     public listaPlanos: Array<PlanoI> = [];
     public listaServidores: Array<ServidorI> = [];
     public listaClientesSelecionados: Array<ClienteI> = [];
@@ -55,6 +56,7 @@ export class ClienteComponent implements OnInit {
     public dialogoCliente: boolean = false;
     public dialogoDeleteVarios: boolean = false;
     public filtroVencimento: any;
+    public termoBusca: string = '';
 
     cols: any[] = [];
 
@@ -89,6 +91,30 @@ export class ClienteComponent implements OnInit {
             });
     };
 
+    private vencido: (cliente: ClienteI) => boolean = (cliente: ClienteI) => {
+        const date: Date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return cliente.dataVencimento < date;
+    };
+
+    private naoVencido: (cliente: ClienteI) => boolean = (
+        cliente: ClienteI
+    ) => {
+        const date: Date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return cliente.dataVencimento >= date;
+    };
+
+    private venceEm3Dias: (cliente: ClienteI) => boolean = (cliente: ClienteI) => {
+        const dataAtual: Date = new Date();
+        dataAtual.setHours(0, 0, 0, 0);
+
+        const data3d: Date = new Date();
+        data3d.setHours(0, 0, 0, 0);
+        data3d.setDate(data3d.getDate() + 3);
+        return (cliente.dataVencimento >= dataAtual) && (cliente.dataVencimento <= data3d);
+    };
+
     ngOnInit(): void {
 
         this.config.setTranslation({
@@ -109,9 +135,11 @@ export class ClienteComponent implements OnInit {
             { field: 'observacao', header: 'Observacao' },
         ];
 
-        //this.buscarClientesOrdenado();
-        //this.buscarClientes();
-        this.filtrarPorVence3Dias();
+        // Define o filtro inicial para clientes que vencem em 3 dias
+        this.filtroVencimento = this.venceEm3Dias;
+
+        // Carrega todos os clientes
+        this.buscarClientes();
 
         this.planoService.getAll().subscribe({
             next: (v) => (this.listaPlanos = v),
@@ -148,7 +176,13 @@ export class ClienteComponent implements OnInit {
     public buscarClientes() {
         this.clienteService.getAll().subscribe({
             next: (v) => {
-                this.convertEFiltra(v, this.filtroVencimento);
+                // Armazena todos os clientes convertidos
+                this.todosClientes = v.map((item) => {
+                    return this.converterDateToTimeStamp(item);
+                });
+
+                // Aplica o filtro de vencimento na lista exibida
+                this.aplicarFiltroAtual();
                 console.log('this.listaClientes: ', this.listaClientes);
             },
             error: (e) => console.error(e),
@@ -156,49 +190,90 @@ export class ClienteComponent implements OnInit {
         });
     }
 
-    private vencido: (cliente: ClienteI) => boolean = (cliente: ClienteI) => {
-        const date: Date = new Date();
-        date.setHours(0, 0, 0, 0);
-        return cliente.dataVencimento < date;
-    };
+    private aplicarFiltroAtual() {
+        if (this.termoBusca && this.termoBusca.trim() !== '') {
+            // Se há termo de busca, filtra por nome em todos os clientes
+            this.listaClientes = this.todosClientes.filter((cliente: ClienteI) => {
+                return cliente.nome && cliente.nome.toLowerCase().includes(this.termoBusca.toLowerCase());
+            });
+        } else {
+            // Se não há termo de busca, aplica o filtro de vencimento normal
+            this.listaClientes = this.todosClientes.filter((item: any) => {
+                return this.filtroVencimento ? this.filtroVencimento(item) : true;
+            });
+        }
+    }
 
-    private naoVencido: (cliente: ClienteI) => boolean = (
-        cliente: ClienteI
-    ) => {
-        const date: Date = new Date();
-        date.setHours(0, 0, 0, 0);
-        return cliente.dataVencimento >= date;
-    };
+    public buscarPorNome(termo: string) {
+        this.termoBusca = termo;
+        this.aplicarFiltroAtual();
+    }
 
-    private venceEm3Dias: (cliente: ClienteI) => boolean = (cliente: ClienteI) => {
+    public limparBusca(campoBusca: HTMLInputElement) {
+        campoBusca.value = '';
+        this.termoBusca = '';
+        this.aplicarFiltroAtual();
+    }
 
-        const dataAtual: Date = new Date();
-        dataAtual.setHours(0, 0, 0, 0);
+    public getStatusCliente(dataVencimento: Date): string {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
 
-        const data3d: Date = new Date();
-        data3d.setHours(0, 0, 0, 0);
-        data3d.setDate(data3d.getDate() + 3);
-        return (cliente.dataVencimento >= dataAtual) && (cliente.dataVencimento <= data3d);
-    };
+        if (dataVencimento < hoje) {
+            return 'Vencido';
+        } else if (dataVencimento.getTime() === hoje.getTime()) {
+            return 'Vence Hoje';
+        } else {
+            const diffDias = Math.ceil((dataVencimento.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
+            if (diffDias <= 3) {
+                return `Vence em ${diffDias} dia(s)`;
+            } else {
+                return 'Ativo';
+            }
+        }
+    }
+
+    public getStatusClass(dataVencimento: Date): string {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        if (dataVencimento < hoje) {
+            return 'status-vencido';
+        } else if (dataVencimento.getTime() === hoje.getTime()) {
+            return 'status-vence-hoje';
+        } else {
+            const diffDias = Math.ceil((dataVencimento.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
+            if (diffDias <= 3) {
+                return 'status-vence-3dias';
+            } else {
+                return 'status-ativo';
+            }
+        }
+    }
+
 
     public filtrarPorVence3Dias() {
         this.filtroVencimento = this.venceEm3Dias;
-        this.buscarClientes();
+        this.termoBusca = '';
+        this.aplicarFiltroAtual();
     }
 
     public filtrarPorVencidos() {
         this.filtroVencimento = this.vencido;
-        this.buscarClientes();
+        this.termoBusca = '';
+        this.aplicarFiltroAtual();
     }
 
     public filtrarPorNaoVencidos() {
         this.filtroVencimento = this.naoVencido;
-        this.buscarClientes();
+        this.termoBusca = '';
+        this.aplicarFiltroAtual();
     }
 
     public mostrarTodos() {
         this.filtroVencimento = null;
-        this.buscarClientes();
+        this.termoBusca = '';
+        this.aplicarFiltroAtual();
     }
 
     public salvarOuAlterar() {
@@ -407,8 +482,22 @@ export class ClienteComponent implements OnInit {
     public abrirDialogRenovar(cliente: ClienteI) {
         this.clienteRenovacao = { ...cliente };
         const dt: any = cliente.dataVencimento;
-        let base = dt && dt.seconds ? new Date(dt.seconds * 1000) : new Date(cliente.dataVencimento);
-        base.setHours(0,0,0,0);
+        let base: Date;
+
+        // Verifica se o cliente está vencido
+        const dataVencimento: Date = dt && dt.seconds ? new Date(dt.seconds * 1000) : new Date(cliente.dataVencimento);
+        const hoje: Date = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        dataVencimento.setHours(0, 0, 0, 0);
+
+        if (dataVencimento < hoje) {
+            // Se estiver vencido, usa a data atual como base
+            base = hoje;
+        } else {
+            // Se não estiver vencido, usa a data de vencimento como base
+            base = dataVencimento;
+        }
+
         const nova = new Date(base);
         nova.setDate(nova.getDate() + 30);
         this.novaDataVencimento = nova;

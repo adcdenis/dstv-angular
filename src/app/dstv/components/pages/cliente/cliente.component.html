@@ -34,17 +34,20 @@
                 </p-toolbar>
 
                 <p-table sortField="dataVencimento" styleClass="p-datatable-striped clientes-table" #dt [value]="listaClientes"
-                    [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['valor','nome','id']"
+                    [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['valor','nome','id','plano.nome','servidor.nome']"
                     [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                     currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
                     [(selection)]="listaClientesSelecionados" selectionMode="multiple" [rowHover]="true" dataKey="id">
                     <ng-template pTemplate="caption">
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h5 class="m-0"><i class="pi pi-users mr-2"></i>Gerenciar Clientes</h5>
-                            <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <span class="block mt-2 md:mt-0 p-input-icon-left" style="width: 25%;">
                                 <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
-                                    placeholder="Procurar..." class="w-full sm:w-auto" />
+                                <input #campoBusca pInputText type="text" (input)="buscarPorNome($any($event.target).value)"
+                                    placeholder="Procurar em todos os clientes..." class="w-full" style="padding-right: 2.5rem;" />
+                                <button pButton pRipple type="button" icon="pi pi-times" class="p-button-text p-button-rounded"
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);"
+                                    (click)="limparBusca(campoBusca)" [disabled]="!termoBusca"></button>
                             </span>
                         </div>
                     </ng-template>
@@ -58,11 +61,12 @@
                             </th>
                             <th pSortableColumn="nome">Nome <p-sortIcon field="nome"></p-sortIcon>
                             </th>
+                            <th>Status</th>
                             <th>Alerta
                             </th>
-                            <th pSortableColumn="plano">Plano <p-sortIcon field="nome"></p-sortIcon>
+                            <th pSortableColumn="plano.nome">Plano <p-sortIcon field="plano.nome"></p-sortIcon>
                             </th>
-                            <th pSortableColumn="servidor">Servidor <p-sortIcon field="servidor"></p-sortIcon>
+                            <th pSortableColumn="servidor.nome">Servidor <p-sortIcon field="servidor.nome"></p-sortIcon>
                             </th>
                             <th></th>
                         </tr>
@@ -79,6 +83,12 @@
                             <td (click)="abrirDialogAlterar(cliente)" class="nome-usuario">
                                 <span class="p-column-title">Nome</span>
                                 {{cliente.nome}}
+                            </td>
+                            <td (click)="abrirDialogAlterar(cliente)">
+                                <span class="p-column-title">Status</span>
+                                <span [class]="'status-badge ' + getStatusClass(cliente.dataVencimento)">
+                                    {{getStatusCliente(cliente.dataVencimento)}}
+                                </span>
                             </td>
                             <td>
                                 <div class="flex flex-wrap">

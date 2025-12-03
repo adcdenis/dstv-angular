@@ -73,3 +73,16 @@
     position: relative;
     min-height: 100vh;
 }
+
+// Estilo para o badge de número de clientes
+.badge {
+    background-color: #007bff;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 24px;
+    text-align: center;
+}

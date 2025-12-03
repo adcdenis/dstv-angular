@@ -16,12 +16,12 @@ import { ClienteService } from 'src/app/dstv/service/cliente.service';
 export class ServidorComponent implements OnInit {
     public listaServidores: Array<ServidorI> = [];
     public listaServidoresSelecionados: Array<ServidorI> = [];
-    public dialogoExcluir: boolean = false;
     public dialogoServidor: boolean = false;
     public dialogoExcluirSelecionados: boolean = false;
     public servidorSelecionado: ServidorI = {};
     cols: any[] = [];
     submitted: boolean = false;
+    public clientesPorServidor: { [key: string]: number } = {};
 
     constructor(
         private servidorService: ServidorFireService,
@@ -35,10 +35,14 @@ export class ServidorComponent implements OnInit {
         this.cols = [
             { field: 'id', header: 'Id' },
             { field: 'nome', header: 'Nome' },
+            { field: 'nrClientes', header: 'Clientes' },
         ];
 
         this.servidorService.getAll().subscribe({
-            next: (v) => (this.listaServidores = v),
+            next: (v) => {
+                this.listaServidores = v;
+                this.carregarContagemClientes();
+            },
             error: (e) => console.error(e),
             complete: () => console.info('complete'),
         });
@@ -81,7 +85,10 @@ export class ServidorComponent implements OnInit {
             });
 
             this.servidorService.getAll().subscribe({
-                next: (v) => (this.listaServidores = v),
+                next: (v) => {
+                    this.listaServidores = v;
+                    this.carregarContagemClientes();
+                },
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });
@@ -111,7 +118,10 @@ export class ServidorComponent implements OnInit {
             });
 
             this.servidorService.getAll().subscribe({
-                next: (v) => (this.listaServidores = v),
+                next: (v) => {
+                    this.listaServidores = v;
+                    this.carregarContagemClientes();
+                },
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });
@@ -123,51 +133,6 @@ export class ServidorComponent implements OnInit {
         // });
     }
 
-    public abrirDialogExcluir(servidor: ServidorI) {
-        this.submitted = false;
-        this.servidorSelecionado = servidor;
-        this.dialogoExcluir = true;
-    }
-
-    public async excluir() {
-        // Verificar se há clientes utilizando este servidor
-        const clientesQuery = await this.clienteService.getByServidor(this.servidorSelecionado.id || '');
-        const clientes = clientesQuery.docs.map(doc => doc.data() as any);
-
-        if (clientes.length > 0) {
-            const nomesClientes = clientes.map(c => c.nome).join(', ');
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Erro ao excluir!',
-                detail: `Este servidor não pode ser excluído pois está sendo utilizado pelos seguintes clientes: ${nomesClientes}`,
-                life: 5000,
-            });
-            this.dialogoExcluir = false;
-            return;
-        }
-
-        this.servidorService
-            .delete(this.servidorSelecionado.id || '')
-            .then(() => {
-                console.info('complete');
-
-                this.dialogoExcluir = false;
-
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Sucesso!',
-                    detail: 'Servidor Excluído',
-                    life: 3000,
-                });
-                this.servidorSelecionado = {};
-
-                this.servidorService.getAll().subscribe({
-                    next: (v) => (this.listaServidores = v),
-                    error: (e) => console.error(e),
-                    complete: () => console.info('complete'),
-                });
-            });
-    }
 
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal(
@@ -182,7 +147,39 @@ export class ServidorComponent implements OnInit {
     }
 
     public abrirDialogExcluirSelecionados() {
+        // Verificar se há servidores selecionados
+        if (!this.listaServidoresSelecionados || this.listaServidoresSelecionados.length === 0) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Atenção!',
+                detail: 'Por favor, selecione pelo menos um servidor para excluir.',
+                life: 3000,
+            });
+            return;
+        }
         this.dialogoExcluirSelecionados = true;
+    }
+
+    public async carregarContagemClientes() {
+        this.clientesPorServidor = {};
+
+        for (const servidor of this.listaServidores) {
+            if (servidor.id) {
+                const clientesQuery = await this.clienteService.getByServidor(servidor.id);
+                const clientes = clientesQuery.docs.map(doc => doc.data() as any);
+                this.clientesPorServidor[servidor.id] = clientes.length;
+                // Adiciona a propriedade nrClientes ao objeto servidor para ordenação
+                (servidor as any).nrClientes = clientes.length;
+            }
+        }
+
+        // Força a atualização da tabela após carregar as contagens
+        this.listaServidores = [...this.listaServidores];
+    }
+
+    public getNumeroClientes(servidorId?: string): number {
+        if (!servidorId) return 0;
+        return this.clientesPorServidor[servidorId] || 0;
     }
 
     public async excluirSelecionados() {
@@ -237,7 +234,10 @@ export class ServidorComponent implements OnInit {
             });
 
             this.servidorService.getAll().subscribe({
-                next: (v) => (this.listaServidores = v),
+                next: (v) => {
+                    this.listaServidores = v;
+                    this.carregarContagemClientes();
+                },
                 error: (e) => console.error(e),
                 complete: () => console.info('complete'),
             });
