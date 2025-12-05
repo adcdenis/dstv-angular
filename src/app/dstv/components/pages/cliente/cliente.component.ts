@@ -499,7 +499,15 @@ export class ClienteComponent implements OnInit {
         }
 
         const nova = new Date(base);
-        nova.setDate(nova.getDate() + 30);
+        const diaOriginal = base.getDate();
+        nova.setMonth(nova.getMonth() + 1);
+
+        // Ajuste para casos onde o mês seguinte tem menos dias (ex: 31/01 -> 28/02)
+        // Se o dia mudou, significa que houve overflow para o mês seguinte
+        if (nova.getDate() !== diaOriginal) {
+            nova.setDate(0);
+        }
+
         this.novaDataVencimento = nova;
         this.dialogoRenovar = true;
     }
