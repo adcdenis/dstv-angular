@@ -1,6 +1,7 @@
 export interface ServidorI {
     id?: string;
     nome?: string;
+    valorCredito?: number;
 }
 
 export interface PlanoI {

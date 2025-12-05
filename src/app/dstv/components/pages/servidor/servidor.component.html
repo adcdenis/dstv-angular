@@ -69,6 +69,10 @@
                     <input type="text" pInputText id="name" [(ngModel)]="servidorSelecionado.nome" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !servidorSelecionado.nome}"/>
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !servidorSelecionado.nome">Nome é obrigatório.</small>
                 </div>
+                <div class="field col-12">
+                    <label for="valorCredito">Valor Crédito</label>
+                    <p-inputNumber id="valorCredito" [(ngModel)]="servidorSelecionado.valorCredito" mode="currency" currency="BRL" locale="pt-BR" [minFractionDigits]="2"></p-inputNumber>
+                </div>
                 <div class="field col-6">
                     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger" (click)="dialogoServidor = false"></button>
                 </div>
