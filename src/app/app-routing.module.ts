@@ -18,6 +18,7 @@ import { GuardsGuard } from './dstv/core/guards.guard';
                     { path: 'mensagem', loadChildren: () => import('./dstv/components/pages/mensagem/mensagem.module').then(m => m.MensagemModule) },
                     { path: 'export', loadChildren: () => import('./dstv/components/pages/export/export.module').then(m => m.ExportModule) },
                     { path: 'relatorios', loadChildren: () => import('./dstv/components/pages/relatorios/relatorios.module').then(m => m.RelatoriosModule) },
+                    { path: 'financas', loadChildren: () => import('./dstv/components/pages/financas/financas.module').then(m => m.FinancasModule) },
 
 
                     { path: 'uikit', loadChildren: () => import('./dstv/components/uikit/uikit.module').then(m => m.UikitModule) },
