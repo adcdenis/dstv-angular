@@ -33,24 +33,23 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-servidor>
-                    <tr>
+                    <tr class="cursor-pointer">
                         <td>
                             <p-tableCheckbox [value]="servidor"></p-tableCheckbox>
                         </td>
                         <td *ngIf="false"><span class="p-column-title">Id</span>
                             {{servidor.id}}
                         </td>
-                        <td>
+                        <td (click)="abrirDialogAlterar(servidor)">
                             <span class="p-column-title">Nome</span>
                             {{servidor.nome}}
                         </td>
-                        <td style="width: 150px; min-width: 150px; text-align: center;">
+                        <td style="width: 150px; min-width: 150px; text-align: center;" (click)="abrirDialogAlterar(servidor)">
                             <span class="p-column-title">Clientes</span>
                             <span class="badge">{{getNumeroClientes(servidor.id)}}</span>
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="abrirDialogAlterar(servidor)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="abrirDialogExcluirSelecionados()"></button>
                             </div>
                         </td>

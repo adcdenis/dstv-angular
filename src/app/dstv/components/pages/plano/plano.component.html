@@ -35,28 +35,27 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-plano>
-                    <tr>
+                    <tr class="cursor-pointer">
                         <td>
                             <p-tableCheckbox [value]="plano"></p-tableCheckbox>
                         </td>
                         <td *ngIf="false"><span class="p-column-title">Id</span>
                             {{plano.id}}
                         </td>
-                        <td>
+                        <td (click)="abrirDialogAlterar(plano)">
                             <span class="p-column-title">Nome</span>
                             {{plano.nome}}
                         </td>
-                        <td>
+                        <td (click)="abrirDialogAlterar(plano)">
                             <span class="p-column-title">Valor</span>
                             {{plano.valor}}
                         </td>
-                        <td style="width: 150px; min-width: 150px; text-align: center;">
+                        <td style="width: 150px; min-width: 150px; text-align: center;" (click)="abrirDialogAlterar(plano)">
                             <span class="p-column-title">Clientes</span>
                             <span class="badge">{{getNumeroClientes(plano.id)}}</span>
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="abrirDialogAlterar(plano)"></button>
                                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="abrirDialogExcluirSelecionados()"></button>
                             </div>
                         </td>
