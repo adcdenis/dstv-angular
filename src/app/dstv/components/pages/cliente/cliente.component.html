@@ -173,12 +173,12 @@
                         <div class="field col-6">
                             <label for="servidor">Servidor:</label>
                             <p-dropdown id="servidor" [options]="listaServidores" formControlName="servidor"
-                                placeholder="Selecione um servidor" optionLabel="nome" [showClear]="true"></p-dropdown>
+                                placeholder="Selecione um servidor" optionLabel="nome" [showClear]="true" dataKey="id"></p-dropdown>
                         </div>
                         <div class="field col-6">
                             <label for="plano">Plano:</label>
                             <p-dropdown id="plano" [options]="listaPlanos" formControlName="plano"
-                                placeholder="Selecione um plano" optionLabel="nome" [showClear]="true"></p-dropdown>
+                                placeholder="Selecione um plano" optionLabel="nome" [showClear]="true" dataKey="id"></p-dropdown>
                         </div>
 
                         <div class="field col-12">
