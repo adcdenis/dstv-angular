@@ -1,0 +1,50 @@
+.list-card {
+    .p-toolbar {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+    }
+    
+    .clientes-toolbar {
+        .p-toolbar-group-left,
+        .p-toolbar-group-right {
+            @media screen and (max-width: 768px) {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+    
+    .clientes-table {
+        .p-datatable-tbody > tr > td {
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .p-datatable-thead > tr > th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+    }
+    
+    // Correção para sobreposição de dropdowns e calendários
+    .p-dropdown-panel {
+        z-index: 1000 !important;
+    }
+    
+    .p-datepicker {
+        z-index: 1000 !important;
+    }
+    
+    .p-autocomplete-panel {
+        z-index: 1000 !important;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

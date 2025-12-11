@@ -25,6 +25,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Mensagem', icon: 'pi pi-whatsapp', routerLink: ['mensagem'], class: 'menu-mensagem' },
                     { label: 'Relatórios', icon: 'pi pi-file-excel', routerLink: ['relatorios'], class: 'menu-relatorios' },
                     { label: 'Finanças', icon: 'pi pi-money-bill', routerLink: ['financas'], class: 'menu-financas' },
+                    { label: 'Histórico de Renovações', icon: 'pi pi-history', routerLink: ['historico-renovacoes'], class: 'menu-historico' },
                     { label: 'Importar / Exportar', icon: 'pi pi-file-export', routerLink: ['export'], class: 'menu-export' },
                 ]
             },

@@ -10,6 +10,8 @@ import { ServidorFireService } from 'src/app/dstv/service/servidor-fire.service'
 import * as FileSaver from 'file-saver';
 import { MensagemService } from 'src/app/dstv/service/mensagem.service';
 import { MensagemTemplateI } from 'src/app/dstv/api/dstvInterfaces';
+import { HistoricoRenovacaoService } from 'src/app/dstv/service/historico-renovacao.service';
+import { HistoricoRenovacaoI } from 'src/app/dstv/api/dstvInterfaces';
 
 @Component({
     selector: 'app-cliente',
@@ -67,7 +69,8 @@ export class ClienteComponent implements OnInit {
         private messageService: MessageService,
         private formBuilder: FormBuilder,
         private config: PrimeNGConfig,
-        private mensagemService: MensagemService
+        private mensagemService: MensagemService,
+        private historicoRenovacaoService: HistoricoRenovacaoService
     ) {}
 
     private converterDateToTimeStamp: any = (cliente: ClienteI) => {
@@ -516,6 +519,18 @@ export class ClienteComponent implements OnInit {
         if (!this.clienteRenovacao || !this.novaDataVencimento) return;
         const atualizado: ClienteI = { ...this.clienteRenovacao, dataVencimento: this.novaDataVencimento };
         await this.clienteService.update(atualizado);
+        
+        // Registrar no histórico de renovações
+        const historico: HistoricoRenovacaoI = {
+            cliente: this.clienteRenovacao,
+            plano: this.clienteRenovacao.plano || { id: '', nome: '', valor: 0 },
+            servidor: this.clienteRenovacao.servidor || { id: '', nome: '', valorCredito: 0 },
+            dataHoraRenovacao: new Date(),
+            dataNovoVencimento: this.novaDataVencimento
+        };
+        
+        await this.historicoRenovacaoService.create(historico);
+        
         this.dialogoRenovar = false;
         const dataStr = this.novaDataVencimento.toLocaleDateString('pt-BR');
         this.mensagemRenovacao = `Conta renovada com sucesso. Novo vencimento: ${dataStr}`;

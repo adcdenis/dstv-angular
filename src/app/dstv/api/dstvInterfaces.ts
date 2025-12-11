@@ -31,3 +31,12 @@ export interface MensagemTemplateI {
     criadoEm?: number;
 }
 
+export interface HistoricoRenovacaoI {
+    id?: string;
+    cliente: ClienteI;
+    plano: PlanoI;
+    servidor: ServidorI;
+    dataHoraRenovacao: Date;
+    dataNovoVencimento: Date;
+}
+

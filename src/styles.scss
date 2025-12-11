@@ -44,6 +44,27 @@ $gutter: 1rem; //for primeflex grid system
   color: #00BCD4;
   font-size: 1.4rem;
 }
+.layout-menu .menu-historico .pi {
+  color: #FF5722;
+  font-size: 1.4rem;
+}
+
+/* Correção para sobreposição de componentes PrimeNG */
+.p-dropdown-panel {
+  z-index: 1000 !important;
+}
+
+.p-datepicker {
+  z-index: 1000 !important;
+}
+
+.p-autocomplete-panel {
+  z-index: 1000 !important;
+}
+
+.p-dialog {
+  z-index: 1001 !important;
+}
 .layout-menu .menu-export .pi {
   color: #3F51B5;
   font-size: 1.4rem;
