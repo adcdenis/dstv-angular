@@ -1,0 +1,56 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6 fade-in">
+            <h5 class="m-0 mb-4"><i class="pi pi-chart-bar mr-2"></i>Finanças - Lucro Mensal</h5>
+            
+            <!-- Seletor de Ano -->
+            <div class="card mb-4" style="position: relative; z-index: 1;">
+                <div class="flex align-items-center gap-3">
+                    <label for="anoSelect" class="text-900 font-medium">Ano:</label>
+                    <p-dropdown 
+                        id="anoSelect" 
+                        [options]="anosDisponiveis" 
+                        [(ngModel)]="anoSelecionado"
+                        (onChange)="onAnoChange()"
+                        placeholder="Selecione o ano"
+                        class="w-12rem"
+                        appendTo="body">
+                    </p-dropdown>
+                    <span class="text-600 text-sm">Selecione o ano para visualizar o lucro mensal</span>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <!-- Chart Section -->
+                <div class="col-12">
+                    <div class="card">
+                        <h5>Lucro Mensal - {{ anoSelecionado }}</h5>
+                        <div *ngIf="isLoading" class="flex justify-content-center p-5">
+                            <i class="pi pi-spin pi-spinner text-4xl"></i>
+                        </div>
+                        <div *ngIf="!isLoading && chartData" style="height: 400px;">
+                            <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+                        </div>
+                        <div *ngIf="!isLoading && !chartData" class="text-center text-500 p-5">
+                            Nenhum dado encontrado para o ano selecionado.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Total Profit Section -->
+            <div class="col-12 mt-4">
+                <div class="card flex flex-column align-items-center justify-content-center bg-green-50 surface-overlay border-round shadow-2">
+                    <div class="flex align-items-center justify-content-center bg-green-100 border-circle p-3 mb-3">
+                        <i class="pi pi-money-bill text-5xl text-green-600"></i>
+                    </div>
+                    <span class="text-xl text-600 font-medium mb-2">Lucro Total Anual - {{ anoSelecionado }}</span>
+                    <span class="text-4xl font-bold text-900">{{ lucroTotalAnual | currency:'BRL' }}</span>
+                    <span class="text-sm text-500 mt-3 text-center px-3">
+                        Baseado nas renovações registradas no histórico
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

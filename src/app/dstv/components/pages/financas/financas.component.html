@@ -1,61 +1,71 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6 fade-in">
-            <h5 class="m-0 mb-4"><i class="pi pi-dollar mr-2"></i>Finanças - Lucro Previsto (Mês Atual)</h5>
+            <h5 class="m-0 mb-4"><i class="pi pi-dollar mr-2"></i>Finanças</h5>
             
-            <div class="grid">
-                <!-- Chart Section -->
-                <div class="col-12 lg:col-8">
-                    <div class="card">
-                        <h5>Lucro por Servidor</h5>
-                        <div *ngIf="isLoading" class="flex justify-content-center p-5">
-                            <i class="pi pi-spin pi-spinner text-4xl"></i>
+            <p-tabView>
+                <!-- Aba 1: Lucro Mensal -->
+                <p-tabPanel header="Lucro Mensal" leftIcon="pi pi-chart-bar">
+                    <app-lucro-mensal></app-lucro-mensal>
+                </p-tabPanel>
+                
+                <!-- Aba 2: Lucro Previsto (Mês Atual) -->
+                <p-tabPanel header="Lucro Previsto (Mês Atual)" leftIcon="pi pi-dollar">
+                    <div class="grid">
+                        <!-- Chart Section -->
+                        <div class="col-12 lg:col-8">
+                            <div class="card">
+                                <h5>Lucro por Servidor</h5>
+                                <div *ngIf="isLoading" class="flex justify-content-center p-5">
+                                    <i class="pi pi-spin pi-spinner text-4xl"></i>
+                                </div>
+                                <p-chart *ngIf="!isLoading && basicData" type="bar" [data]="basicData" [options]="basicOptions" height="400px"></p-chart>
+                            </div>
                         </div>
-                        <p-chart *ngIf="!isLoading && basicData" type="bar" [data]="basicData" [options]="basicOptions" height="400px"></p-chart>
-                    </div>
-                </div>
 
-                <!-- Total Profit Section -->
-                <div class="col-12 lg:col-4">
-                    <div class="card flex flex-column align-items-center justify-content-center h-full bg-blue-50 surface-overlay border-round shadow-2">
-                        <div class="flex align-items-center justify-content-center bg-blue-100 border-circle p-3 mb-3">
-                            <i class="pi pi-money-bill text-5xl text-blue-600"></i>
-                        </div>
-                        <span class="text-xl text-600 font-medium mb-2">Lucro Total Previsto</span>
-                        <span class="text-4xl font-bold text-900">{{ lucroTotal | currency:'BRL' }}</span>
-                        <span class="text-sm text-500 mt-3 text-center px-3">Baseado em clientes ativos</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Server Statistics Section -->
-            <div class="col-12 mt-4">
-                <div class="card">
-                    <h5 class="mb-4"><i class="pi pi-server mr-2"></i>Estatísticas por Servidor</h5>
-                    <div *ngIf="isLoading" class="flex justify-content-center p-5">
-                        <i class="pi pi-spin pi-spinner text-4xl"></i>
-                    </div>
-                    <div *ngIf="!isLoading && estatisticasServidor.length > 0" class="grid">
-                        <div class="col-12 md:col-6 lg:col-4" *ngFor="let stat of estatisticasServidor">
-                            <div class="p-3 border-1 surface-border border-round surface-card">
-                                <div class="flex justify-content-between align-items-center mb-3">
-                                    <span class="text-xl font-semibold text-900">{{ stat.servidor.nome }}</span>
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">
-                                        {{ stat.clientesAtivos }} {{ stat.clientesAtivos === 1 ? 'cliente' : 'clientes' }}
-                                    </span>
+                        <!-- Total Profit Section -->
+                        <div class="col-12 lg:col-4">
+                            <div class="card flex flex-column align-items-center justify-content-center h-full bg-blue-50 surface-overlay border-round shadow-2">
+                                <div class="flex align-items-center justify-content-center bg-blue-100 border-circle p-3 mb-3">
+                                    <i class="pi pi-money-bill text-5xl text-blue-600"></i>
                                 </div>
-                                <div class="flex justify-content-between align-items-center">
-                                    <span class="text-600">Lucro Previsto:</span>
-                                    <span class="text-xl font-bold text-green-600">{{ stat.lucro | currency:'BRL' }}</span>
-                                </div>
+                                <span class="text-xl text-600 font-medium mb-2">Lucro Total Previsto</span>
+                                <span class="text-4xl font-bold text-900">{{ lucroTotal | currency:'BRL' }}</span>
+                                <span class="text-sm text-500 mt-3 text-center px-3">Baseado em clientes ativos</span>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="!isLoading && estatisticasServidor.length === 0" class="text-center text-500 p-4">
-                        Nenhum servidor com clientes ativos encontrado.
+                    
+                    <!-- Server Statistics Section -->
+                    <div class="col-12 mt-4">
+                        <div class="card">
+                            <h5 class="mb-4"><i class="pi pi-server mr-2"></i>Estatísticas por Servidor</h5>
+                            <div *ngIf="isLoading" class="flex justify-content-center p-5">
+                                <i class="pi pi-spin pi-spinner text-4xl"></i>
+                            </div>
+                            <div *ngIf="!isLoading && estatisticasServidor.length > 0" class="grid">
+                                <div class="col-12 md:col-6 lg:col-4" *ngFor="let stat of estatisticasServidor">
+                                    <div class="p-3 border-1 surface-border border-round surface-card">
+                                        <div class="flex justify-content-between align-items-center mb-3">
+                                            <span class="text-xl font-semibold text-900">{{ stat.servidor.nome }}</span>
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-bold mr-2 px-2.5 py-0.5 rounded">
+                                                {{ stat.clientesAtivos }} {{ stat.clientesAtivos === 1 ? 'cliente' : 'clientes' }}
+                                            </span>
+                                        </div>
+                                        <div class="flex justify-content-between align-items-center">
+                                            <span class="text-600">Lucro Previsto:</span>
+                                            <span class="text-xl font-bold text-green-600">{{ stat.lucro | currency:'BRL' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!isLoading && estatisticasServidor.length === 0" class="text-center text-500 p-4">
+                                Nenhum servidor com clientes ativos encontrado.
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </p-tabPanel>
+            </p-tabView>
         </div>
     </div>
 </div>

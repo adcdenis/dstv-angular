@@ -1,0 +1,40 @@
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+:host {
+    position: relative;
+    min-height: 100vh;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.bg-green-50 {
+    background-color: #f0fdf4 !important;
+}
+
+.bg-green-100 {
+    background-color: #dcfce7 !important;
+}
+
+.text-green-600 {
+    color: #16a34a !important;
+}
