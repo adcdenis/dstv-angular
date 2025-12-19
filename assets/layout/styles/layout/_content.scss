@@ -4,8 +4,15 @@
     flex-direction: column;
     min-height: 100vh;
     justify-content: space-between;
-    padding: 7rem 2rem 2rem 4rem;
+    padding: 5.5rem 1.5rem 1.5rem 1.5rem;
     transition: margin-left $transitionDuration;
+}
+
+@media (min-width: 992px) {
+    .layout-main-container {
+        margin-left: 300px;
+        padding-left: 1rem;
+    }
 }
 
 .layout-main {
