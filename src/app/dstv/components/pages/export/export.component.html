@@ -1,39 +1,92 @@
 <div class="grid">
-    <div class="col-12 md:col-6">
-        <div class="card fade-in">
-            <h5><i class="pi pi-download mr-2"></i>Exportar Dados</h5>
-            <p>Clique no botão abaixo para baixar um arquivo JSON contendo todos os Clientes, Planos e Servidores cadastrados.</p>
-            <button pButton pRipple label="Exportar JSON" icon="pi pi-download" class="p-button-success mr-2"
-                (click)="exportarJson()" [loading]="loading"></button>
-        </div>
-    </div>
-    <div class="col-12 md:col-6">
-        <div class="card fade-in">
-            <h5><i class="pi pi-upload mr-2"></i>Importar Dados</h5>
-            <p>Importe um arquivo JSON no mesmo formato do export.</p>
-            <p-fileUpload mode="basic" name="file" accept="application/json" chooseLabel="Selecionar JSON" [maxFileSize]="2000000" (onSelect)="importarJson($event)" [disabled]="importing"></p-fileUpload>
-            <div class="mt-3" *ngIf="importSummary">
-                <strong>Resumo:</strong>
-                <div class="flex gap-2 mt-2">
-                    <p-tag severity="info" value="Importados: {{importSummary.total}}"></p-tag>
-                    <p-tag severity="success" value="Novos: {{importSummary.novos}}"></p-tag>
-                    <p-tag severity="warning" value="Editados: {{importSummary.editados}}"></p-tag>
-                    <p-tag severity="danger" value="Inválidos: {{importSummary.invalidos}}"></p-tag>
+    <div class="col-12">
+        <div class="card p-0 overflow-hidden border-none shadow-2">
+            <div class="p-4 bg-primary text-white flex align-items-center gap-3">
+                <i class="pi pi-sync text-3xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold m-0 text-white">Sincronização de Dados</h1>
+                    <p class="m-0 text-primary-100 opacity-80">Exportação e importação da base de dados (JSON)</p>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="card">
-            <h5>Regras e Formato</h5>
-            <p>
-                - Campos obrigatórios em clientes: <code>nome</code> e <code>dataVencimento</code> (ISO).<br>
-                - Se o <code>nome</code> já existir, o registro é atualizado; caso contrário, é criado novo.<br>
-                - <code>dataVencimento</code> é exportada e importada em ISO e convertida para o padrão do banco.<br>
-                - Demais campos podem vir vazios.
-            </p>
-            <h6>Formato JSON</h6>
-            <pre class="pre-wrap">{{ '{\n  "clientes": [\n    {\n      "nome": "Fulano",\n      "dataVencimento": "2025-12-31T00:00:00.000Z",\n      "usuario": "user1",\n      "email": "fulano@exemplo.com",\n      "telefone": "55999999999",\n      "observacao": "",\n      "servidor": null,\n      "plano": null\n    }\n  ],\n  "planos": [],\n  "servidores": []\n}' }}</pre>
+
+            <div class="p-4">
+                <div class="grid">
+                    <div class="col-12 lg:col-6">
+                        <div class="card shadow-1 border-round-xl h-full border-top-3 border-green-500">
+                            <div class="flex align-items-center gap-2 mb-4">
+                                <i class="pi pi-download text-green-500 text-2xl"></i>
+                                <h5 class="m-0 font-bold text-900">Exportar Base Completa</h5>
+                            </div>
+                            <p class="text-700 line-height-3 mb-4">
+                                Gera um arquivo <span class="font-bold text-900">JSON</span> contendo todos os <span class="text-primary font-medium">Clientes</span>,
+                                <span class="text-primary font-medium">Planos</span> e <span class="text-primary font-medium">Servidores</span> cadastrados.
+                                Utilize este arquivo para backups ou migração de dados.
+                            </p>
+                            <button pButton pRipple label="Baixar Backup (JSON)" icon="pi pi-file-export"
+                                class="p-button-success p-button-lg w-full border-round-lg"
+                                (click)="exportarJson()" [loading]="loading"></button>
+                        </div>
+                    </div>
+
+                    <div class="col-12 lg:col-6">
+                        <div class="card shadow-1 border-round-xl h-full border-top-3 border-blue-500">
+                            <div class="flex align-items-center gap-2 mb-4">
+                                <i class="pi pi-upload text-blue-500 text-2xl"></i>
+                                <h5 class="m-0 font-bold text-900">Restaurar / Importar</h5>
+                            </div>
+                            <p class="text-700 line-height-3 mb-4">
+                                Selecione um arquivo <span class="font-bold text-900">JSON</span> exportado anteriormente para restaurar os dados.
+                                O sistema identificará automaticamente registros novos e atualizações.
+                            </p>
+                            <p-fileUpload mode="basic" name="file" accept="application/json" chooseLabel="Selecionar Arquivo JSON"
+                                chooseIcon="pi pi-search" [maxFileSize]="5000000" styleClass="p-button-primary p-button-lg w-full border-round-lg"
+                                (onSelect)="importarJson($event)" [disabled]="importing"></p-fileUpload>
+
+                            <div class="mt-4 surface-ground p-3 border-round-lg" *ngIf="importSummary">
+                                <span class="block text-900 font-bold mb-3 flex align-items-center gap-2">
+                                    <i class="pi pi-info-circle text-blue-500"></i> Resumo da Importação
+                                </span>
+                                <div class="flex flex-wrap gap-2">
+                                    <p-tag severity="info" icon="pi pi-list" value="Total: {{importSummary.total}}"></p-tag>
+                                    <p-tag severity="success" icon="pi pi-plus" value="Novos: {{importSummary.novos}}"></p-tag>
+                                    <p-tag severity="warning" icon="pi pi-pencil" value="Atualizados: {{importSummary.editados}}"></p-tag>
+                                    <p-tag severity="danger" icon="pi pi-times" value="Erros: {{importSummary.invalidos}}"></p-tag>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <div class="card shadow-1 border-round-xl surface-50">
+                            <h5 class="text-900 font-bold mb-4">Especificações do Formato</h5>
+                            <div class="grid">
+                                <div class="col-12 md:col-6">
+                                    <ul class="list-none p-0 m-0 text-700 line-height-4">
+                                        <li class="flex align-items-start gap-2">
+                                            <i class="pi pi-check-circle text-green-500 mt-1"></i>
+                                            <span>O campo <code class="font-bold">nome</code> é a chave principal. Se já existir, o registro será <span class="text-900 font-medium">atualizado</span>.</span>
+                                        </li>
+                                        <li class="flex align-items-start gap-2">
+                                            <i class="pi pi-check-circle text-green-500 mt-1"></i>
+                                            <span>A <code class="font-bold">dataVencimento</code> deve seguir o padrão ISO (ex: 2025-12-31).</span>
+                                        </li>
+                                        <li class="flex align-items-start gap-2">
+                                            <i class="pi pi-check-circle text-green-500 mt-1"></i>
+                                            <span>Campos de relacionamento (servidor/plano) podem ser nulos.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-12 md:col-6">
+                                    <div class="bg-surface-900 border-round-xl p-3 shadow-4">
+                                        <span class="block text-blue-300 font-mono text-xs mb-2 uppercase">Exemplo de Estrutura</span>
+                                        <pre class="text-900 text-xs m-0 line-height-2 overflow-auto" style="max-height: 150px;">{{ '{\n  "clientes": [\n    {\n      "nome": "João Silva",\n      "dataVencimento": "2025-12-31T00:00:00Z",\n      "usuario": "joao123",\n      "email": "joao@email.com",\n      "telefone": "55999999999"\n    }\n  ]\n}' }}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

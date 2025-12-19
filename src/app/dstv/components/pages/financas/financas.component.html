@@ -1,14 +1,20 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6 fade-in">
-            <h5 class="m-0 mb-4"><i class="pi pi-dollar mr-2"></i>Finanças</h5>
-            
-            <p-tabView>
+        <div class="card p-0 overflow-hidden border-none shadow-2">
+            <div class="p-4 bg-primary text-white flex align-items-center gap-3">
+                <i class="pi pi-dollar text-3xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold m-0 text-white">Gestão Financeira</h1>
+                    <p class="m-0 text-primary-100 opacity-80">Acompanhamento de lucros e previsões</p>
+                </div>
+            </div>
+
+            <p-tabView styleClass="p-4">
                 <!-- Aba 1: Lucro Mensal -->
                 <p-tabPanel header="Lucro Mensal" leftIcon="pi pi-chart-bar">
                     <app-lucro-mensal></app-lucro-mensal>
                 </p-tabPanel>
-                
+
                 <!-- Aba 2: Lucro Previsto (Mês Atual) -->
                 <p-tabPanel header="Lucro Previsto (Mês Atual)" leftIcon="pi pi-dollar">
                     <div class="grid">
@@ -25,17 +31,19 @@
 
                         <!-- Total Profit Section -->
                         <div class="col-12 lg:col-4">
-                            <div class="card flex flex-column align-items-center justify-content-center h-full bg-blue-50 surface-overlay border-round shadow-2">
-                                <div class="flex align-items-center justify-content-center bg-blue-100 border-circle p-3 mb-3">
-                                    <i class="pi pi-money-bill text-5xl text-blue-600"></i>
+                            <div class="card flex flex-column align-items-center justify-content-center h-full bg-blue-50 border-none border-round-xl p-6 shadow-1">
+                                <div class="flex align-items-center justify-content-center bg-white border-circle shadow-1 p-4 mb-4" style="width: 100px; height: 100px;">
+                                    <i class="pi pi-money-bill text-6xl text-blue-600"></i>
                                 </div>
-                                <span class="text-xl text-600 font-medium mb-2">Lucro Total Previsto</span>
-                                <span class="text-4xl font-bold text-900">{{ lucroTotal | currency:'BRL' }}</span>
-                                <span class="text-sm text-500 mt-3 text-center px-3">Baseado em clientes ativos</span>
+                                <span class="text-xl text-700 font-semibold mb-2">Lucro Total Previsto</span>
+                                <div class="text-5xl font-bold text-blue-900 mb-2">{{ lucroTotal | currency:'BRL' }}</div>
+                                <div class="p-2 bg-blue-100 text-blue-800 border-round-lg font-medium">
+                                    Estimativa Mensal
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Server Statistics Section -->
                     <div class="col-12 mt-4">
                         <div class="card">

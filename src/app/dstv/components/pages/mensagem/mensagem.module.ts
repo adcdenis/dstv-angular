@@ -10,6 +10,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [MensagemComponent],
@@ -24,7 +25,8 @@ import { ToastModule } from 'primeng/toast';
     InputTextareaModule,
     CheckboxModule,
     DropdownModule,
-    ToastModule
+    ToastModule,
+    DividerModule
   ]
 })
 export class MensagemModule {}

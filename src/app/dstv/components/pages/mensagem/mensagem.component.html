@@ -1,51 +1,103 @@
 <div class="grid">
-  <div class="col-12 md:col-4">
-    <div class="card p-fluid">
-      <h5>Template</h5>
-      <div class="field">
-        <label for="corpo">Mensagem</label>
-        <textarea pInputTextarea id="corpo" class="corpo-textarea" rows="20" [(ngModel)]="form.value.corpo" (ngModelChange)="form.patchValue({corpo: $event})"></textarea>
-      </div>
-      <div class="flex flex-wrap gap-2">
-        <button *ngFor="let t of tokens" pButton type="button" (click)="inserirToken(t.value)" [label]="t.label" class="p-button-outlined"></button>
-      </div>
-      
+    <div class="col-12">
+        <div class="card p-0 overflow-hidden border-none shadow-2">
+            <div class="p-4 bg-primary text-white flex align-items-center gap-3">
+                <i class="pi pi-whatsapp text-3xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold m-0 text-white">Template de Mensagem</h1>
+                    <p class="m-0 text-primary-100 opacity-80">Personalize as mensagens enviadas aos clientes</p>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <div class="grid">
+                    <!-- Editor Section -->
+                    <div class="col-12 lg:col-5">
+                        <div class="card shadow-1 border-round-xl h-full">
+                            <h5 class="text-900 font-bold mb-4 flex align-items-center gap-2">
+                                <i class="pi pi-pencil text-primary"></i> Editor do Template
+                            </h5>
+                            <div class="p-fluid">
+                                <div class="field">
+                                    <textarea pInputTextarea id="corpo" class="border-round-xl p-3 font-family-monospace" rows="20"
+                                        [(ngModel)]="form.value.corpo" (ngModelChange)="form.patchValue({corpo: $event})"
+                                        placeholder="Escreva sua mensagem aqui..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="block text-700 font-semibold mb-2 text-sm uppercase">Tokens Dinâmicos (Clique para inserir)</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button *ngFor="let t of tokens" pButton type="button" (click)="inserirToken(t.value)"
+                                            [label]="t.label" class="p-button-sm p-button-outlined border-round-lg"></button>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 mt-4">
+                                    <button pButton type="button" icon="pi pi-refresh" label="Restaurar Padrão" class="p-button-secondary border-round-lg flex-1" (click)="limpar()"></button>
+                                    <button pButton type="button" icon="pi pi-save" label="Salvar Template" class="p-button-primary border-round-lg flex-1" (click)="salvar()"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="col-12 lg:col-4">
+                        <div class="card shadow-1 border-round-xl h-full bg-surface-50">
+                            <h5 class="text-900 font-bold mb-4 flex align-items-center gap-2">
+                                <i class="pi pi-eye text-primary"></i> Pré-visualização Real
+                            </h5>
+                            <div class="p-4 bg-white border-round-xl shadow-1 relative" style="min-height: 300px; border: 1px solid #e2e8f0;">
+                                <div class="absolute top-0 left-0 w-full h-2rem bg-primary-100 border-round-top-xl flex align-items-center px-3">
+                                    <span class="text-xs font-bold text-primary-700">Visualização de Mensagem</span>
+                                </div>
+                                <div class="mt-4">
+                                    <pre class="pre-wrap text-800 m-0 line-height-3" style="font-family: inherit;">{{ previewText }}</pre>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-3 bg-blue-50 border-round-lg border-left-3 border-blue-500">
+                                <p class="m-0 text-sm text-blue-800">
+                                    <i class="pi pi-info-circle mr-2"></i>
+                                    Esta é uma simulação de como o cliente receberá a mensagem no WhatsApp.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Help Section -->
+                    <div class="col-12 lg:col-3">
+                        <div class="card shadow-1 border-round-xl h-full border-top-3 border-primary">
+                            <h5 class="text-900 font-bold mb-4">Dicas de Formatação</h5>
+                            <div class="flex flex-column gap-3 text-700">
+                                <div class="flex align-items-center gap-2">
+                                    <code class="bg-surface-200 px-2 py-1 border-round">*texto*</code>
+                                    <span class="text-sm font-bold">Negrito</span>
+                                </div>
+                                <div class="flex align-items-center gap-2">
+                                    <code class="bg-surface-200 px-2 py-1 border-round">_texto_</code>
+                                    <span class="text-sm font-italic">Itálico</span>
+                                </div>
+                                <div class="flex align-items-center gap-2">
+                                    <code class="bg-surface-200 px-2 py-1 border-round">~texto~</code>
+                                    <span class="text-sm line-through">Tachado</span>
+                                </div>
+                                <div class="flex align-items-center gap-2">
+                                    <code class="bg-surface-200 px-2 py-1 border-round">`texto`</code>
+                                    <span class="text-sm font-family-monospace">Monoespaço</span>
+                                </div>
+                            </div>
+
+                            <p-divider></p-divider>
+
+                            <h6 class="text-900 font-bold mb-3">Variáveis Disponíveis</h6>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="bg-primary-50 text-primary-700 px-2 py-1 border-round text-xs font-semibold">{{'{{saudacao}}'}}</span>
+                                <span class="bg-primary-50 text-primary-700 px-2 py-1 border-round text-xs font-semibold">{{'{{nome}}'}}</span>
+                                <span class="bg-primary-50 text-primary-700 px-2 py-1 border-round text-xs font-semibold">{{'{{usuario}}'}}</span>
+                                <span class="bg-primary-50 text-primary-700 px-2 py-1 border-round text-xs font-semibold">{{'{{vencimento}}'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="col-12 md:col-4">
-    <div class="card">
-      <h5>Pré-visualização</h5>
-      <pre class="pre-wrap">{{ previewText }}</pre>
-    </div>
-  </div>
-  <div class="col-12 md:col-4">
-    <div class="card">
-      <h5>Formatação WhatsApp</h5>
-      <p>
-        - Negrito: envolver com <code>*texto*</code><br>
-        - Itálico: envolver com <code>_texto_</code><br>
-        - Tachado: envolver com <code>~texto~</code><br>
-        - Monoespaço: envolver com <code>`texto`</code><br>
-        - Quebra de linha: usar quebra normal; é enviada como <code>\n</code> automaticamente.
-      </p>
-      <h6>Tokens disponíveis</h6>
-      <ul>
-        <li><code>{{'{{saudacao}}'}}</code>, <code>{{'{{nome}}'}}</code>, <code>{{'{{telefone}}'}}</code>, <code>{{'{{usuario}}'}}</code></li>
-        <li><code>{{'{{dataVencimento}}'}}</code>, <code>{{'{{plano.nome}}'}}</code>, <code>{{'{{plano.valor}}'}}</code></li>
-      </ul>
-      <h6>Mensagem padrão</h6>
-      <pre class="pre-wrap">{{ defaultCorpo() }}</pre>
-    </div>
-  </div>
-  <div class="col-12">
-    <div class="grid mt-3">
-      <div class="col-12 md:col-6">
-        <button pButton type="button" icon="pi pi-times" label="Limpar" class="p-button-danger" style="width:100%" (click)="limpar()"></button>
-      </div>
-      <div class="col-12 md:col-6">
-        <button pButton type="button" icon="pi pi-check" label="Salvar" class="p-button-success" style="width:100%" (click)="salvar()"></button>
-      </div>
-    </div>
-  </div>
-  <p-toast></p-toast>
+    <p-toast></p-toast>
 </div>

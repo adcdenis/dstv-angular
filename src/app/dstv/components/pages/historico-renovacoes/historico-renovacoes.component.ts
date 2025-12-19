@@ -24,7 +24,7 @@ export class HistoricoRenovacoesComponent implements OnInit {
     public listaServidores: Array<ServidorI> = [];
     public isLoading: boolean = true;
     public dt: Table | undefined;
-    
+
     public filtroForm: FormGroup = this.formBuilder.group({
         cliente: [''],
         plano: [''],
@@ -58,7 +58,7 @@ export class HistoricoRenovacoesComponent implements OnInit {
         const hoje = new Date();
         const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
         const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
-        
+
         this.filtroForm.patchValue({
             dataInicio: primeiroDia,
             dataFim: ultimoDia
@@ -80,19 +80,19 @@ export class HistoricoRenovacoesComponent implements OnInit {
             const dataConvertida = new Date(dtRenovacao.seconds * 1000);
             historico.dataHoraRenovacao = dataConvertida;
         }
-        
+
         const dtVencimento: any = historico.dataNovoVencimento;
         if (dtVencimento && dtVencimento.seconds) {
             const dataConvertida = new Date(dtVencimento.seconds * 1000);
             historico.dataNovoVencimento = dataConvertida;
         }
-        
+
         return historico;
     };
 
     private async carregarDados() {
         this.isLoading = true;
-        
+
         try {
             // Carregar listas para filtros
             // Usamos take(1) porque os observables do Firestore são streams contínuos e não completam sozinhos
@@ -102,11 +102,11 @@ export class HistoricoRenovacoesComponent implements OnInit {
                 this.planoService.getAll().pipe(take(1)).toPromise(),
                 this.servidorService.getAll().pipe(take(1)).toPromise()
             ]);
-            
+
             this.listaClientes = clientes || [];
             this.listaPlanos = planos || [];
             this.listaServidores = servidores || [];
-            
+
             // Carregar histórico com filtros iniciais
             await this.aplicarFiltros();
         } catch (error) {
@@ -125,7 +125,7 @@ export class HistoricoRenovacoesComponent implements OnInit {
 
     public async aplicarFiltros() {
         this.isLoading = true;
-        
+
         try {
             const formValues = this.filtroForm.value;
             // Com o autocomplete, o campo cliente pode ser o objeto ClienteI ou uma string (ID)
@@ -135,65 +135,65 @@ export class HistoricoRenovacoesComponent implements OnInit {
             const servidorId = formValues.servidor;
             const dataInicio = formValues.dataInicio ? formValues.dataInicio : undefined;
             const dataFim = formValues.dataFim ? formValues.dataFim : undefined;
-            
+
             // Se houver data fim, ajustar para o final do dia
             if (dataFim) {
                 dataFim.setHours(23, 59, 59, 999);
             }
-            
+
             const querySnapshot = await this.historicoService.getByFiltros(
-                clienteId, 
-                planoId, 
-                servidorId, 
-                dataInicio, 
+                clienteId,
+                planoId,
+                servidorId,
+                dataInicio,
                 dataFim
             );
-            
+
             // Se houve múltiplos filtros, o serviço já filtrou os dados
             // então precisamos extrair apenas os documentos filtrados
             const temMultiplosFiltros = (clienteId ? 1 : 0) + (planoId ? 1 : 0) + (servidorId ? 1 : 0) + (dataInicio && dataFim ? 1 : 0) > 1;
-            
+
             if (temMultiplosFiltros) {
                 // Para múltiplos filtros, precisamos refazer o filtro no componente
                 // pois o serviço retorna o snapshot completo
                 let docsFiltrados = querySnapshot.docs;
-                
+
                 if (clienteId) {
                     docsFiltrados = docsFiltrados.filter(doc => {
                         const data = doc.data();
                         return data['cliente'] && data['cliente'].id === clienteId;
                     });
                 }
-                
+
                 if (planoId) {
                     docsFiltrados = docsFiltrados.filter(doc => {
                         const data = doc.data();
                         return data['plano'] && data['plano'].id === planoId;
                     });
                 }
-                
+
                 if (servidorId) {
                     docsFiltrados = docsFiltrados.filter(doc => {
                         const data = doc.data();
                         return data['servidor'] && data['servidor'].id === servidorId;
                     });
                 }
-                
+
                 if (dataInicio && dataFim) {
                     docsFiltrados = docsFiltrados.filter(doc => {
                         const data = doc.data();
                         const dataRenovacao = data['dataHoraRenovacao'];
                         if (!dataRenovacao) return false;
-                        
+
                         // Converte Timestamp para Date se necessário
-                        const dataRenovacaoDate = dataRenovacao.seconds 
-                            ? new Date(dataRenovacao.seconds * 1000) 
+                        const dataRenovacaoDate = dataRenovacao.seconds
+                            ? new Date(dataRenovacao.seconds * 1000)
                             : dataRenovacao;
-                        
+
                         return dataRenovacaoDate >= dataInicio && dataRenovacaoDate <= dataFim;
                     });
                 }
-                
+
                 this.listaHistorico = docsFiltrados.map((doc: any) => {
                     const historico = doc.data() as HistoricoRenovacaoI;
                     historico.id = doc.id;
@@ -207,7 +207,7 @@ export class HistoricoRenovacoesComponent implements OnInit {
                     return this.converterDateToTimeStamp(historico);
                 });
             }
-            
+
         } catch (error) {
             console.error('Erro ao aplicar filtros:', error);
             this.messageService.add({
@@ -225,7 +225,7 @@ export class HistoricoRenovacoesComponent implements OnInit {
         const hoje = new Date();
         const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
         const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
-        
+
         this.filtroForm.patchValue({
             cliente: null,
             plano: '',
@@ -233,32 +233,32 @@ export class HistoricoRenovacoesComponent implements OnInit {
             dataInicio: primeiroDia,
             dataFim: ultimoDia
         });
-        
+
         this.clientesFiltrados = [];
         this.aplicarFiltros();
     }
 
     public formatarData(data: Date): string {
         if (!data) return '';
-        
+
         // Verificar se é um objeto Timestamp do Firebase
         const dt: any = data;
         if (dt && dt.seconds) {
             data = new Date(dt.seconds * 1000);
         }
-        
+
         return data.toLocaleString('pt-BR');
     }
 
     public formatarDataSemHora(data: Date): string {
         if (!data) return '';
-        
+
         // Verificar se é um objeto Timestamp do Firebase
         const dt: any = data;
         if (dt && dt.seconds) {
             data = new Date(dt.seconds * 1000);
         }
-        
+
         return data.toLocaleDateString('pt-BR');
     }
 
@@ -269,15 +269,43 @@ export class HistoricoRenovacoesComponent implements OnInit {
         );
     }
 
+    public filtrarGlobalmente(termo: string) {
+        if (!termo || termo.trim() === '') {
+            // Se não houver termo, mostra todos os registros
+            this.aplicarFiltros();
+            return;
+        }
+
+        const termoLower = termo.toLowerCase();
+
+        // Filtra a lista já carregada
+        this.listaHistorico = this.listaHistorico.filter(historico => {
+            // Converte objetos para string e verifica se contém o termo
+            const clienteNome = historico.cliente?.nome?.toLowerCase() || '';
+            const planoNome = historico.plano?.nome?.toLowerCase() || '';
+            const servidorNome = historico.servidor?.nome?.toLowerCase() || '';
+
+            // Formata as datas para string
+            const dataRenovacao = this.formatarData(historico.dataHoraRenovacao).toLowerCase();
+            const dataVencimento = this.formatarDataSemHora(historico.dataNovoVencimento).toLowerCase();
+
+            return clienteNome.includes(termoLower) ||
+                   planoNome.includes(termoLower) ||
+                   servidorNome.includes(termoLower) ||
+                   dataRenovacao.includes(termoLower) ||
+                   dataVencimento.includes(termoLower);
+        });
+    }
+
     public filtrarClientes(event: any) {
         const query = event.query.toLowerCase();
-        
+
         if (!query || query.length < 3) {
             this.clientesFiltrados = [];
             return;
         }
-        
-        this.clientesFiltrados = this.listaClientes.filter(cliente => 
+
+        this.clientesFiltrados = this.listaClientes.filter(cliente =>
             cliente.nome && cliente.nome.toLowerCase().includes(query)
         );
     }
@@ -306,14 +334,14 @@ export class HistoricoRenovacoesComponent implements OnInit {
             }
 
             await this.historicoService.delete(historico.id);
-            
+
             this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso!',
                 detail: 'Registro excluído com sucesso.',
                 life: 3000,
             });
-            
+
             // Recarrega os dados após a exclusão
             await this.aplicarFiltros();
         } catch (error) {

@@ -2,7 +2,7 @@
 
 @use "assets/dstv/styles/badges";
 
-$gutter: 1rem; //for primeflex grid system
+$gutter: 1.5rem; // Increased gutter for better spacing
 @use "assets/layout/styles/layout/layout" as *;
 
 /* PrimeNG */
@@ -16,75 +16,139 @@ $gutter: 1rem; //for primeflex grid system
 /* Demos */
 @import "assets/dstv/styles/flags/flags.css";
 
-.layout-menu .menu-dashboard .pi {
-  color: #2196F3;
-  font-size: 1.4rem;
+:root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-.layout-menu .menu-clientes .pi {
-  color: #9C27B0;
-  font-size: 1.4rem;
+
+body {
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--surface-ground);
 }
-.layout-menu .menu-servidores .pi {
-  color: #FB8C00;
-  font-size: 1.4rem;
+
+/* Modernizing Layout Menu Icons - More Subtle */
+.layout-menu .pi {
+  font-size: 1.25rem !important;
+  opacity: 0.85;
+  transition: transform 0.2s;
 }
-.layout-menu .menu-planos .pi {
-  color: #4CAF50;
-  font-size: 1.4rem;
+
+.layout-menu a:hover .pi {
+  transform: scale(1.1);
+  opacity: 1;
 }
-.layout-menu .menu-mensagem .pi {
-  color: #25D366;
-  font-size: 1.4rem;
-}
-.layout-menu .menu-relatorios .pi {
-  color: #8B5CF6;
-  font-size: 1.4rem;
-}
-.layout-menu .menu-financas .pi {
-  color: #00BCD4;
-  font-size: 1.4rem;
-}
-.layout-menu .menu-historico .pi {
-  color: #FF5722;
-  font-size: 1.4rem;
-}
+
+.layout-menu .menu-dashboard .pi { color: #3B82F6; }
+.layout-menu .menu-clientes .pi { color: #8B5CF6; }
+.layout-menu .menu-servidores .pi { color: #F59E0B; }
+.layout-menu .menu-planos .pi { color: #10B981; }
+.layout-menu .menu-mensagem .pi { color: #25D366; }
+.layout-menu .menu-relatorios .pi { color: #6366F1; }
+.layout-menu .menu-financas .pi { color: #06B6D4; }
+.layout-menu .menu-historico .pi { color: #EF4444; }
+.layout-menu .menu-export .pi { color: #64748B; }
 
 /* Correção para sobreposição de componentes PrimeNG */
-.p-dropdown-panel {
-  z-index: 1000 !important;
-}
-
-.p-datepicker {
-  z-index: 1000 !important;
-}
-
-.p-autocomplete-panel {
-  z-index: 1000 !important;
+.p-dropdown-panel, .p-datepicker, .p-autocomplete-panel {
+  z-index: 1100 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
 }
 
 .p-dialog {
-  z-index: 1001 !important;
+  z-index: 1101 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+
+  .p-dialog-header {
+    background: var(--surface-card);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--surface-border);
+  }
+
+  .p-dialog-content {
+    padding: 1.5rem;
+  }
+
+  .p-dialog-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--surface-border);
+  }
 }
-.layout-menu .menu-export .pi {
-  color: #3F51B5;
-  font-size: 1.4rem;
+
+/* General Component Modernization */
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.p-button {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &.p-button-raised {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.p-inputtext, .p-dropdown, .p-multiselect, .p-inputnumber-input, .p-calendar {
+  border-radius: 8px !important;
+  border-color: var(--surface-border);
+
+  &:enabled:focus {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--primary-300), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
 }
 
 /* Clientes table mobile refinements */
 .clientes-table .p-datatable-tbody > tr > td {
-  padding: 0.5rem 0.75rem;
+  padding: 1rem 0.75rem;
+}
+
+.p-datatable {
+  .p-datatable-thead > tr > th {
+    background: var(--surface-50);
+    color: var(--surface-700);
+    padding: 1rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--surface-border);
+  }
+
+  .p-datatable-tbody > tr {
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--surface-50) !important;
+    }
+
+    > td {
+      border-color: var(--surface-border);
+    }
+  }
 }
 
 /* Toolbar wrapping for mobile */
 .clientes-toolbar .p-toolbar-group-left,
 .clientes-toolbar .p-toolbar-group-right {
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 @media (max-width: 640px) {
+  .clientes-toolbar {
+    padding: 1rem;
+  }
+
   .clientes-toolbar .p-toolbar-group-left,
   .clientes-toolbar .p-toolbar-group-right {
-    gap: 0.25rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .clientes-toolbar .p-toolbar-group-right {
@@ -92,26 +156,13 @@ $gutter: 1rem; //for primeflex grid system
   }
 
   .clientes-toolbar .p-button {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  .clientes-toolbar .p-button .pi {
-    font-size: 0.9rem;
+    flex: 1 1 auto;
+    justify-content: center;
   }
 
   .clientes-table .p-datatable-thead > tr > th:nth-child(3),
   .clientes-table .p-datatable-tbody > tr > td:nth-child(3) {
     display: none;
-  }
-
-  .clientes-table .nome-usuario {
-    white-space: normal;
-  }
-
-  .clientes-table .p-datatable-tbody > tr > td:last-child .p-button {
-    margin-right: 0.5rem;
-    margin-bottom: 0.25rem;
   }
 
   .mobile-only {

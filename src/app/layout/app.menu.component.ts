@@ -18,15 +18,15 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Home',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-chart-bar', routerLink: ['dashboard'], class: 'menu-dashboard' },
-                    { label: 'Clientes', icon: 'pi pi-id-card', routerLink: ['cliente'], class: 'menu-clientes' },
-                    { label: 'Servidores', icon: 'pi pi-cloud', routerLink: ['servidor'], class: 'menu-servidores' },
-                    { label: 'Planos', icon: 'pi pi-wallet', routerLink: ['plano'], class: 'menu-planos' },
+                    { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['dashboard'], class: 'menu-dashboard' },
+                    { label: 'Clientes', icon: 'pi pi-users', routerLink: ['cliente'], class: 'menu-clientes' },
+                    { label: 'Servidores', icon: 'pi pi-server', routerLink: ['servidor'], class: 'menu-servidores' },
+                    { label: 'Planos', icon: 'pi pi-tag', routerLink: ['plano'], class: 'menu-planos' },
                     { label: 'Mensagem', icon: 'pi pi-whatsapp', routerLink: ['mensagem'], class: 'menu-mensagem' },
-                    { label: 'Relatórios', icon: 'pi pi-file-excel', routerLink: ['relatorios'], class: 'menu-relatorios' },
-                    { label: 'Finanças', icon: 'pi pi-money-bill', routerLink: ['financas'], class: 'menu-financas' },
-                    { label: 'Histórico de Renovações', icon: 'pi pi-history', routerLink: ['historico-renovacoes'], class: 'menu-historico' },
-                    { label: 'Importar / Exportar', icon: 'pi pi-file-export', routerLink: ['export'], class: 'menu-export' },
+                    { label: 'Relatórios', icon: 'pi pi-chart-line', routerLink: ['relatorios'], class: 'menu-relatorios' },
+                    { label: 'Finanças', icon: 'pi pi-dollar', routerLink: ['financas'], class: 'menu-financas' },
+                    { label: 'Histórico', icon: 'pi pi-history', routerLink: ['historico-renovacoes'], class: 'menu-historico' },
+                    { label: 'Exportar / Importar', icon: 'pi pi-sync', routerLink: ['export'], class: 'menu-export' },
                 ]
             },
             // {

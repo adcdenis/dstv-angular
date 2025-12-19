@@ -10,82 +10,28 @@ import { AuthServiceService } from './../../../service/auth-service.service';
     templateUrl: './login.component.html',
     styles: [
         `
-            :host ::ng-deep .p-password input {
-                width: 100%;
-                padding: 1rem;
-            }
-
-            :host ::ng-deep .pi-eye {
-                transform: scale(1.6);
-                margin-right: 1rem;
-                color: var(--primary-color) !important;
-            }
-
-            :host ::ng-deep .pi-eye-slash {
-                transform: scale(1.6);
-                margin-right: 1rem;
-                color: var(--primary-color) !important;
-            }
-
-            .image {
-                background-image: url('https://picsum.photos/1920/1080.jpg');
-                background-repeat: no-repeat;
-                background-size: cover;
-                background-position: center;
-            }
-
-            #random{
-                /* BOX MODEL */
-                width: 100%;
-                height: 100vh;
-                border: none;
-
-                /* ENHANCEMENT */
-                background-position: center center;
-                background-size: cover;
-                background-repeat: no-repeat;
-                position: relative;
-            }
-
-            #random::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 1;
-            }
-
-            #random > div {
-                position: relative;
-                z-index: 2;
-            }
-
-            .surface-card {
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-                animation: fadeInUp 0.6s ease-out;
-            }
-
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
+            :host ::ng-deep {
+                .p-password input {
+                    width: 100%;
                 }
-                to {
-                    opacity: 0.9;
-                    transform: translateY(0);
+
+                .p-button {
+                    transition: all 0.2s ease;
+                    &:hover {
+                        transform: translateY(-1px);
+                        filter: brightness(1.1);
+                    }
                 }
             }
 
-            :host ::ng-deep .p-button {
-                transition: all 0.3s ease;
+            .card {
+                backdrop-filter: blur(10px);
+                animation: slideIn 0.5s ease-out;
             }
 
-            :host ::ng-deep .p-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            @keyframes slideIn {
+                from { opacity: 0; transform: scale(0.95); }
+                to { opacity: 1; transform: scale(1); }
             }
         `,
     ],
@@ -107,27 +53,27 @@ export class LoginComponent implements OnInit{
         'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1920&h=1080&fit=crop&q=80', // código colorido
         'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=1920&h=1080&fit=crop&q=80', // código escuro
         'https://images.unsplash.com/photo-1607705703571-c5a8695f18f6?w=1920&h=1080&fit=crop&q=80', // código verde matrix
-        
+
         // Setup Gaming e Workstation
         'https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=1920&h=1080&fit=crop&q=80', // setup gamer RGB
         'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=1920&h=1080&fit=crop&q=80', // setup gaming neon
         'https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2?w=1920&h=1080&fit=crop&q=80', // setup gaming roxo
         'https://images.unsplash.com/photo-1600861194942-f883de0dfe96?w=1920&h=1080&fit=crop&q=80', // workstation dev
         'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=1920&h=1080&fit=crop&q=80', // setup minimalista
-        
+
         // Hardware e Circuitos
         'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&h=1080&fit=crop&q=80', // placa de circuito
         'https://images.unsplash.com/photo-1555617778-02518510b9fa?w=1920&h=1080&fit=crop&q=80', // processador
         'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1920&h=1080&fit=crop&q=80', // componentes PC
         'https://images.unsplash.com/photo-1562976540-1502c2145186?w=1920&h=1080&fit=crop&q=80', // placa mãe
-        
+
         // Abstrato Tech
         'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1920&h=1080&fit=crop&q=80', // matrix digital
         'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&h=1080&fit=crop&q=80', // cyber security
         'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&h=1080&fit=crop&q=80', // servidor data center
         'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop&q=80', // terra digital
         'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1920&h=1080&fit=crop&q=80', // fórmulas matemáticas
-        
+
         // Tecnologia Moderna
         'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1920&h=1080&fit=crop&q=80', // laptops reunião
         'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1920&h=1080&fit=crop&q=80', // laptop roxo

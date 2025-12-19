@@ -58,6 +58,7 @@ export class ClienteComponent implements OnInit {
     public dialogoCliente: boolean = false;
     public dialogoDeleteVarios: boolean = false;
     public filtroVencimento: any;
+    public filtroSelecionado: string = '3dias';
     public termoBusca: string = '';
 
     cols: any[] = [];
@@ -257,24 +258,28 @@ export class ClienteComponent implements OnInit {
 
     public filtrarPorVence3Dias() {
         this.filtroVencimento = this.venceEm3Dias;
+        this.filtroSelecionado = '3dias';
         this.termoBusca = '';
         this.aplicarFiltroAtual();
     }
 
     public filtrarPorVencidos() {
         this.filtroVencimento = this.vencido;
+        this.filtroSelecionado = 'vencidos';
         this.termoBusca = '';
         this.aplicarFiltroAtual();
     }
 
     public filtrarPorNaoVencidos() {
         this.filtroVencimento = this.naoVencido;
+        this.filtroSelecionado = 'ativos';
         this.termoBusca = '';
         this.aplicarFiltroAtual();
     }
 
     public mostrarTodos() {
         this.filtroVencimento = null;
+        this.filtroSelecionado = 'todos';
         this.termoBusca = '';
         this.aplicarFiltroAtual();
     }
@@ -519,7 +524,7 @@ export class ClienteComponent implements OnInit {
         if (!this.clienteRenovacao || !this.novaDataVencimento) return;
         const atualizado: ClienteI = { ...this.clienteRenovacao, dataVencimento: this.novaDataVencimento };
         await this.clienteService.update(atualizado);
-        
+
         // Registrar no histórico de renovações
         const historico: HistoricoRenovacaoI = {
             cliente: this.clienteRenovacao,
@@ -528,9 +533,9 @@ export class ClienteComponent implements OnInit {
             dataHoraRenovacao: new Date(),
             dataNovoVencimento: this.novaDataVencimento
         };
-        
+
         await this.historicoRenovacaoService.create(historico);
-        
+
         this.dialogoRenovar = false;
         const dataStr = this.novaDataVencimento.toLocaleDateString('pt-BR');
         this.mensagemRenovacao = `Conta renovada com sucesso. Novo vencimento: ${dataStr}`;

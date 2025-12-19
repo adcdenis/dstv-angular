@@ -2,19 +2,28 @@
     <p-toast></p-toast>
     <p-confirmDialog></p-confirmDialog>
     <div class="col-12">
-        <div class="card px-6 py-6 fade-in list-card">
-            <h5 class="mb-4"><i class="pi pi-history mr-2"></i>Histórico de Renovações</h5>
-            
+        <div class="card p-0 overflow-hidden border-none shadow-2">
+            <div class="p-4 bg-primary text-white flex align-items-center gap-3">
+                <i class="pi pi-history text-3xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold m-0 text-white">Histórico de Renovações</h1>
+                    <p class="m-0 text-primary-100 opacity-80">Rastreamento completo de transações</p>
+                </div>
+            </div>
+
+            <div class="p-4">
             <!-- Filtros -->
-            <div class="card mb-4" style="position: relative; z-index: 1;">
-                <h6 class="mb-3">Filtros</h6>
+            <div class="surface-ground p-4 border-round-xl mb-4">
+                <h6 class="text-900 font-bold mb-4 flex align-items-center gap-2">
+                    <i class="pi pi-filter"></i> Filtros de Busca
+                </h6>
                 <form [formGroup]="filtroForm" class="grid">
                     <!-- Primeira linha - Filtros de Data -->
                     <div class="col-12 md:col-6 lg:col-4">
                         <label for="dataInicio" class="block text-900 font-medium mb-2">Data Início</label>
-                        <p-calendar 
-                            id="dataInicio" 
-                            formControlName="dataInicio" 
+                        <p-calendar
+                            id="dataInicio"
+                            formControlName="dataInicio"
                             [showIcon]="true"
                             [showButtonBar]="true"
                             dateFormat="dd/mm/yy"
@@ -23,12 +32,12 @@
                             appendTo="body">
                         </p-calendar>
                     </div>
-                    
+
                     <div class="col-12 md:col-6 lg:col-4">
                         <label for="dataFim" class="block text-900 font-medium mb-2">Data Fim</label>
-                        <p-calendar 
-                            id="dataFim" 
-                            formControlName="dataFim" 
+                        <p-calendar
+                            id="dataFim"
+                            formControlName="dataFim"
                             [showIcon]="true"
                             [showButtonBar]="true"
                             dateFormat="dd/mm/yy"
@@ -37,35 +46,35 @@
                             appendTo="body">
                         </p-calendar>
                     </div>
-                    
+
                     <div class="col-12 md:col-12 lg:col-4 flex align-items-end">
                         <div class="flex gap-2">
-                            <button 
-                                pButton 
-                                pRipple 
-                                label="Filtrar" 
-                                icon="pi pi-filter" 
+                            <button
+                                pButton
+                                pRipple
+                                label="Filtrar"
+                                icon="pi pi-filter"
                                 class="p-button-primary"
                                 (click)="aplicarFiltros()">
                             </button>
-                            <button 
-                                pButton 
-                                pRipple 
-                                label="Limpar" 
-                                icon="pi pi-times" 
+                            <button
+                                pButton
+                                pRipple
+                                label="Limpar"
+                                icon="pi pi-times"
                                 class="p-button-secondary"
                                 (click)="limparFiltros()">
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Segunda linha - Filtros de Cliente, Plano e Servidor -->
                     <div class="col-12 md:col-6 lg:col-4">
                         <label for="cliente" class="block text-900 font-medium mb-2">Cliente</label>
-                        <p-autoComplete 
-                            id="cliente" 
-                            formControlName="cliente" 
-                            [suggestions]="clientesFiltrados" 
+                        <p-autoComplete
+                            id="cliente"
+                            formControlName="cliente"
+                            [suggestions]="clientesFiltrados"
                             (completeMethod)="filtrarClientes($event)"
                             field="nome"
                             placeholder="Digite pelo menos 3 caracteres"
@@ -75,14 +84,14 @@
                             appendTo="body">
                         </p-autoComplete>
                     </div>
-                    
+
                     <div class="col-12 md:col-6 lg:col-4">
                         <label for="plano" class="block text-900 font-medium mb-2">Plano</label>
-                        <p-dropdown 
-                            id="plano" 
-                            formControlName="plano" 
-                            [options]="listaPlanos" 
-                            optionLabel="nome" 
+                        <p-dropdown
+                            id="plano"
+                            formControlName="plano"
+                            [options]="listaPlanos"
+                            optionLabel="nome"
                             optionValue="id"
                             placeholder="Todos os planos"
                             [showClear]="true"
@@ -90,14 +99,14 @@
                             appendTo="body">
                         </p-dropdown>
                     </div>
-                    
+
                     <div class="col-12 md:col-6 lg:col-4">
                         <label for="servidor" class="block text-900 font-medium mb-2">Servidor</label>
-                        <p-dropdown 
-                            id="servidor" 
-                            formControlName="servidor" 
-                            [options]="listaServidores" 
-                            optionLabel="nome" 
+                        <p-dropdown
+                            id="servidor"
+                            formControlName="servidor"
+                            [options]="listaServidores"
+                            optionLabel="nome"
                             optionValue="id"
                             placeholder="Todos os servidores"
                             [showClear]="true"
@@ -107,37 +116,38 @@
                     </div>
                 </form>
             </div>
-            
+
             <!-- Tabela de Histórico -->
-            <div class="card">
-                <div class="flex justify-content-between align-items-center mb-4">
-                    <h6 class="m-0">Registros de Renovação</h6>
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input #globalFilter pInputText type="text" placeholder="Pesquisar..." class="w-full" />
+            <div class="card shadow-1 border-round-xl">
+                <div class="flex flex-column md:flex-row justify-content-between align-items-center mb-4 gap-3">
+                    <h5 class="m-0 font-bold">Registros de Renovação</h5>
+                    <span class="p-input-icon-right md:w-20rem">
+                        <i class="pi pi-search text-500"></i>
+                        <input #globalFilter pInputText type="text" (input)="filtrarGlobalmente($any($event.target).value)" placeholder="Busca rápida..." class="w-full p-3 border-round-xl" />
                     </span>
                 </div>
-                
-                <div *ngIf="isLoading" class="flex justify-content-center p-5">
-                    <i class="pi pi-spin pi-spinner text-4xl"></i>
+
+                <div *ngIf="isLoading" class="flex justify-content-center p-8">
+                    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="4"></p-progressSpinner>
                 </div>
-                
-                <p-table 
+
+                <p-table
                     *ngIf="!isLoading"
-                    #dt 
-                    [value]="listaHistorico" 
-                    [columns]="cols" 
-                    responsiveLayout="stack" 
-                    [rows]="10" 
-                    [paginator]="true" 
-                    [rowsPerPageOptions]="[10,20,30]" 
+                    #dt
+                    [value]="listaHistorico"
+                    [columns]="cols"
+                    styleClass="p-datatable-sm p-datatable-gridlines"
+                    responsiveLayout="stack"
+                    [rows]="10"
+                    [paginator]="true"
+                    [rowsPerPageOptions]="[10,20,50]"
                     [showCurrentPageReport]="true"
-                    currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
+                    currentPageReportTemplate="Exibindo {first} a {last} de {totalRecords}"
                     [globalFilterFields]="['cliente.nome', 'plano.nome', 'servidor.nome']"
                     [rowHover]="true"
-                    sortField="dataHoraRenovacao" 
+                    sortField="dataHoraRenovacao"
                     [sortOrder]="-1">
-                    
+
                     <ng-template pTemplate="header">
                         <tr>
                             <th pSortableColumn="dataHoraRenovacao">Data/Hora Renovação <p-sortIcon field="dataHoraRenovacao"></p-sortIcon></th>
@@ -148,7 +158,7 @@
                             <th style="width: 8rem;">Ações</th>
                         </tr>
                     </ng-template>
-                    
+
                     <ng-template pTemplate="body" let-historico>
                         <tr>
                             <td>{{ formatarData(historico.dataHoraRenovacao) }}</td>
@@ -157,10 +167,10 @@
                             <td>{{ historico.servidor?.nome || '-' }}</td>
                             <td>{{ formatarDataSemHora(historico.dataNovoVencimento) }}</td>
                             <td>
-                                <button 
-                                    pButton 
-                                    pRipple 
-                                    icon="pi pi-trash" 
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-trash"
                                     class="p-button-rounded p-button-danger p-button-outlined mr-2 mb-2"
                                     (click)="confirmarExclusao(historico)"
                                     title="Excluir">
@@ -168,7 +178,7 @@
                             </td>
                         </tr>
                     </ng-template>
-                    
+
                     <ng-template pTemplate="emptymessage">
                         <tr>
                             <td colspan="6" class="text-center">
@@ -177,6 +187,7 @@
                         </tr>
                     </ng-template>
                 </p-table>
+            </div>
             </div>
         </div>
     </div>

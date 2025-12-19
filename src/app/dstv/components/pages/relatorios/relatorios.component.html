@@ -1,16 +1,22 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6 fade-in">
+        <div class="card p-0 overflow-hidden border-none shadow-2">
             <p-toast></p-toast>
 
-            <!-- Título da página -->
-            <div class="flex align-items-center justify-content-between mb-4">
-                <h5 class="m-0"><i class="pi pi-file-excel mr-2"></i>Relatórios de Clientes</h5>
+            <div class="p-4 bg-primary text-white flex align-items-center gap-3">
+                <i class="pi pi-chart-line text-3xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold m-0 text-white">Relatórios de Clientes</h1>
+                    <p class="m-0 text-primary-100 opacity-80">Filtre e exporte dados da sua base</p>
+                </div>
             </div>
 
+            <div class="p-4">
             <!-- Área de Filtros -->
-            <div class="card mb-4 filtro-card">
-                <h6 class="mb-3"><i class="pi pi-filter mr-2"></i>Filtros</h6>
+            <div class="surface-ground p-4 border-round-xl mb-4">
+                <h6 class="text-900 font-bold mb-4 flex align-items-center gap-2">
+                    <i class="pi pi-filter"></i> Filtros Disponíveis
+                </h6>
 
                 <form [formGroup]="filtroForm" class="p-fluid">
                     <div class="grid">
@@ -94,56 +100,56 @@
             <!-- Resumo dos Dados -->
             <div class="grid mb-4">
                 <div class="col-12 md:col-6 lg:col-3">
-                    <div class="card summary-card">
+                    <div class="card mb-0 shadow-1 border-left-3 border-blue-500 p-3">
                         <div class="flex align-items-center">
-                            <div class="p-3 bg-blue-100 border-round mr-3">
-                                <i class="pi pi-users text-blue-600 text-xl"></i>
+                            <div class="p-3 bg-blue-50 border-round-xl mr-3">
+                                <i class="pi pi-users text-blue-500 text-xl"></i>
                             </div>
                             <div>
-                                <div class="text-900 font-medium text-xl">{{clientesFiltrados.length}}</div>
-                                <div class="text-600">Total Filtrado</div>
+                                <div class="text-600 font-medium text-sm">Total Filtrado</div>
+                                <div class="text-900 font-bold text-2xl">{{clientesFiltrados.length}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-12 md:col-6 lg:col-3">
-                    <div class="card summary-card">
+                    <div class="card mb-0 shadow-1 border-left-3 border-green-500 p-3">
                         <div class="flex align-items-center">
-                            <div class="p-3 bg-green-100 border-round mr-3">
-                                <i class="pi pi-check-circle text-green-600 text-xl"></i>
+                            <div class="p-3 bg-green-50 border-round-xl mr-3">
+                                <i class="pi pi-check-circle text-green-500 text-xl"></i>
                             </div>
                             <div>
-                                <div class="text-900 font-medium text-xl">{{getCountByStatus('ativos')}}</div>
-                                <div class="text-600">Ativos</div>
+                                <div class="text-600 font-medium text-sm">Ativos</div>
+                                <div class="text-900 font-bold text-2xl">{{getCountByStatus('ativos')}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-12 md:col-6 lg:col-3">
-                    <div class="card summary-card">
+                    <div class="card mb-0 shadow-1 border-left-3 border-red-500 p-3">
                         <div class="flex align-items-center">
-                            <div class="p-3 bg-orange-100 border-round mr-3">
-                                <i class="pi pi-exclamation-triangle text-orange-600 text-xl"></i>
+                            <div class="p-3 bg-red-50 border-round-xl mr-3">
+                                <i class="pi pi-times-circle text-red-500 text-xl"></i>
                             </div>
                             <div>
-                                <div class="text-900 font-medium text-xl">{{getCountByStatus('vencidos')}}</div>
-                                <div class="text-600">Vencidos</div>
+                                <div class="text-600 font-medium text-sm">Vencidos</div>
+                                <div class="text-900 font-bold text-2xl">{{getCountByStatus('vencidos')}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-12 md:col-6 lg:col-3">
-                    <div class="card summary-card">
+                    <div class="card mb-0 shadow-1 border-left-3 border-orange-500 p-3">
                         <div class="flex align-items-center">
-                            <div class="p-3 bg-yellow-100 border-round mr-3">
-                                <i class="pi pi-clock text-yellow-600 text-xl"></i>
+                            <div class="p-3 bg-orange-50 border-round-xl mr-3">
+                                <i class="pi pi-clock text-orange-500 text-xl"></i>
                             </div>
                             <div>
-                                <div class="text-900 font-medium text-xl">{{getCountByStatus('vence3dias')}}</div>
-                                <div class="text-600">Vencem em 3 dias</div>
+                                <div class="text-600 font-medium text-sm">Vencem 3 dias</div>
+                                <div class="text-900 font-bold text-2xl">{{getCountByStatus('vence3dias')}}</div>
                             </div>
                         </div>
                     </div>
@@ -151,13 +157,15 @@
             </div>
 
             <!-- Tabela de Pré-visualização -->
-            <div class="card">
-                <h6 class="mb-3"><i class="pi pi-eye mr-2"></i>Pré-visualização dos Dados</h6>
+            <div class="card shadow-1 border-round-xl">
+                <h6 class="text-900 font-bold mb-4 flex align-items-center gap-2">
+                    <i class="pi pi-eye"></i> Pré-visualização (Primeiros 10)
+                </h6>
 
                 <p-table
                     [value]="clientesFiltrados.slice(0, 10)"
                     [columns]="cols"
-                    styleClass="p-datatable-striped relatorios-table"
+                    styleClass="p-datatable-sm p-datatable-gridlines relatorios-table"
                     responsiveLayout="stack"
                     [rows]="10"
                     [paginator]="false"
@@ -223,6 +231,7 @@
                         Clique em "Gerar Excel" para exportar todos os dados.
                     </small>
                 </div>
+            </div>
             </div>
         </div>
     </div>

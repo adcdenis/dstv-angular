@@ -3,54 +3,41 @@
     <div class="col-12">
         <ng-container *ngIf="!dialogoCliente">
             <div class="card px-6 py-6 fade-in list-card">
-                <p-toolbar styleClass="mb-4 clientes-toolbar">
-                    <ng-template pTemplate="left">
-                        <div class="p-toolbar-group-left flex flex-wrap gap-2 w-full">
-                            <button pButton pRipple label="3 dias!" icon="pi pi-exclamation-triangle"
-                                class="p-button-danger" (click)="filtrarPorVence3Dias()"></button>
-                            <button *ngIf="false" pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
-                                (click)="abrirDialogDeletarVarios()"
-                                [disabled]="!listaClientesSelecionados || !listaClientesSelecionados.length"></button>
-                        </div>
-                    </ng-template>
+                <div class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4 gap-3">
+                    <div class="flex align-items-center gap-2">
+                        <i class="pi pi-users text-primary text-3xl"></i>
+                        <h1 class="text-2xl font-bold m-0 text-900">Gerenciar Clientes</h1>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button pButton pRipple label="Ativos" icon="pi pi-check-circle"
+                            [class]="filtroSelecionado === 'ativos' ? 'p-button-success border-round-xl' : 'p-button-outlined p-button-success border-round-xl'"
+                            (click)="filtrarPorNaoVencidos()"></button>
+                        <button pButton pRipple label="3 dias!" icon="pi pi-clock"
+                            [class]="filtroSelecionado === '3dias' ? 'p-button-warning border-round-xl' : 'p-button-outlined p-button-warning border-round-xl'"
+                            (click)="filtrarPorVence3Dias()"></button>
+                        <button pButton pRipple label="Vencidos" icon="pi pi-times-circle"
+                            [class]="filtroSelecionado === 'vencidos' ? 'p-button-danger border-round-xl' : 'p-button-outlined p-button-danger border-round-xl'"
+                            (click)="filtrarPorVencidos()"></button>
+                        <button pButton pRipple label="Todos" icon="pi pi-list"
+                            [class]="filtroSelecionado === 'todos' ? 'p-button-secondary border-round-xl' : 'p-button-outlined p-button-secondary border-round-xl'"
+                            (click)="mostrarTodos()"></button>
+                    </div>
+                </div>
 
-                    <ng-template pTemplate="right">
-                        <div class="p-toolbar-group-right flex flex-wrap gap-2 w-full md:w-auto justify-content-end mt-2 md:mt-0">
-                            <button pButton pRipple label="Ativos" icon="pi pi-users" class="p-button-success"
-                                (click)="filtrarPorNaoVencidos()"></button>
-                            <button pButton pRipple label="Vencidos!" icon="pi pi-history" class="p-button-warning"
-                                (click)="filtrarPorVencidos()"></button>
-                            <button pButton pRipple label="TODOS" icon="pi pi-list"
-                                (click)="mostrarTodos()"></button>
+                <div class="surface-ground p-3 border-round-xl mb-4">
+                    <span class="p-input-icon-right w-full">
+                        <i class="pi pi-search text-500"></i>
+                        <input #campoBusca pInputText type="text" (input)="buscarPorNome($any($event.target).value)"
+                            placeholder="Pesquisar por nome, usuário, plano ou servidor..." class="w-full p-3 border-round-xl" />
+                        <button *ngIf="termoBusca" type="button" pButton pRipple icon="pi pi-times" class="p-button-text p-button-secondary" (click)="limparBusca(campoBusca)"></button>
+                    </span>
+                </div>
 
-                            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
-                                chooseLabel="Importar" class="inline-block" *ngIf="false"></p-fileUpload>
-                            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"
-                                (click)="dt.exportCSV()" *ngIf="false"></button>
-                            <button *ngIf="false" pButton pRipple label="Exportar" icon="pi pi-file-excel" class="p-button-help"
-                                (click)="exportExcel()"></button>
-                        </div>
-                    </ng-template>
-                </p-toolbar>
-
-                <p-table sortField="dataVencimento" styleClass="p-datatable-striped clientes-table" #dt [value]="listaClientes"
+                <p-table sortField="dataVencimento" styleClass="p-datatable-sm p-datatable-gridlines clientes-table" #dt [value]="listaClientes"
                     [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['valor','nome','id','plano.nome','servidor.nome']"
-                    [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
-                    currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} registros"
+                    [paginator]="true" [rowsPerPageOptions]="[10,20,50]" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
                     [(selection)]="listaClientesSelecionados" selectionMode="multiple" [rowHover]="true" dataKey="id">
-                    <ng-template pTemplate="caption">
-                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0"><i class="pi pi-users mr-2"></i>Gerenciar Clientes</h5>
-                            <span class="block mt-2 md:mt-0 p-input-icon-left" style="width: 25%;">
-                                <i class="pi pi-search"></i>
-                                <input #campoBusca pInputText type="text" (input)="buscarPorNome($any($event.target).value)"
-                                    placeholder="Procurar em todos os clientes..." class="w-full" style="padding-right: 2.5rem;" />
-                                <button pButton pRipple type="button" icon="pi pi-times" class="p-button-text p-button-rounded"
-                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);"
-                                    (click)="limparBusca(campoBusca)" [disabled]="!termoBusca"></button>
-                            </span>
-                        </div>
-                    </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="width: 3rem" *ngIf="false">
@@ -138,66 +125,68 @@
             </ng-template>
         </p-dialog>
 
-        <ng-container *ngIf="dialogoCliente">
-            <div class="card px-6 py-6 fade-in">
-                <form [formGroup]="cadastroForm" (ngSubmit)="salvarOuAlterar()">
-
-                    <div class="p-fluid grid">
-                        <div class="field col-12">
-                            <input formControlName="id" type="hidden" pInputText id="id" />
-                            <label for="name">Nome:</label>
-                            <input formControlName="nome" type="text" pInputText id="name" required autofocus
-                                [ngClass]="{'ng-invalid ng-dirty' : cadastroForm.get('nome')?.errors && !cadastroForm.get('nome')}" />
-                            <small class="ng-dirty ng-invalid"
-                                *ngIf="cadastroForm.get('nome')?.errors && (cadastroForm.get('nome')?.dirty || cadastroForm.get('nome')?.touched)">Nome
-                                é obrigatório e deve possuir 3 caracteres no mínimo.</small>
-                        </div>
-                        <div class="field col-6">
-                            <label for="usuario">Usuário:</label>
-                            <input formControlName="usuario" type="text" pInputText id="usuario" autofocus
-                                maxlength="20" />
-                        </div>
-                        <div class="field col-6">
-                            <label for="email">Email:</label>
-                            <input formControlName="email" type="text" pInputText id="email" autofocus maxlength="50" />
-                        </div>
-                        <div class="field col-6">
-                            <label for="telefone">Telefone:</label>
-                            <p-inputMask mask="(55) 99-999999999" formControlName="telefone"></p-inputMask>
-                        </div>
-                        <div class="field col-6">
-                            <label for="dataVencimento">Data Vencimento:</label>
-                            <p-calendar id="dataVencimento" formControlName="dataVencimento" dateFormat="dd/mm/yy">
-                            </p-calendar>
-                        </div>
-                        <div class="field col-6">
-                            <label for="servidor">Servidor:</label>
-                            <p-dropdown id="servidor" [options]="listaServidores" formControlName="servidor"
-                                placeholder="Selecione um servidor" optionLabel="nome" [showClear]="true" dataKey="id"></p-dropdown>
-                        </div>
-                        <div class="field col-6">
-                            <label for="plano">Plano:</label>
-                            <p-dropdown id="plano" [options]="listaPlanos" formControlName="plano"
-                                placeholder="Selecione um plano" optionLabel="nome" [showClear]="true" dataKey="id"></p-dropdown>
-                        </div>
-
-                        <div class="field col-12">
-                            <label for="observacao">Observação:</label>
-                            <textarea formControlName="observacao" pInputTextarea autofocus maxlength="500" [rows]="5"
-                                [cols]="30"></textarea>
-                        </div>
-                        <div class="field col-6">
-                            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger"
-                                (click)="dialogoCliente = false"></button>
-                        </div>
-                        <div class="field col-6">
-                            <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success"
-                                type="submit" [disabled]="cadastroForm.invalid"></button>
-                        </div>
+        <p-dialog [(visible)]="dialogoCliente" [header]="cadastroForm.get('id')?.value ? 'Editar Cliente' : 'Novo Cliente'"
+            [modal]="true" class="p-fluid" [style]="{width: '600px'}" [breakpoints]="{'960px':'75vw', '640px':'100vw'}">
+            <form [formGroup]="cadastroForm" (ngSubmit)="salvarOuAlterar()" class="mt-2">
+                <div class="grid">
+                    <div class="field col-12">
+                        <label for="name" class="font-bold">Nome Completo</label>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-user"></i>
+                            <input formControlName="nome" type="text" pInputText id="name" placeholder="Ex: João Silva" autofocus />
+                        </span>
+                        <small class="p-error block" *ngIf="cadastroForm.get('nome')?.invalid && cadastroForm.get('nome')?.touched">
+                            Nome é obrigatório (mín. 3 caracteres).
+                        </small>
                     </div>
-                </form>
-            </div>
-        </ng-container>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="usuario" class="font-bold">Usuário / Login</label>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-at"></i>
+                            <input formControlName="usuario" type="text" pInputText id="usuario" placeholder="usuario123" />
+                        </span>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="telefone" class="font-bold">WhatsApp</label>
+                        <p-inputMask mask="(55) 99-999999999" formControlName="telefone" placeholder="(55) 00-000000000"></p-inputMask>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="dataVencimento" class="font-bold">Vencimento</label>
+                        <p-calendar id="dataVencimento" formControlName="dataVencimento" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="servidor" class="font-bold">Servidor</label>
+                        <p-dropdown id="servidor" [options]="listaServidores" formControlName="servidor"
+                            placeholder="Selecione" optionLabel="nome" [showClear]="true" dataKey="id"></p-dropdown>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="plano" class="font-bold">Plano</label>
+                        <p-dropdown id="plano" [options]="listaPlanos" formControlName="plano"
+                            placeholder="Selecione" optionLabel="nome" [showClear]="true" dataKey="id"></p-dropdown>
+                    </div>
+
+                    <div class="field col-12 md:col-6">
+                        <label for="email" class="font-bold">E-mail (opcional)</label>
+                        <input formControlName="email" type="email" pInputText id="email" placeholder="email@exemplo.com" />
+                    </div>
+
+                    <div class="field col-12">
+                        <label for="observacao" class="font-bold">Observações</label>
+                        <textarea formControlName="observacao" pInputTextarea [rows]="3" placeholder="Informações adicionais..."></textarea>
+                    </div>
+                </div>
+            </form>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text p-button-secondary" (click)="dialogoCliente = false"></button>
+                <button pButton pRipple label="Salvar Alterações" icon="pi pi-check" class="p-button-primary border-round-lg"
+                    [disabled]="cadastroForm.invalid" (click)="salvarOuAlterar()"></button>
+            </ng-template>
+        </p-dialog>
 
         <p-dialog [(visible)]="dialogoDeleteVarios" header="Confirmar" [modal]="true" [style]="{width:'450px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
             <div class="flex align-items-center justify-content-center">

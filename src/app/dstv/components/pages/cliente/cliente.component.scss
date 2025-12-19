@@ -76,31 +76,48 @@
 
 // Estilos para os badges de status
 .status-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-align: center;
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .status-ativo {
-    background-color: #10b981;
-    color: white;
+    background-color: var(--green-100);
+    color: var(--green-700);
+    border: 1px solid var(--green-200);
 }
 
 .status-vencido {
-    background-color: #ef4444;
-    color: white;
+    background-color: var(--red-100);
+    color: var(--red-700);
+    border: 1px solid var(--red-200);
 }
 
-.status-vence-hoje {
-    background-color: #f59e0b;
-    color: white;
+.status-vence-hoje, .status-vence-3dias {
+    background-color: var(--orange-100);
+    color: var(--orange-700);
+    border: 1px solid var(--orange-200);
 }
 
-.status-vence-3dias {
-    background-color: #f59e0b;
-    color: white;
+.clientes-table {
+    .p-datatable-tbody > tr {
+        cursor: pointer;
+        &:hover {
+            background-color: var(--surface-50);
+        }
+    }
+
+    .p-column-title {
+        font-weight: 700;
+        color: var(--surface-500);
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        margin-bottom: 0.25rem;
+    }
 }

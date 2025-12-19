@@ -14,6 +14,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DropdownModule,
     CalendarModule,
     AutoCompleteModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ProgressSpinnerModule
   ],
   exports: [
     HistoricoRenovacoesComponent

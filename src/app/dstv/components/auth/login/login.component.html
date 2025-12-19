@@ -1,33 +1,43 @@
-<div id="random" class="surface-0 flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div id="random" class="flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden bg-cover bg-center relative">
+    <div class="absolute inset-0 z-1" style="background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);"></div>
 
-    <div class="grid justify-content-center p-32 lg:p-0" style="min-width:50%">
-        <div class="col-12 xl:col-6" style="opacity: 0.9; border-radius: 56px; padding: 0.3rem; background: linear-gradient(45deg, var(--primary-color), var(--primary-color-text));">
-            <div class="h-full w-full m-0 py-7 px-4 surface-card" style="border-radius: 53px;" >
-                <div class="text-center mb-5">
-                    <div class="mb-4">
-                        <i class="pi pi-prime text-6xl text-primary"></i>
-                    </div>
-                    <div class="text-900 font-bold text-4xl mb-3">Bem-vindo</div>
-                    <span class="text-600 font-medium text-xl">Faça login para continuar</span>
+    <div class="z-2 w-full px-4" style="max-width: 450px;">
+        <div class="card shadow-8 border-none p-4 md:p-6" style="background: rgba(255, 255, 255, 0.95); border-radius: 20px;">
+            <div class="text-center mb-6">
+                <div class="inline-flex align-items-center justify-content-center bg-primary-50 rounded-circle mb-4" style="width: 80px; height: 80px; border-radius: 50%;">
+                    <i class="pi pi-lock text-4xl text-primary"></i>
+                </div>
+                <h1 class="text-900 font-bold text-3xl mb-2">Acesso Restrito</h1>
+                <p class="text-600 font-medium line-height-3">Bem-vindo ao sistema DSTV</p>
+            </div>
+
+            <div class="flex flex-column gap-4">
+                <div class="flex flex-column gap-2">
+                    <label for="email" class="text-900 font-semibold">Email</label>
+                    <input id="email" [(ngModel)]="email" type="email" placeholder="Seu email" pInputText class="w-full p-3 border-round-xl">
                 </div>
 
-                <div class="w-full md:w-10 mx-auto">
-                    <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                    <input id="email1" [(ngModel)]="email" type="text" placeholder="Digite seu email" pInputText class="w-full mb-3" style="padding:1rem;">
+                <div class="flex flex-column gap-2">
+                    <label for="password" class="text-900 font-semibold">Senha</label>
+                    <p-password id="password" [(ngModel)]="password" placeholder="Sua senha" [toggleMask]="true"
+                        styleClass="w-full" inputStyleClass="w-full p-3 border-round-xl" [feedback]="false"></p-password>
+                </div>
 
-                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Senha</label>
-                    <p-password id="password1" [(ngModel)]="password" placeholder="Digite sua senha" [toggleMask]="true" styleClass="w-full mb-3" [feedback]="false"></p-password>
-
-                    <button pButton pRipple label="Entrar" class="w-full p-3 text-xl mb-3" (click)="verificaLogin()"></button>
-
-                    <div class="flex justify-content-between mb-5">
-                        <a class="text-600 font-medium no-underline cursor-pointer" style="color: var(--primary-color);">Esqueceu a senha?</a>
-                        <a class="text-600 font-medium no-underline cursor-pointer" style="color: var(--primary-color);">Criar conta</a>
+                <div class="flex align-items-center justify-content-between mb-2">
+                    <div class="flex align-items-center">
+                        <p-checkbox name="remember" value="remember" [(ngModel)]="valCheck" id="remember" class="mr-2"></p-checkbox>
+                        <label for="remember" class="text-700 cursor-pointer">Lembrar-me</label>
                     </div>
+                    <a class="text-primary font-semibold no-underline cursor-pointer hover:underline">Esqueceu a senha?</a>
+                </div>
 
-                    <div class="text-center">
-                        <span class="text-600 font-small">Copyright © CanutoBR 2025 - v{{ version }}</span>
-                    </div>
+                <button pButton pRipple label="Entrar no Sistema" icon="pi pi-sign-in"
+                    class="w-full p-3 text-lg font-bold border-round-xl" (click)="verificaLogin()"></button>
+
+                <div class="text-center mt-4">
+                    <p class="text-500 text-sm">
+                        Copyright © CanutoBR 2025 - <span class="font-bold">v{{ version }}</span>
+                    </p>
                 </div>
             </div>
         </div>
