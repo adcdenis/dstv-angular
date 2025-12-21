@@ -86,3 +86,28 @@
     min-width: 24px;
     text-align: center;
 }
+
+// Estilos para o campo de busca no cabeçalho azul
+.bg-primary {
+    .p-input-icon-right {
+        input {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            color: white !important;
+
+            &::placeholder {
+                color: rgba(255, 255, 255, 0.7) !important;
+            }
+
+            &:focus {
+                background-color: rgba(255, 255, 255, 0.15) !important;
+                border-color: rgba(255, 255, 255, 0.5) !important;
+                box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+            }
+        }
+
+        .pi-search {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+    }
+}

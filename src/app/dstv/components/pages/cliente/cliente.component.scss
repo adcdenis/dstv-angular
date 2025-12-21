@@ -121,3 +121,65 @@
         margin-bottom: 0.25rem;
     }
 }
+
+// Estilos para botões no cabeçalho azul
+.bg-primary {
+    .p-button-outlined {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+        }
+    }
+
+    .p-button-success {
+        background-color: var(--green-500) !important;
+        border-color: var(--green-500) !important;
+        color: white !important;
+
+        &:hover {
+            background-color: var(--green-600) !important;
+            border-color: var(--green-600) !important;
+        }
+    }
+
+    .p-button-warning {
+        background-color: var(--orange-500) !important;
+        border-color: var(--orange-500) !important;
+        color: white !important;
+
+        &:hover {
+            background-color: var(--orange-600) !important;
+            border-color: var(--orange-600) !important;
+        }
+    }
+
+    .p-button-danger {
+        background-color: var(--red-500) !important;
+        border-color: var(--red-500) !important;
+        color: white !important;
+
+        &:hover {
+            background-color: var(--red-600) !important;
+            border-color: var(--red-600) !important;
+        }
+    }
+
+    .p-button-secondary {
+        background-color: var(--surface-600) !important;
+        border-color: var(--surface-600) !important;
+        color: white !important;
+
+        &:hover {
+            background-color: var(--surface-700) !important;
+            border-color: var(--surface-700) !important;
+        }
+    }
+}
