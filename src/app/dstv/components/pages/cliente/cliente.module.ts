@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -28,6 +28,7 @@ import { TooltipModule } from 'primeng/tooltip';
   imports: [
     CommonModule,
     ClienteRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
 
     //Primefaces

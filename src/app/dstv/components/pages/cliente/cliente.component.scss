@@ -183,3 +183,136 @@
         }
     }
 }
+
+// Popup de renovacao
+:host ::ng-deep .renovacao-dialog {
+    .p-dialog {
+        overflow: visible;
+    }
+
+    .p-dialog-header {
+        padding: 1.5rem 1.75rem 0.75rem;
+    }
+
+    .p-dialog-content {
+        overflow: visible;
+        padding: 0 1.75rem 1.5rem;
+    }
+
+    .p-dialog-footer {
+        padding: 0 1.75rem 1.5rem;
+        gap: 0.5rem;
+    }
+}
+
+::ng-deep .p-datepicker,
+::ng-deep .p-datepicker-panel,
+::ng-deep .renovacao-calendar-panel {
+    z-index: 4000 !important;
+}
+
+.renovacao-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.renovacao-header {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 0.75rem;
+    align-items: start;
+}
+
+.renovacao-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--orange-100);
+    color: var(--orange-700);
+    font-size: 1.1rem;
+}
+
+.renovacao-title {
+    font-weight: 600;
+    color: var(--surface-800);
+}
+
+.renovacao-subtitle {
+    margin-top: 0.25rem;
+    color: var(--surface-500);
+    font-size: 0.9rem;
+}
+
+.renovacao-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--surface-700);
+}
+
+.renovacao-input {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.renovacao-input ::ng-deep .p-calendar {
+    width: 100%;
+}
+
+.renovacao-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: var(--primary-50);
+    color: var(--primary-700);
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.renovacao-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: var(--surface-50);
+    border: 1px solid var(--surface-200);
+}
+
+.renovacao-result-label {
+    color: var(--surface-600);
+    font-weight: 600;
+}
+
+.renovacao-result-date {
+    color: var(--surface-900);
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .renovacao-header {
+        grid-template-columns: 32px 1fr;
+    }
+
+    .renovacao-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+    }
+
+    .renovacao-input {
+        grid-template-columns: 1fr;
+    }
+
+    .renovacao-chip {
+        justify-self: start;
+    }
+}

@@ -207,13 +207,31 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog [(visible)]="dialogoRenovar" header="Confirmar Renovação" [modal]="true" [style]="{width:'480px'}" [breakpoints]="{'960px':'50vw','640px':'90vw'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Tem certeza que deseja renovar <b>{{clienteRenovacao?.nome}}</b> por mais 30 dias?<br> Novo vencimento: <b>{{novaDataVencimento | date:'dd/MM/yyyy'}}</b></span>
+<p-dialog [(visible)]="dialogoRenovar" header="Confirmar Renovação" [modal]="true" [style]="{width:'520px'}" [breakpoints]="{'960px':'60vw','640px':'92vw'}" [baseZIndex]="1000" styleClass="renovacao-dialog">
+            <div class="renovacao-content">
+                <div class="renovacao-header">
+                    <span class="renovacao-icon pi pi-exclamation-triangle" aria-hidden="true"></span>
+                    <div>
+                        <div class="renovacao-title">Tem certeza que deseja renovar <b>{{clienteRenovacao?.nome}}</b> por mais 30 dias?</div>
+                        <div class="renovacao-subtitle">Escolha a data base. O vencimento sera calculado a partir dela.</div>
+                    </div>
+                </div>
+                <div class="renovacao-form">
+                    <label for="dataBaseRenovacao" class="font-bold">Data base da renovacao</label>
+                    <div class="renovacao-input">
+                        <p-calendar id="dataBaseRenovacao" [(ngModel)]="dataBaseRenovacao" [ngModelOptions]="{standalone: true}"
+                            dateFormat="dd/mm/yy" [showIcon]="true" [appendTo]="'body'" [baseZIndex]="3000" panelStyleClass="renovacao-calendar-panel"
+                            (ngModelChange)="atualizarNovaDataVencimento()"></p-calendar>
+                        <span class="renovacao-chip">30 dias</span>
+                    </div>
+                </div>
+                <div class="renovacao-result">
+                    <span class="renovacao-result-label">Novo vencimento</span>
+                    <span class="renovacao-result-date">{{novaDataVencimento | date:'dd/MM/yyyy'}}</span>
+                </div>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Não"
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Nao"
                     (click)="dialogoRenovar = false"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sim"
                     (click)="confirmarRenovar()"></button>
@@ -233,3 +251,5 @@
         </p-dialog>
     </div>
 </div>
+
+

@@ -485,14 +485,37 @@ export class ClienteComponent implements OnInit {
     dialogoPosRenovacao: boolean = false;
     clienteRenovacao: ClienteI | null = null;
     novaDataVencimento: Date | null = null;
+    dataBaseRenovacao: Date | null = null;
     mensagemRenovacao: string = '';
+
+    private calcularNovaDataVencimento(base: Date): Date {
+        const nova = new Date(base);
+        nova.setHours(0, 0, 0, 0);
+        const diaOriginal = nova.getDate();
+        nova.setMonth(nova.getMonth() + 1);
+        if (nova.getDate() !== diaOriginal) {
+            nova.setDate(0);
+        }
+        return nova;
+    }
+
+    public atualizarNovaDataVencimento() {
+        if (!this.dataBaseRenovacao) {
+            this.novaDataVencimento = null;
+            return;
+        }
+        const base = new Date(this.dataBaseRenovacao);
+        base.setHours(0, 0, 0, 0);
+        this.dataBaseRenovacao = base;
+        this.novaDataVencimento = this.calcularNovaDataVencimento(base);
+    }
 
     public abrirDialogRenovar(cliente: ClienteI) {
         this.clienteRenovacao = { ...cliente };
         const dt: any = cliente.dataVencimento;
         let base: Date;
 
-        // Verifica se o cliente está vencido
+        // Verifica se o cliente esta vencido
         const dataVencimento: Date = dt && dt.seconds ? new Date(dt.seconds * 1000) : new Date(cliente.dataVencimento);
         const hoje: Date = new Date();
         hoje.setHours(0, 0, 0, 0);
@@ -502,21 +525,12 @@ export class ClienteComponent implements OnInit {
             // Se estiver vencido, usa a data atual como base
             base = hoje;
         } else {
-            // Se não estiver vencido, usa a data de vencimento como base
+            // Se nao estiver vencido, usa a data de vencimento como base
             base = dataVencimento;
         }
 
-        const nova = new Date(base);
-        const diaOriginal = base.getDate();
-        nova.setMonth(nova.getMonth() + 1);
-
-        // Ajuste para casos onde o mês seguinte tem menos dias (ex: 31/01 -> 28/02)
-        // Se o dia mudou, significa que houve overflow para o mês seguinte
-        if (nova.getDate() !== diaOriginal) {
-            nova.setDate(0);
-        }
-
-        this.novaDataVencimento = nova;
+        this.dataBaseRenovacao = new Date(base);
+        this.atualizarNovaDataVencimento();
         this.dialogoRenovar = true;
     }
 
@@ -573,3 +587,4 @@ export class ClienteComponent implements OnInit {
         .catch((error) => console.log('error: ', error));
     }
 }
+
