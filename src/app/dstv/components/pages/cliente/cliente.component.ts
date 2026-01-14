@@ -119,6 +119,16 @@ export class ClienteComponent implements OnInit {
         return (cliente.dataVencimento >= dataAtual) && (cliente.dataVencimento <= data3d);
     };
 
+    private venceEm10Dias: (cliente: ClienteI) => boolean = (cliente: ClienteI) => {
+        const dataAtual: Date = new Date();
+        dataAtual.setHours(0, 0, 0, 0);
+
+        const data10d: Date = new Date();
+        data10d.setHours(0, 0, 0, 0);
+        data10d.setDate(data10d.getDate() + 10);
+        return (cliente.dataVencimento >= dataAtual) && (cliente.dataVencimento <= data10d);
+    };
+
     ngOnInit(): void {
 
         this.config.setTranslation({
@@ -259,6 +269,13 @@ export class ClienteComponent implements OnInit {
     public filtrarPorVence3Dias() {
         this.filtroVencimento = this.venceEm3Dias;
         this.filtroSelecionado = '3dias';
+        this.termoBusca = '';
+        this.aplicarFiltroAtual();
+    }
+
+    public filtrarPorVence10Dias() {
+        this.filtroVencimento = this.venceEm10Dias;
+        this.filtroSelecionado = '10dias';
         this.termoBusca = '';
         this.aplicarFiltroAtual();
     }

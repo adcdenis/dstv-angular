@@ -18,6 +18,9 @@
                         <button pButton pRipple label="3 dias!" icon="pi pi-clock"
                             [class]="filtroSelecionado === '3dias' ? 'p-button-warning border-round-xl' : 'p-button-outlined border-round-xl'"
                             (click)="filtrarPorVence3Dias()"></button>
+                        <button pButton pRipple label="10 dias" icon="pi pi-clock"
+                            [class]="filtroSelecionado === '10dias' ? 'p-button-info border-round-xl' : 'p-button-outlined border-round-xl'"
+                            (click)="filtrarPorVence10Dias()"></button>
                         <button pButton pRipple label="Vencidos" icon="pi pi-times-circle"
                             [class]="filtroSelecionado === 'vencidos' ? 'p-button-danger border-round-xl' : 'p-button-outlined border-round-xl'"
                             (click)="filtrarPorVencidos()"></button>

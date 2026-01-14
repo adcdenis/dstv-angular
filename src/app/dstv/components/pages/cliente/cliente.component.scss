@@ -161,6 +161,17 @@
         }
     }
 
+    .p-button-info {
+        background-color: var(--blue-400) !important;
+        border-color: var(--blue-400) !important;
+        color: white !important;
+
+        &:hover {
+            background-color: var(--blue-500) !important;
+            border-color: var(--blue-500) !important;
+        }
+    }
+
     .p-button-danger {
         background-color: var(--red-500) !important;
         border-color: var(--red-500) !important;
